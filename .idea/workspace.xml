@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="2f16c2a5-4fd2-4cd8-acf8-b379f45a2309" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1lqAvbzrtsEvoKEcjxPSLkcW6U8" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="restartRequiresConfirmation" value="false" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RunManager">
+    <configuration name="dev" type="js.build_tools.npm">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="dev" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2f16c2a5-4fd2-4cd8-acf8-b379f45a2309" name="Default Changelist" comment="" />
+      <created>1608314480654</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1608314480654</updated>
+      <workItem from="1608314482455" duration="4458000" />
+      <workItem from="1608381213846" duration="25000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="104" y="25" width="1071" height="702" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1608315694669">
+      <screen x="0" y="25" width="1280" height="702" />
+    </state>
+    <state x="104" y="25" width="1071" height="702" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.25.1280.702/1280.75.1920.1055@0.25.1280.702" timestamp="1608315694669" />
+    <state x="360" y="182" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1608380763455">
+      <screen x="0" y="25" width="1280" height="775" />
+    </state>
+    <state x="360" y="182" key="#com.intellij.fileTypes.FileTypeChooser/0.25.1280.775/1280.75.1920.982@0.25.1280.775" timestamp="1608380763455" />
+    <state x="427" y="85" key="#com.intellij.ide.macro.MacrosDialog" timestamp="1608315613342">
+      <screen x="0" y="25" width="1280" height="702" />
+    </state>
+    <state x="427" y="85" key="#com.intellij.ide.macro.MacrosDialog/0.25.1280.702/1280.75.1920.1055@0.25.1280.702" timestamp="1608315613342" />
+    <state width="1259" height="298" key="GridCell.Tab.0.bottom" timestamp="1608381208661">
+      <screen x="0" y="25" width="1280" height="775" />
+    </state>
+    <state width="1259" height="298" key="GridCell.Tab.0.bottom/0.25.1280.702/1280.75.1920.1055@0.25.1280.702" timestamp="1608316972015" />
+    <state width="1259" height="298" key="GridCell.Tab.0.bottom/0.25.1280.775/1280.75.1920.982@0.25.1280.775" timestamp="1608381208661" />
+    <state width="1259" height="298" key="GridCell.Tab.0.center" timestamp="1608381208659">
+      <screen x="0" y="25" width="1280" height="775" />
+    </state>
+    <state width="1259" height="298" key="GridCell.Tab.0.center/0.25.1280.702/1280.75.1920.1055@0.25.1280.702" timestamp="1608316972014" />
+    <state width="1259" height="298" key="GridCell.Tab.0.center/0.25.1280.775/1280.75.1920.982@0.25.1280.775" timestamp="1608381208659" />
+    <state width="1259" height="298" key="GridCell.Tab.0.left" timestamp="1608381208658">
+      <screen x="0" y="25" width="1280" height="775" />
+    </state>
+    <state width="1259" height="298" key="GridCell.Tab.0.left/0.25.1280.702/1280.75.1920.1055@0.25.1280.702" timestamp="1608316972014" />
+    <state width="1259" height="298" key="GridCell.Tab.0.left/0.25.1280.775/1280.75.1920.982@0.25.1280.775" timestamp="1608381208658" />
+    <state width="1259" height="298" key="GridCell.Tab.0.right" timestamp="1608381208660">
+      <screen x="0" y="25" width="1280" height="775" />
+    </state>
+    <state width="1259" height="298" key="GridCell.Tab.0.right/0.25.1280.702/1280.75.1920.1055@0.25.1280.702" timestamp="1608316972015" />
+    <state width="1259" height="298" key="GridCell.Tab.0.right/0.25.1280.775/1280.75.1920.982@0.25.1280.775" timestamp="1608381208660" />
+    <state x="149" y="25" key="SettingsEditor" timestamp="1608381200682">
+      <screen x="0" y="25" width="1280" height="775" />
+    </state>
+    <state x="149" y="25" key="SettingsEditor/0.25.1280.775/1280.75.1920.982@0.25.1280.775" timestamp="1608381200682" />
+  </component>
+</project>
