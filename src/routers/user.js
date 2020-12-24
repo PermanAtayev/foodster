@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../_helpers/db');
 const User = require('../mongo/model/user');
+const auth = require('../middleware/auth');
 
 router.post('/users/signup', async (req, res) =>{
     const user = new User(req.body);
     try{
         await user.save();
-        const token = user.generateAuthToken();
+        await user.generateAuthToken();
         return res.status(201).send(user);
     }
     catch (e){
@@ -18,13 +18,29 @@ router.post('/users/signup', async (req, res) =>{
 router.post('/users/login', async (req, res) => {
     try{
         const user = await User.findByCredentials(req.body.email, req.body.password);
-        const token = await user.generateAuthToken();
+        await user.generateAuthToken();
         res.send(user);
     }
     catch(e){
         res.status(400).send(e + "");
     }
 });
+
+router.patch('/users/updateinfo', auth, async(req, res) => {
+    const updates = Object.keys(req.body);
+
+    try {
+        const user = req.user;
+        updates.forEach((update) => {
+            user[update] = req.body[update];
+        })
+        await user.save();
+        return res.status(201).send(user);
+    }
+    catch(error){
+        res.status(400).send(error);
+    }
+})
 
 router.get('/users/list', async (req, res) => {
     try{

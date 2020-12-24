@@ -11,6 +11,13 @@ schema.methods.generateAuthToken = async function(){
     if(!user.token)
         user.token = token;
 
+    // if the token of the user has expired, the token needs to be updated
+    try {
+        jwt.verify(user.token, process.env.JWT_SECRET);
+    }
+    catch(e){
+        user.token = token;
+    }
     await user.save();
     return token;
 
