@@ -13,6 +13,7 @@ schema.methods.generateAuthToken = async function(){
 
     await user.save();
     return token;
+
 }
 
 schema.statics.findByCredentials = async (email, password) => {
