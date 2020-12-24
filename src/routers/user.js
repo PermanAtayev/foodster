@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../_helpers/db');
-const User = require('../mongo/model/user')
+const User = require('../mongo/model/user');
 
 router.post('/users/signup', async (req, res) =>{
     const user = new User(req.body);
@@ -24,16 +24,26 @@ router.post('/users/login', async (req, res) => {
     catch(e){
         res.status(400).send(e + "");
     }
-})
+});
 
 router.get('/users/list', async (req, res) => {
     try{
         const users = await User.find({});
         console.log(users);
-        return res.status(200).send('Found users');
+        return res.status(200).send(users);
     }
     catch(e){
         res.status(404).send(e + "");
+    }
+})
+
+router.delete('/users/deleteAll', async(req, res) => {
+    try{
+        await User.deleteMany({});
+        res.send("Successfully delete all users");
+    }
+    catch(e){
+        res.status(500).send(e + "");
     }
 })
 

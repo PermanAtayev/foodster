@@ -19,12 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2f16c2a5-4fd2-4cd8-acf8-b379f45a2309" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
-    </list>
+    <list default="true" id="2f16c2a5-4fd2-4cd8-acf8-b379f45a2309" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -59,6 +54,7 @@
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="restartRequiresConfirmation" value="false" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
     <property name="vue.rearranger.settings.migration" value="true" />
@@ -85,6 +81,7 @@
       <updated>1608314480654</updated>
       <workItem from="1608314482455" duration="4458000" />
       <workItem from="1608381213846" duration="25000" />
+      <workItem from="1608810568780" duration="4063000" />
     </task>
     <servers />
   </component>
@@ -101,6 +98,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
     <state x="104" y="25" width="1071" height="702" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1608315694669">
@@ -115,25 +113,33 @@
       <screen x="0" y="25" width="1280" height="702" />
     </state>
     <state x="427" y="85" key="#com.intellij.ide.macro.MacrosDialog/0.25.1280.702/1280.75.1920.1055@0.25.1280.702" timestamp="1608315613342" />
-    <state width="1259" height="283" key="GridCell.Tab.0.bottom" timestamp="1608394279270">
-      <screen x="0" y="25" width="1280" height="775" />
+    <state x="399" y="250" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1608813613820">
+      <screen x="0" y="25" width="1280" height="702" />
     </state>
-    <state width="1259" height="298" key="GridCell.Tab.0.bottom/0.25.1280.702/1280.75.1920.1055@0.25.1280.702" timestamp="1608316972015" />
+    <state x="399" y="250" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.25.1280.702/1280.75.1920.1055@0.25.1280.702" timestamp="1608813613820" />
+    <state width="1259" height="222" key="GridCell.Tab.0.bottom" timestamp="1608816729386">
+      <screen x="0" y="25" width="1280" height="702" />
+    </state>
+    <state width="1259" height="222" key="GridCell.Tab.0.bottom/0.25.1280.702/1280.75.1920.1055@0.25.1280.702" timestamp="1608816729386" />
+    <state width="1259" height="283" key="GridCell.Tab.0.bottom/0.25.1280.706/1280.75.1920.1055@0.25.1280.706" timestamp="1608488918821" />
     <state width="1259" height="283" key="GridCell.Tab.0.bottom/0.25.1280.775/1280.75.1920.982@0.25.1280.775" timestamp="1608394279270" />
-    <state width="1259" height="283" key="GridCell.Tab.0.center" timestamp="1608394279269">
-      <screen x="0" y="25" width="1280" height="775" />
+    <state width="1259" height="222" key="GridCell.Tab.0.center" timestamp="1608816729384">
+      <screen x="0" y="25" width="1280" height="702" />
     </state>
-    <state width="1259" height="298" key="GridCell.Tab.0.center/0.25.1280.702/1280.75.1920.1055@0.25.1280.702" timestamp="1608316972014" />
+    <state width="1259" height="222" key="GridCell.Tab.0.center/0.25.1280.702/1280.75.1920.1055@0.25.1280.702" timestamp="1608816729384" />
+    <state width="1259" height="283" key="GridCell.Tab.0.center/0.25.1280.706/1280.75.1920.1055@0.25.1280.706" timestamp="1608488918817" />
     <state width="1259" height="283" key="GridCell.Tab.0.center/0.25.1280.775/1280.75.1920.982@0.25.1280.775" timestamp="1608394279269" />
-    <state width="1259" height="283" key="GridCell.Tab.0.left" timestamp="1608394279267">
-      <screen x="0" y="25" width="1280" height="775" />
+    <state width="1259" height="222" key="GridCell.Tab.0.left" timestamp="1608816729383">
+      <screen x="0" y="25" width="1280" height="702" />
     </state>
-    <state width="1259" height="298" key="GridCell.Tab.0.left/0.25.1280.702/1280.75.1920.1055@0.25.1280.702" timestamp="1608316972014" />
+    <state width="1259" height="222" key="GridCell.Tab.0.left/0.25.1280.702/1280.75.1920.1055@0.25.1280.702" timestamp="1608816729383" />
+    <state width="1259" height="283" key="GridCell.Tab.0.left/0.25.1280.706/1280.75.1920.1055@0.25.1280.706" timestamp="1608488918810" />
     <state width="1259" height="283" key="GridCell.Tab.0.left/0.25.1280.775/1280.75.1920.982@0.25.1280.775" timestamp="1608394279267" />
-    <state width="1259" height="283" key="GridCell.Tab.0.right" timestamp="1608394279269">
-      <screen x="0" y="25" width="1280" height="775" />
+    <state width="1259" height="222" key="GridCell.Tab.0.right" timestamp="1608816729385">
+      <screen x="0" y="25" width="1280" height="702" />
     </state>
-    <state width="1259" height="298" key="GridCell.Tab.0.right/0.25.1280.702/1280.75.1920.1055@0.25.1280.702" timestamp="1608316972015" />
+    <state width="1259" height="222" key="GridCell.Tab.0.right/0.25.1280.702/1280.75.1920.1055@0.25.1280.702" timestamp="1608816729385" />
+    <state width="1259" height="283" key="GridCell.Tab.0.right/0.25.1280.706/1280.75.1920.1055@0.25.1280.706" timestamp="1608488918817" />
     <state width="1259" height="283" key="GridCell.Tab.0.right/0.25.1280.775/1280.75.1920.982@0.25.1280.775" timestamp="1608394279269" />
     <state x="149" y="25" key="SettingsEditor" timestamp="1608381200682">
       <screen x="0" y="25" width="1280" height="775" />
