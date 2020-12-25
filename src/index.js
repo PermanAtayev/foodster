@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 // register routers
 app.use('', userRouter);
 app.use('', mealRouter);
-app.use('', dbRouter)
+app.use('', dbRouter);
 
 app.get('/', (req, res) => {
     res.send("Welcome to the REST API of Foodster");
