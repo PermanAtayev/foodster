@@ -1,15 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../_helpers/db');
-const User = require('../mongo/model/user');
+const Meal = require('../mongo/model/meal');
 const auth = require('../middleware/auth')
 
-router.get('/meals/generate', auth, async(req, res) => {
-    const random_meal = {
-        "name" : "somsa",
-        "cookingTime" : 50
+router.post('/meals/generate', auth, async(req, res) => {
+    try{
+        const planFilter = req.body;
+        const mealPlan = await Meal.generateMealPlan(planFilter, req.user._id);
+        
+        res.send(mealPlan);
     }
-    res.send(random_meal);
+    catch(e){
+        res.status(400).send(e + "");
+    }
 })
 
 module.exports = router;

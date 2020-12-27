@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const userRouter = require('./routers/user');
 const mealRouter = require('./routers/meal');
 const dbRouter = require('./routers/db');
+const recipeRouter = require('./routers/recipe');
 
 const cors = require('cors');
 app.use(cors());
@@ -20,6 +21,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use('', userRouter);
 app.use('', mealRouter);
 app.use('', dbRouter);
+app.use('', recipeRouter);
 
 app.get('/', (req, res) => {
     res.send("Welcome to the REST API of Foodster");

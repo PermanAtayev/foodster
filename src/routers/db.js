@@ -6,8 +6,8 @@ const Recipe = require('../mongo/model/recipe')
 
 const fs = require('fs');
 
-let rawdata = fs.readFileSync('allrecipes_healthy.json');
-let recipes = JSON.parse(rawdata);
+//let rawdata = fs.readFileSync('allrecipes_healthy.json');
+//let recipes = JSON.parse(rawdata);
 
 router.delete('/db/drop', async(req, res) => {
     try{
