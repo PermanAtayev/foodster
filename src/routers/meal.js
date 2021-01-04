@@ -1,16 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../_helpers/db');
-const User = require('../mongo/model/user');
-const Recipe = require('../mongo/model/recipe');
+const Meal = require('../mongo/model/meal');
 const auth = require('../middleware/auth')
 
-router.get('/meals/generateRandom', auth, async(req, res) => {
-    const n = Recipe.count({});
-    let r = Math.floor(Math.random() * n);
-    let randomMeal = await Recipe.find({}).limit(1).skip(r);
-
-    res.status(200).send(randomMeal);
+router.post('/meals/generate', auth, async(req, res) => {
+    try{
+        const planFilter = req.body;
+        const mealPlan = await Meal.generateMealPlan(planFilter, req.user._id);
+        
+        res.send(mealPlan);
+    }
+    catch(e){
+        res.status(400).send(e + "");
+    }
 })
 
 module.exports = router;
