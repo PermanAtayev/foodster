@@ -39,7 +39,7 @@ authentication is required for this update, in the body of the request have all 
 To get a meal for an authorized user request
 
 ```
-GET /meals/generate
+POST /meals/generate
 ```
 
 needs to be sent where `breakfast_number`, `lunch_number`, `dinner_number`, `snack_number`, `calories`, `protein`, `carbs` and `fat` fields of the request are required.
