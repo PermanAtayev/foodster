@@ -1,10 +1,12 @@
 const mongoose = require('mongoose');
 const schema = require('../schema/recipe');
 
-const calorieTolarance = 20;
-const carbsTolarance = 20;
-const proteinTolarance = 20;
-const fatTolarance = 20;
+const commonTempTolarance = 200;
+
+const calorieTolarance = commonTempTolarance;
+const carbsTolarance = commonTempTolarance;
+const proteinTolarance = commonTempTolarance;
+const fatTolarance = commonTempTolarance;
 
 
 schema.statics.findRecipeWithNutritions = async (type, calories, protein, carbs, fat) => {
