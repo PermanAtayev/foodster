@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../mongo/model/user');
 const auth = require('../middleware/auth');
+const permission = require('../middleware/permission');
 
 router.post('/users/signup', async (req, res) =>{
     const user = new User(req.body);
@@ -42,7 +43,7 @@ router.patch('/users/updateinfo', auth, async(req, res) => {
     }
 })
 
-router.get('/users/list', async (req, res) => {
+router.get('/users/list', auth, permission('userList'), async (req, res) => {
     try{
         const users = await User.find({});
         console.log(users);
@@ -53,7 +54,7 @@ router.get('/users/list', async (req, res) => {
     }
 })
 
-router.delete('/users/deleteAll', async(req, res) => {
+router.delete('/users/deleteAll',  auth, permission('deleteAllUsers'), async(req, res) => {
     try{
         await User.deleteMany({});
         res.send("Successfully delete all users");

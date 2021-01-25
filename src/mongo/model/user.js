@@ -23,6 +23,18 @@ schema.methods.generateAuthToken = async function(){
 
 }
 
+schema.methods.hasPermission = async function(permission){
+    const user = this;
+    let hasPermission = false;
+
+    user.permissions.forEach(userPermission => {
+        if (userPermission === permission){
+            hasPermission = true;
+        } 
+    });
+    return hasPermission;
+}
+
 schema.statics.findByCredentials = async (email, password) => {
     const user = await User.findOne({ email });
 
