@@ -4,7 +4,7 @@ const User = require('../mongo/model/user');
 const auth = require('../middleware/auth');
 const permission = require('../middleware/permission');
 
-router.post('/users/signup', async (req, res) =>{
+router.post('/signup', async (req, res) =>{
     /*
         #swagger.tags = ['User']
         #swagger.description = 'Endpoint for a user to signup'
@@ -58,7 +58,7 @@ router.post('/users/signup', async (req, res) =>{
     }
 });
 
-router.post('/users/login', async (req, res) => {
+router.post('/login', async (req, res) => {
     /*    #swagger.tags = ['User']
           #swagger.description = 'Endpoint for a user to login. Will get a token back if successful.'
     */
@@ -112,7 +112,7 @@ router.post('/users/login', async (req, res) => {
     }
 });
 
-router.patch('/users/updateinfo', auth, async(req, res) => {
+router.patch('/updateinfo', auth, async(req, res) => {
     /*
           #swagger.tags = ['User']
           #swagger.description = 'Endpoint to update the user info'
@@ -132,7 +132,7 @@ router.patch('/users/updateinfo', auth, async(req, res) => {
     }
 })
 
-router.get('/users/list', auth, permission('userList'),
+router.get('/list', auth, permission('userList'),
     /*    #swagger.tags = ['User']
       #swagger.description = 'Endpoint to get a list of users, requires authentication.'
     */
@@ -147,7 +147,12 @@ router.get('/users/list', auth, permission('userList'),
     }
 })
 
-router.delete('/users/deleteAll',  auth, permission('deleteAllUsers'),
+router.delete('/deleteAll',  auth, permission('deleteAllUsers'),
+    /*
+        #swagger.tags = ['User']
+        #swagger.description = 'Endpoint to delete all users'
+    */
+
     async(req, res) => {
     try{
         await User.deleteMany({});

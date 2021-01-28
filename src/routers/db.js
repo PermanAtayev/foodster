@@ -12,7 +12,7 @@ const fs = require('fs');
 
 
 
-router.delete('/db/drop', auth, permission('dropUsersDb'), async(req, res) => {
+router.delete('/drop', auth, permission('dropUsersDb'), async(req, res) => {
     try{
         await db.dropCollection("Users");
         res.status(200).send("Collections dropped successfully");

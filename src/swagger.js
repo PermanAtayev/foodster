@@ -20,7 +20,7 @@ const doc = {
             "name": "User",
             "description": "Endpoints"
         }
-    ],
+    ]
 }
 
 const outputFile = './src/docs/swagger_output.json'
@@ -28,7 +28,8 @@ const endpointsFiles = [
     './src/routers/user.js',
     './src/routers/db.js',
     './src/routers/meal.js',
-    './src/routers/recipe.js'
+    './src/routers/recipe.js',
+    './src/mongo/schema/user.js'
 ]
 
 

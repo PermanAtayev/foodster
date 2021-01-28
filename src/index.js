@@ -20,10 +20,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 // register routers
-app.use('', userRouter);
-app.use('', mealRouter);
-app.use('', dbRouter);
-app.use('', recipeRouter);
+app.use('/users', userRouter);
+app.use('/meals', mealRouter);
+app.use('/db', dbRouter);
+app.use('/recipe', recipeRouter);
 
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerFile))
