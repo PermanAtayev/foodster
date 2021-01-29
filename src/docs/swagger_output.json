@@ -23,7 +23,7 @@
   ],
   "produces": [],
   "paths": {
-    "/signup": {
+    "/users/signup": {
       "post": {
         "tags": [
           "User"
@@ -89,7 +89,7 @@
         }
       }
     },
-    "/login": {
+    "/users/login": {
       "post": {
         "tags": [
           "User"
@@ -151,7 +151,7 @@
         }
       }
     },
-    "/updateinfo": {
+    "/users/updateinfo": {
       "patch": {
         "tags": [
           "User"
@@ -171,7 +171,7 @@
         }
       }
     },
-    "/list": {
+    "/users/list": {
       "get": {
         "tags": [
           "User"
@@ -191,7 +191,7 @@
         }
       }
     },
-    "/deleteAll": {
+    "/users/deleteAll": {
       "delete": {
         "tags": [
           "User"
@@ -210,8 +210,10 @@
     },
     "/db/drop": {
       "delete": {
-        "tags": [],
-        "description": "",
+        "tags": [
+          "DB"
+        ],
+        "description": "Drop a database",
         "parameters": [],
         "responses": {
           "200": {
@@ -228,8 +230,10 @@
     },
     "/meals/generate": {
       "post": {
-        "tags": [],
-        "description": "",
+        "tags": [
+          "Meal"
+        ],
+        "description": "generate a meal",
         "parameters": [],
         "responses": {
           "400": {
@@ -243,8 +247,10 @@
     },
     "/recipe/nameFilter": {
       "post": {
-        "tags": [],
-        "description": "",
+        "tags": [
+          "Recipe"
+        ],
+        "description": "Find a recipe using its name",
         "parameters": [],
         "responses": {
           "201": {
@@ -261,8 +267,10 @@
     },
     "/recipe/nutritionFilter": {
       "post": {
-        "tags": [],
-        "description": "",
+        "tags": [
+          "Recipe"
+        ],
+        "description": "Filter a recipe according to its nutritional info",
         "parameters": [],
         "responses": {
           "201": {

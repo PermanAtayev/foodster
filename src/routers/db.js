@@ -12,7 +12,11 @@ const fs = require('fs');
 
 
 
-router.delete('/drop', auth, permission('dropUsersDb'), async(req, res) => {
+router.delete('/db/drop', auth, permission('dropUsersDb'), async(req, res) => {
+    /*
+    #swagger.tags = ['DB']
+    #swagger.description = 'Drop a database'
+    */
     try{
         await db.dropCollection("Users");
         res.status(200).send("Collections dropped successfully");

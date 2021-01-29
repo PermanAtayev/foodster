@@ -4,7 +4,11 @@ const Meal = require('../mongo/model/meal');
 const auth = require('../middleware/auth');
 
 
-router.post('/generate',  auth, async(req, res) => {
+router.post('/meals/generate',  auth, async(req, res) => {
+    /*
+    #swagger.tags = ['Meal']
+    #swagger.description = 'generate a meal'
+    */
     try{
         const planFilter = req.body;
         const mealPlan = await Meal.generateMealPlan(planFilter, req.user._id);
