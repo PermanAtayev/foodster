@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 8080;
+const morgan = require('morgan');
 
 const bodyParser = require('body-parser');
 
@@ -14,16 +15,17 @@ const swaggerFile = require('./docs/swagger_output.json')
 
 const cors = require('cors');
 app.use(cors());
+app.use(morgan('combined'));
 
 // parse the incoming request
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 // register routers
-app.use('/users', userRouter);
-app.use('/meals', mealRouter);
-app.use('/db', dbRouter);
-app.use('/recipe', recipeRouter);
+app.use('/', userRouter);
+app.use('/', mealRouter);
+app.use('/', dbRouter);
+app.use('/', recipeRouter);
 
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerFile))
