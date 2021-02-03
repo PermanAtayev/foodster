@@ -23,3 +23,13 @@ npm run autogen
 ```
 needs to be run. Once that is done swagger_output.json will be filled with the documentation
 you have added. Then, you can go to the ```base_url/docs``` link to find the documentation.
+
+### Environment variables:
+```
+NODE_ENV=development
+PORT=8077
+CONNECTION_STRING=YOUR CLOUD TEST MONGODB URI
+CONNECTION_STRING_DEV=YOUR LOCAL MONGODB URI
+CONNECTION_STRING_DEPLOYMENT=YOUR CLOUD DEVELOPMENT MONGODB URI
+JWT_SECRET=FOODSTER_SECRET
+```
