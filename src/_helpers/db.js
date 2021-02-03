@@ -3,7 +3,4 @@ const connectionOptions = { useCreateIndex: true, useNewUrlParser: true, useUnif
 mongoose.connect(process.env.CONNECTION_STRING_DEV, connectionOptions);
 mongoose.Promise = global.Promise;
 
-const db = mongoose.connection;
-
-
-module.exports = db;
+module.exports = mongoose.connection;
