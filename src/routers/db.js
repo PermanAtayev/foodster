@@ -26,6 +26,15 @@ router.delete('/db/drop', auth, permission('dropUsersDb'), async(req, res) => {
     }
 })
 
+router.post('/db/addMeal', auth, async(req, res) => {
+    /*
+    #swagger.tags = ['DB']
+    #swagger.description = 'Add a meal to the db and store the image in s3.'
+    */
+
+
+})
+
 // router.get('/db/upload/:number', async(req, res) => {
 //         const n = (req.params.number > recipes.length ? recipes.length : req.params.number);
 //
