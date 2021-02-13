@@ -4,60 +4,32 @@
 
 To run a docker instance of mongodb in a local machine go [here](https://www.code4it.dev/blog/run-mongodb-on-docker).
 
-## Deployment
-
 ## Documentation
 
+### Deployment
 The server is published [here](https://foodster-cs491.herokuapp.com/), please query that base url with parameters you want depending on the functionality.
 
-### User related queries
+For now in the ```master``` branch of this repository auto-deployment is configured. Therefore, it is important that nothing
+that is unstable should be pushed to the ```master```. The default branch of development called ```development```.
+### Documenting code
+Documentation of swagger that is used to write documentation can be found [here](https://swagger.io/docs/specification/basic-structure/)
 
-To sign-up a user request
+To make the generation of documentation an npm library swagger-autogen is used, you can 
+read further about it [here](https://github.com/davibaltar/swagger-autogen)
 
+Once the comments for the swagger autogen are written, 
 ```
-POST /users/signup
+npm run autogen
 ```
+needs to be run. Once that is done swagger_output.json will be filled with the documentation
+you have added. Then, you can go to the ```base_url/docs``` link to find the documentation.
 
-needs to be sent where `email` and `password` fields of the request are required. If your request is successful, response with stat 201 will be sent back.
-
-To login a user request
-
+### Environment variables:
 ```
-POST /users/login
+NODE_ENV=development
+PORT=8077
+CONNECTION_STRING=YOUR CLOUD TEST MONGODB URI
+CONNECTION_STRING_DEV=YOUR LOCAL MONGODB URI
+CONNECTION_STRING_DEPLOYMENT=YOUR CLOUD DEVELOPMENT MONGODB URI
+JWT_SECRET=FOODSTER_SECRET
 ```
-
-needs to be sent where `email` and `password` fields of the request are required. If your request is successful, response with status 200 will be sent back, as well as the token you will need to use in your subsequent requests. To add the token to your header, make sure that is in the Authorization header with value:
-`Bearer <token_value>`. For example, if your token is equal to a.b.c, then your request would have an Authorization header with value `Bearer a.b.c`.
-To save and / or update metadata related to the user request
-
-```
-POST /users/updateinfo
-```
-
-authentication is required for this update, in the body of the request have all the fields that need to be updated / saved.
-
-### Meal related queries
-
-To get a meal for an authorized user request
-
-```
-POST /meals/generate
-```
-
-needs to be sent where `breakfast_number`, `lunch_number`, `dinner_number`, `snack_number`, `calories`, `protein`, `carbs` and `fat` fields of the request are required.
-Example body:
-
-```
-{
-    "breakfast_number": 1,
-    "lunch_number": 1,
-    "dinner_number": 1,
-    "snack_number": 0,
-    "calories" : 243,
-    "protein" : 5.8,
-    "carbs": 37.4,
-    "fat": 9.8
-}
-```
-
-meal plan data is returned in the json format. plan is divided days and days are divided into meals. days may have specific meal (breakfast, lunch, dinner or snack) or not. So, some days may have breakfast, dinner, and some days may have only breakfast.

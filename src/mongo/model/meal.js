@@ -1,9 +1,6 @@
 const mongoose = require('mongoose');
 const schema = require('../schema/meal');
 const Recipe = require('./recipe');
-const jwt = require("jsonwebtoken");
-
-const bcrypt = require('bcryptjs');
 
 const createMultipleMeal = async (user_id, date, type, nutritions) => {
     

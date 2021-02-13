@@ -1,15 +1,22 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../_helpers/db');
-const Recipe = require('../mongo/model/recipe')
-
+const Recipe = require('../mongo/model/recipe');
+const auth = require('../middleware/auth');
+const permission = require('../middleware/permission');
 
 const fs = require('fs');
 
 // let rawdata = fs.readFileSync('allrecipes_healthy.json');
 // let recipes = JSON.parse(rawdata);
 
-router.delete('/db/drop', async(req, res) => {
+
+
+router.delete('/db/drop', auth, permission('dropUsersDb'), async(req, res) => {
+    /*
+    #swagger.tags = ['DB']
+    #swagger.description = 'Drop a database'
+    */
     try{
         await db.dropCollection("Users");
         res.status(200).send("Collections dropped successfully");
@@ -17,6 +24,15 @@ router.delete('/db/drop', async(req, res) => {
     catch(e){
         res.status(400).send(e + '');
     }
+})
+
+router.post('/db/addMeal', auth, async(req, res) => {
+    /*
+    #swagger.tags = ['DB']
+    #swagger.description = 'Add a meal to the db and store the image in s3.'
+    */
+
+
 })
 
 // router.get('/db/upload/:number', async(req, res) => {
