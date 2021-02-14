@@ -7,7 +7,7 @@ const {test_user} = require('../src/_helpers/test_helpers');
 
 afterAll(async () => {
     mongoose.disconnect();
-    //await new Promise(resolve => setTimeout(() => resolve(), 500));
+    await new Promise(resolve => setTimeout(() => resolve(), 500));
 });
 
 test('Should login', async (done) => {

@@ -20,7 +20,7 @@ beforeAll( async (done) => {
 
 afterAll(async () => {
     mongoose.disconnect();
-    //await new Promise(resolve => setTimeout(() => resolve(), 500));
+    await new Promise(resolve => setTimeout(() => resolve(), 500));
 });
 
 test('Should get recipe', async (done) => {
