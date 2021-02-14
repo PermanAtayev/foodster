@@ -24,7 +24,7 @@ npm run autogen
 needs to be run. Once that is done swagger_output.json will be filled with the documentation
 you have added. Then, you can go to the ```base_url/docs``` link to find the documentation.
 
-### Environment variables:
+### Environment variables: 
 ```
 NODE_ENV=development
 PORT=8077
