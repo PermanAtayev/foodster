@@ -7,10 +7,10 @@ const migrateRecipe = require('../_helpers/s3Manager');
 
 router.get('/recipe/migrateAll', auth, permission('migrateAll'), async(req, res) => {
     try{
-        const allRecipes = await Recipe.find({}).select("name img_path");
+        const allRecipes = await Recipe.find({}).select("name img img_path");
         for (const recipe of allRecipes) {
             if (!recipe.img_path){
-                await migrateRecipe(recipe.name);
+                await migrateRecipe(recipe);
             }
         }
         return res.status(201).send("All migrated");
@@ -21,7 +21,11 @@ router.get('/recipe/migrateAll', auth, permission('migrateAll'), async(req, res)
 
 router.get('/recipe/migrateToS3', auth, permission('migrateToS3'), async(req, res) => {
     try{
-        await migrateRecipe(req.body.recipe_name);
+        // getting recipe
+        const recipe = await Recipe.findRecipeWithName(req.body.recipe_name);
+        if (!recipe)
+            throw new Error('Recipe could not be found');
+        await migrateRecipe(recipe);
         return res.status(201).send("Recipe's image is migrated to S3");
     }catch(e){
         res.status(406).send(e + "");

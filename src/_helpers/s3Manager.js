@@ -11,11 +11,7 @@ const s3 = new AWS.S3({
 // aws s3 bucket name
 const s3BucketName = "kgbip-foodster";
 
-const migrateRecipe = async(recipe_name) => {
-    // getting recipe
-    const recipe = await Recipe.findRecipeWithName(recipe_name);
-    if (!recipe)
-        throw new Error('Recipe could not be found');
+const migrateRecipe = async(recipe) => {
 
     // checking whether if image is already migrated
     if (recipe.img_path)
@@ -33,7 +29,7 @@ const migrateRecipe = async(recipe_name) => {
     const params = {
         Bucket: s3BucketName,
         // Key: recipe.name, // File name you want to save as in S3
-        Key: recipe_name,
+        Key: recipe.name,
         Body: fileContent,
         ACL: 'public-read',
         ContentEncoding: 'base64', // required
