@@ -4,11 +4,17 @@ const User = require('../src/mongo/model/user');
 const mongoose = require('mongoose');
 const {test_user} = require('../src/_helpers/test_helpers');
 
-
-afterAll(async () => {
-    mongoose.disconnect();
-    await new Promise(resolve => setTimeout(() => resolve(), 500));
+beforeEach(async(done) => {
+    if (mongoose.connection.readyState != 1){
+        await mongoose.connect(process.env.CONNECTION_STRING_TEST,
+        { useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false },
+        () => done());
+    }
 });
+afterEach((done) => {
+    mongoose.connection.close(() => done());
+});
+
 
 test('Should login', async (done) => {
     const res = await request(app)
@@ -21,4 +27,4 @@ test('Should login', async (done) => {
     //console.log(res.body);
     expect(res.statusCode).toEqual(200);
     done();
-})
+});
