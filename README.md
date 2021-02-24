@@ -70,14 +70,19 @@ test('Should get recipe', async (done) => {
 
 ```
 
-### Environment variables:
+when you want to start testing, you need to run the following command:
 
+```
+npm run test
+```
+
+### Environment variables:
 ```
 NODE_ENV=development
 PORT=8077
 CONNECTION_STRING=YOUR CLOUD TEST MONGODB URI
 CONNECTION_STRING_DEV=YOUR LOCAL MONGODB URI
-CONNECTION_STRING_TEST=YOUR CLOED TEST ENVIRONMENT MONGODB URI
+CONNECTION_STRING_TEST=YOUR CLOUD TEST ENVIRONMENT MONGODB URI
 CONNECTION_STRING_DEPLOYMENT=YOUR CLOUD DEVELOPMENT MONGODB URI
 JWT_SECRET=FOODSTER_SECRET
 ```

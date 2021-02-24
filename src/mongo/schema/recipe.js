@@ -5,6 +5,7 @@ let schema = new Schema({
     type: {type: String, required: false},
     name: {type:String, required: true},
     url: {type: String, required: false},
+    img_path: {type: String, required: false},
     img: {type:Buffer, required: false},
     total_time: {type: String, required: false},
     serving_size: {type: Number, required: false},
