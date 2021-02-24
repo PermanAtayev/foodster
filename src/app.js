@@ -1,6 +1,5 @@
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 8080;
 const morgan = require('morgan');
 const dotenv = require('dotenv');
 dotenv.config();
@@ -30,10 +29,7 @@ app.use('/', mealRouter);
 app.use('/', dbRouter);
 app.use('/', recipeRouter);
 
-
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerFile))
-
-//console.log("Docs running at: http://localhost:"+ port + "/docs");
 
 app.get('/', (req, res) => {
     res.send("Welcome to the REST API of Foodster");

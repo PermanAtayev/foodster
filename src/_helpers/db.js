@@ -3,7 +3,8 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const connectionOptions = { useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false };
-var conn_string = process.env.CONNECTION_STRING_DEV; 
+let conn_string = process.env.CONNECTION_STRING_DEV;
+
 if (process.env.NODE_ENV === 'test'){
     conn_string = process.env.CONNECTION_STRING_TEST;
 }

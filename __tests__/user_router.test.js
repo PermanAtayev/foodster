@@ -1,12 +1,11 @@
 const request = require('supertest');
 const app = require('../src/app');
-const User = require('../src/mongo/model/user');
 const mongoose = require('mongoose');
 const {test_user} = require('../src/_helpers/test_helpers');
 
 
 afterAll(async () => {
-    mongoose.disconnect();
+    await mongoose.disconnect();
     await new Promise(resolve => setTimeout(() => resolve(), 500));
 });
 

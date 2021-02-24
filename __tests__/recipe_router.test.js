@@ -19,7 +19,7 @@ beforeAll( async (done) => {
 });
 
 afterAll(async () => {
-    mongoose.disconnect();
+    await mongoose.disconnect();
     await new Promise(resolve => setTimeout(() => resolve(), 500));
 });
 
