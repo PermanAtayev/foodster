@@ -19,13 +19,15 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2f16c2a5-4fd2-4cd8-acf8-b379f45a2309" name="Default Changelist" comment="minor change">
+    <list default="true" id="2f16c2a5-4fd2-4cd8-acf8-b379f45a2309" name="Default Changelist" comment="s3Manager is renamed s3_manager, and other minor changes are made">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/__tests__/recipe_router.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/__tests__/recipe_router.test.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/__tests__/user_router.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/__tests__/user_router.test.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/_helpers/db.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/_helpers/db.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/_helpers/s3Manager.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/_helpers/s3_manager.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mongo/model/recipe.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/mongo/model/recipe.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mongo/schema/meal.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/mongo/schema/meal.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/mongo/schema/recipe.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/mongo/schema/recipe.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routers/recipe.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routers/recipe.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -57,7 +59,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="javascript.nodejs.core.library.configured.version" value="15.8.0" />
     <property name="javascript.nodejs.core.library.typings.version" value="14.14.22" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Dockerfile" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -67,7 +69,7 @@
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="configurable.group.tools" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -79,7 +81,22 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Docker.docker_build_app">
+    <configuration name="docker_build_app" type="docker-deploy" factoryName="dockerfile" server-name="Docker">
+      <deployment type="dockerfile">
+        <settings>
+          <option name="imageTag" value="" />
+          <option name="buildCliOptions" value="" />
+          <option name="buildOnly" value="true" />
+          <option name="command" value="" />
+          <option name="containerName" value="" />
+          <option name="entrypoint" value="" />
+          <option name="commandLineOptions" value="" />
+          <option name="sourceFilePath" value="Dockerfile" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
     <configuration name="dev" type="js.build_tools.npm">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -90,6 +107,10 @@
       <envs />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Docker.docker_build_app" />
+      <item itemvalue="npm.dev" />
+    </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
@@ -121,7 +142,9 @@
       <workItem from="1613417215165" duration="8000" />
       <workItem from="1613982664462" duration="2443000" />
       <workItem from="1614008079441" duration="26000" />
-      <workItem from="1614158440208" duration="1538000" />
+      <workItem from="1614158440208" duration="10212000" />
+      <workItem from="1614177142084" duration="1285000" />
+      <workItem from="1614187012854" duration="3902000" />
     </task>
     <task id="LOCAL-00001" summary="minor change">
       <created>1614158682338</created>
@@ -130,7 +153,14 @@
       <option name="project" value="LOCAL" />
       <updated>1614158682338</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="s3Manager is renamed s3_manager, and other minor changes are made">
+      <created>1614160212967</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1614160212967</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -153,6 +183,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="minor change" />
-    <option name="LAST_COMMIT_MESSAGE" value="minor change" />
+    <MESSAGE value="s3Manager is renamed s3_manager, and other minor changes are made" />
+    <option name="LAST_COMMIT_MESSAGE" value="s3Manager is renamed s3_manager, and other minor changes are made" />
   </component>
 </project>

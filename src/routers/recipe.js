@@ -25,7 +25,7 @@ router.get('/recipe/migrateToS3', auth, permission('migrateToS3'), async(req, re
         const recipe = await Recipe.findRecipeWithName(req.body.recipe_name);
 
         if (!recipe)
-            throw new Error('Recipe could not be found');
+            return res.status(404).send("Recipe was not found");
 
         await migrateRecipe(recipe);
         return res.status(201).send("Recipe's image is migrated to S3");
@@ -42,13 +42,18 @@ router.post('/recipe/nameFilter', auth, async (req, res) =>{
     */
     try{
         const recipe = await Recipe.findRecipeWithName(req.body.recipe_name);
-        if (recipe)
+        if (recipe) {
+            // if the image is migrated to s3, then it should not be sent as a response
+            if (recipe.img_path !== "") {
+                delete recipe.img;
+            }
             return res.status(201).send(recipe);
+        }
         else
-            res.status(406).send( "recipe could not be found");
+            res.status(404).send( "Recipe with this name is not found");
     }
     catch (e){
-        res.status(406).send(e + "");
+        res.status(406).send(e + "Something went wrong with finding a recipe");
     }
 });
 
@@ -63,10 +68,10 @@ router.post('/recipe/nutritionFilter', auth, async (req, res) =>{
         if (recipe)
             return res.status(201).send(recipe);
         else
-            res.status(406).send( "recipe could not be found");
+            return res.status(404).send("Recipe with required nutritions was not found");
     }
     catch (e){
-        res.status(406).send(e + "");
+        return res.status(406).send("Something went wrong with find a recipe");
     }
 });
 

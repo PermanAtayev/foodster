@@ -19,7 +19,7 @@ const migrateRecipe = async(recipe) => {
     
     // resizing
     const base64Image = recipe.img.toString();
-    var img = new Buffer.from(base64Image, 'base64');
+    let img = new Buffer.from(base64Image, 'base64');
     
     const fileContent = await sharp(img)
     .resize(250, 250)
