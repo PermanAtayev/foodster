@@ -6,13 +6,13 @@ To run a docker instance of mongodb in a local machine go [here](https://www.cod
 
 ## Documentation
 
-### To Run the backend locally using Docker
+### To Run the backend
+## Using Docker locally
 In the foodster directory run:
 ```
-docker build -t foodster .
-docker run -dp 8078:8077 foodster
+docker-compose up -d
 ```
-Then go to [http://localhost:8078/](http://localhost:8078/)
+Then go to [http://localhost:8077/](http://localhost:8077/)
 
 ### Deployment
 
