@@ -3,7 +3,7 @@ const router = express.Router();
 const Recipe = require('../mongo/model/recipe');
 const auth = require('../middleware/auth');
 const permission = require('../middleware/permission');
-const migrateRecipe = require('../_helpers/s3Manager');
+const migrateRecipe = require('../_helpers/s3_manager');
 
 router.get('/recipe/migrateAll', auth, permission('migrateAll'), async(req, res) => {
     try{
@@ -23,11 +23,14 @@ router.get('/recipe/migrateToS3', auth, permission('migrateToS3'), async(req, re
     try{
         // getting recipe
         const recipe = await Recipe.findRecipeWithName(req.body.recipe_name);
+
         if (!recipe)
             throw new Error('Recipe could not be found');
+
         await migrateRecipe(recipe);
         return res.status(201).send("Recipe's image is migrated to S3");
-    }catch(e){
+    }
+    catch(e){
         res.status(406).send(e + "");
     }
 });
@@ -48,6 +51,7 @@ router.post('/recipe/nameFilter', auth, async (req, res) =>{
         res.status(406).send(e + "");
     }
 });
+
 router.post('/recipe/nutritionFilter', auth, async (req, res) =>{
     /*
     #swagger.tags = ['Recipe']

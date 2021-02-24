@@ -1,11 +1,10 @@
 const request = require('supertest');
 const app = require('../src/app');
-const User = require('../src/mongo/model/user');
 const mongoose = require('mongoose');
 const {test_user} = require('../src/_helpers/test_helpers');
 
 beforeEach(async(done) => {
-    if (mongoose.connection.readyState != 1){
+    if (mongoose.connection.readyState !== 1){
         await mongoose.connect(process.env.CONNECTION_STRING_TEST,
         { useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false },
         () => done());

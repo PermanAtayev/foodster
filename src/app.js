@@ -15,7 +15,6 @@ const swaggerFile = require('./docs/swagger_output.json')
 
 const cors = require('cors');
 
-
 app.use(cors());
 app.use(morgan(':method :url Status\: :status Response_Time\: :response-time'));
 

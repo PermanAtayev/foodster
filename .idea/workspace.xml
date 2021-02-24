@@ -19,14 +19,14 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2f16c2a5-4fd2-4cd8-acf8-b379f45a2309" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+    <list default="true" id="2f16c2a5-4fd2-4cd8-acf8-b379f45a2309" name="Default Changelist" comment="minor change">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/__tests__/recipe_router.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/__tests__/recipe_router.test.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/__tests__/user_router.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/__tests__/user_router.test.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_helpers/db.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/_helpers/db.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/_helpers/s3Manager.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/_helpers/s3_manager.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routers/recipe.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routers/recipe.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,7 +67,7 @@
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="org.jetbrains.plugins.github.ui.GithubSettingsConfigurable" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.tools" />
     <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -92,6 +92,9 @@
     </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration>$USER_HOME$/.subversion</configuration>
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="2f16c2a5-4fd2-4cd8-acf8-b379f45a2309" name="Default Changelist" comment="" />
@@ -118,8 +121,16 @@
       <workItem from="1613417215165" duration="8000" />
       <workItem from="1613982664462" duration="2443000" />
       <workItem from="1614008079441" duration="26000" />
-      <workItem from="1614158440208" duration="28000" />
+      <workItem from="1614158440208" duration="1538000" />
     </task>
+    <task id="LOCAL-00001" summary="minor change">
+      <created>1614158682338</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1614158682338</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -139,5 +150,9 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="minor change" />
+    <option name="LAST_COMMIT_MESSAGE" value="minor change" />
   </component>
 </project>
