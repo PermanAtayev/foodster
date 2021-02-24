@@ -19,16 +19,12 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2f16c2a5-4fd2-4cd8-acf8-b379f45a2309" name="Default Changelist" comment="s3Manager is renamed s3_manager, and other minor changes are made">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_helpers/db.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/_helpers/db.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/_helpers/s3Manager.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/_helpers/s3_manager.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mongo/model/recipe.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/mongo/model/recipe.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mongo/schema/meal.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/mongo/schema/meal.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mongo/schema/recipe.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/mongo/schema/recipe.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routers/recipe.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routers/recipe.js" afterDir="false" />
+    <list default="true" id="2f16c2a5-4fd2-4cd8-acf8-b379f45a2309" name="Default Changelist" comment="dockerfile and docker-compose are configured to run on a remote server">
+      <change afterPath="$PROJECT_DIR$/.dockerignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/mongo/schema/ingredient.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/mongo/schema/measure.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/mongo/schema/nutrition.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -144,7 +140,7 @@
       <workItem from="1614008079441" duration="26000" />
       <workItem from="1614158440208" duration="10212000" />
       <workItem from="1614177142084" duration="1285000" />
-      <workItem from="1614187012854" duration="3902000" />
+      <workItem from="1614187012854" duration="4202000" />
     </task>
     <task id="LOCAL-00001" summary="minor change">
       <created>1614158682338</created>
@@ -160,7 +156,21 @@
       <option name="project" value="LOCAL" />
       <updated>1614160212967</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="dockerfile and docker-compose are configured to run on a remote server">
+      <created>1614191105291</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1614191105292</updated>
+    </task>
+    <task id="LOCAL-00004" summary="dockerfile and docker-compose are configured to run on a remote server">
+      <created>1614191213080</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1614191213080</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -184,6 +194,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="minor change" />
     <MESSAGE value="s3Manager is renamed s3_manager, and other minor changes are made" />
-    <option name="LAST_COMMIT_MESSAGE" value="s3Manager is renamed s3_manager, and other minor changes are made" />
+    <MESSAGE value="dockerfile and docker-compose are configured to run on a remote server" />
+    <option name="LAST_COMMIT_MESSAGE" value="dockerfile and docker-compose are configured to run on a remote server" />
   </component>
 </project>
