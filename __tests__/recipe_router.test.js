@@ -5,31 +5,37 @@ const mongoose = require('mongoose');
 
 const {test_user} = require('../src/_helpers/test_helpers');
 
-let token = null;
 
-beforeAll( async (done) => {
-    const res = await request(app)
-        .post('/users/login')
-        .send({
-            email: test_user.email,
-            password: test_user.password,
+var token = null;
+
+beforeEach(async(done) => {
+    if (mongoose.connection.readyState != 1){
+        await mongoose.connect(process.env.CONNECTION_STRING_TEST,
+        { useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false },
+        async() => {
+            const res = await request(app)
+                .post('/users/login')
+                .send({
+                    email: test_user.email,
+                    password: test_user.password,
+                });
+            token = 'Bearer ' + res.body.token;
+            done();
         });
-    token = 'Bearer ' + res.body.token;
-    done();
+    }
+});
+afterEach((done) => {
+    mongoose.connection.close(() => done());
 });
 
-afterAll(async () => {
-    mongoose.disconnect();
-    //await new Promise(resolve => setTimeout(() => resolve(), 500));
-});
 
 test('Should get recipe', async (done) => {
-    const res = await request(app)
+    const res2 = await request(app)
         .post('/recipe/nameFilter')
         .set('Authorization', token) //set header for this test
         .send({
             recipe_name: "Fabulous Fruit Salad"
         });
-    expect(res.statusCode).toEqual(201);
+    expect(res2.statusCode).toEqual(201);
     done();
 });
