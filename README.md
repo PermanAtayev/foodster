@@ -77,7 +77,6 @@ npm run test
 ```
 
 ### Environment variables:
-
 ```
 NODE_ENV=development
 PORT=8077
