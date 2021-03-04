@@ -1,16 +1,17 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const servingSchema = require('./serving')
+const measureSchema = require('measure');
 
 let schema = new Schema({
-    label: {
-        type: String,
+    ingredient: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'ingredient',
         required: true
     },
-    servings: {
-        type: [servingSchema],
+    measure: {
+        type: measureSchema,
         required: true
     }
-});
+})
 
 module.exports = schema;

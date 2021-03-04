@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const nutiritionSchema = require("./nutrition")
 
+// TODO need to work on this one
 let schema = new Schema({
     type: {
         type: String,
@@ -36,22 +38,27 @@ let schema = new Schema({
         required: false,
         default: 1
     },
-    ingredients: {
-        type: [String],
-        required: false
-    },
+    ingredients: [{
+        type: mongoose.Schema.Types.ObjectId,
+        required: false,
+        ref: "Ingredient"
+    }],
     instructions: {
         type: [String],
         required: false
     },
     nutrition: {
-        type: JSON,
-        required: false
+        type: nutiritionSchema,
+        required: true
     },
     difficulty: {
         type: String,
         required: false
-    }
+    },
+    likedUsers: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    }]
 });
 
 module.exports = schema;

@@ -1,16 +1,13 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// TODO move the convTable to a hashmap in  the helper
+const edibleSchema = require('edible');
+
 let schema = new Schema({
-    mag: {
-        type: Number,
+    inventory: {
+        type: [edibleSchema],
         required: false
     },
-    unit: {
-        type: String,
-        required: false
-    }
 })
 
 module.exports = schema;
