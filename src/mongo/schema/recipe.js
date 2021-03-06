@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const nutiritionSchema = require("./nutrition")
+const ingredientSchema = require("./ingredient")
 
 // TODO need to work on this one
 let schema = new Schema({
@@ -39,9 +40,8 @@ let schema = new Schema({
         default: 1
     },
     ingredients: [{
-        type: mongoose.Schema.Types.ObjectId,
+        type: ingredientSchema,
         required: false,
-        ref: "Ingredient"
     }],
     instructions: {
         type: [String],

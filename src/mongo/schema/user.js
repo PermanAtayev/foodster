@@ -17,7 +17,7 @@ let schema = new Schema({
     gender: {type: String, required: false},
     height: {type: Number, required: false},
     imgUrl: {type: mongoose.SchemaTypes.Url, required: false},
-    allergies: {type: String, required: false},
+    allergies: {type: [String], required: false},
     preferences: {type: preferenceSchema, required: false},
     // this one contains all the recipes liked by a user and will need to be populated with actual recipes
     // whenever actual recipe info is needed

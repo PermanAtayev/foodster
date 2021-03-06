@@ -51,6 +51,26 @@ schema.methods.willKillMe = async function (recipe) {
     return isAllergic;
 }
 
+// TODO Needs to be implemented
+// TODO needs to be tested
+schema.methods.getIngredientFrequencyOfLikedMeals = async function(){
+    const likedRecipes = this.populate('likedRecipes');
+
+    likedRecipes.forEach((recipe) => {
+        console.log(recipe.name);
+    })
+
+
+
+}
+
+// TODO Needs to be implemented
+// TODO needs to be tested
+schema.methods.recommendRecipes = async function(ingredientFrequency){
+
+}
+
+
 schema.statics.findByCredentials = async (email, password) => {
     const user = await User.findOne({email});
 

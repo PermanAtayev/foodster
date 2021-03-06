@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const nutiritionSchema = require("./nutrition")
 
 let schema = new Schema({
     name: {
