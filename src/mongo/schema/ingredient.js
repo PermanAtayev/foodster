@@ -7,26 +7,17 @@ let schema = new Schema({
         type: String,
         required: true
     },
-    imgUrl: {
+// full ingredient text information
+    text: {
         type: String,
         required: false
     },
-    // this is used for population, ref refers to Recipe model
-    // check out: https://mongoosejs.com/docs/populate.html for more details
-    inRecipes: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Recipe"
-    }],
-    nutrition: {
-        type: nutiritionSchema,
-        required: true
-    },
-    estimatedPrice: {
-        type: Number,
+    unit: {
+        type: String,
         required: false
     },
-    labels: {
-        type: [String],
+    quantity: {
+        type: Number,
         required: false
     }
 })

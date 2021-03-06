@@ -4,18 +4,17 @@ const jwt = require("jsonwebtoken");
 
 const bcrypt = require('bcryptjs');
 
-schema.methods.generateAuthToken = async function(){
+schema.methods.generateAuthToken = async function () {
     const user = this;
     const token = jwt.sign({_id: user._id.toString()}, process.env.JWT_SECRET, {expiresIn: '1h'});
 
-    if(!user.token)
+    if (!user.token)
         user.token = token;
 
     // if the token of the user has expired, the token needs to be updated
     try {
         jwt.verify(user.token, process.env.JWT_SECRET);
-    }
-    catch(e){
+    } catch (e) {
         user.token = token;
     }
     await user.save();
@@ -23,20 +22,37 @@ schema.methods.generateAuthToken = async function(){
 
 }
 
-schema.methods.hasPermission = async function(permission){
+schema.methods.hasPermission = async function (permission) {
     const user = this;
     let hasPermission = false;
 
     user.permissions.forEach(userPermission => {
-        if (userPermission === permission){
+        if (userPermission === permission) {
             hasPermission = true;
-        } 
+        }
     });
     return hasPermission;
 }
 
+// here we check whether ingredients of the recipe are among users allergies or not
+// TODO needs to be tested
+schema.methods.willKillMe = async function (recipe) {
+    const user = this;
+    let isAllergic = false;
+
+    if (user.allergies !== null) {
+        user.allergies.forEach((allergyName) => {
+            recipe.ingredients.forEach((ingredient) => {
+                if (ingredient.name === allergyName)
+                    isAllergic = true;
+            })
+        })
+    }
+    return isAllergic;
+}
+
 schema.statics.findByCredentials = async (email, password) => {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({email});
 
     if (!user) {
         throw new Error('Unable to login');
@@ -50,6 +66,7 @@ schema.statics.findByCredentials = async (email, password) => {
 
     return user;
 }
+
 
 schema.pre("save", async function (next) {
     // console.log( this );

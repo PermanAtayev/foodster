@@ -25,7 +25,7 @@ let schema = new Schema({
         type: Buffer,
         required: false
     },
-    prep: {
+    prepTime: {
         type: Number,
         required: true
     },
@@ -50,10 +50,6 @@ let schema = new Schema({
     nutrition: {
         type: nutiritionSchema,
         required: true
-    },
-    difficulty: {
-        type: String,
-        required: false
     },
     likedUsers: [{
         type: mongoose.Schema.Types.ObjectId,

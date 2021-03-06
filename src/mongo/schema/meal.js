@@ -5,7 +5,7 @@ const servingSchema = require('./serving')
 let schema = new Schema({
     label: {
         type: String,
-        required: true
+        required: false
     },
     servings: {
         type: [servingSchema],
