@@ -1,17 +1,18 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const nutiritionSchema = require("./nutrition")
-const ingredientSchema = require("./ingredient")
+const ingredientInRecipeSchema = require("./ingredientInRecipe")
 
 // TODO need to work on this one
 let schema = new Schema({
+    name: {
+        type: String,
+        required: true,
+        unique: true
+    },
     type: {
         type: String,
         required: false
-    },
-    name: {
-        type: String,
-        required: true
     },
     url: {
         type: String,
@@ -40,7 +41,7 @@ let schema = new Schema({
         default: 1
     },
     ingredients: [{
-        type: ingredientSchema,
+        type: ingredientInRecipeSchema,
         required: false,
     }],
     instructions: {
@@ -49,7 +50,7 @@ let schema = new Schema({
     },
     nutrition: {
         type: nutiritionSchema,
-        required: true
+        required: false
     },
     likedUsers: [{
         type: mongoose.Schema.Types.ObjectId,

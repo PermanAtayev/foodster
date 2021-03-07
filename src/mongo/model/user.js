@@ -54,13 +54,15 @@ schema.methods.willKillMe = async function (recipe) {
 // TODO Needs to be implemented
 // TODO needs to be tested
 schema.methods.getIngredientFrequencyOfLikedMeals = async function(){
-    const likedRecipes = this.populate('likedRecipes');
+    const user = this;
+    const populatedUser = await user.populate("likedRecipes", "name").execPopulate();
+    const likedRecipes = populatedUser.likedRecipes;
+
+    let ingredientFrequencyCounter = {};
 
     likedRecipes.forEach((recipe) => {
-        console.log(recipe.name);
+
     })
-
-
 
 }
 

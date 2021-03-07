@@ -9,7 +9,7 @@ const recipes = [
             {
                 text: "1 tbsp of sugar and a lot of salt",
                 unit: "tbsp",
-                ingredient: "sugar",
+                name: "sugar",
                 quantitity: 9.83
             }
         ],
@@ -33,25 +33,25 @@ const recipes = [
             {
                 text: "4 slices bacon",
                 unit: "slice",
-                ingredient: "bacon",
+                name: "bacon",
                 quantitity: 4
             },
             {
                 text: "1/4 cup butter",
                 unit: "cup",
-                ingredient: "butter",
+                name: "butter",
                 quantitity: 0.5
             },
             {
                 text: "100g peanut",
                 unit: "g",
-                ingredient: "peanut",
+                name: "peanut",
                 quantitity: 100
             },
             {
                 text: "1kg fish",
                 unit: "kg",
-                ingredient: "fish",
+                name: "fish",
                 quantitity: 100
             }
         ],
@@ -75,7 +75,7 @@ const recipes = [
             {
                 text: "1 gallon of milk",
                 unit: "gallon",
-                ingredient: "milk",
+                name: "milk",
                 quantitity: 1
             },
         ],

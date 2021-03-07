@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../mongo/model/user');
+const Recipe = require('../mongo/model/recipe')
 const auth = require('../middleware/auth');
 const permission = require('../middleware/permission');
 
@@ -128,9 +129,58 @@ router.patch('/users/updateinfo', auth, async(req, res) => {
         return res.status(201).send(user);
     }
     catch(error){
-        res.status(400).send(error);
+        return res.status(400).send(error);
     }
 })
+
+// TODO needs to be documented
+router.post('/users/likeRecipe', auth, async(req, res) => {
+    try{
+        const user = req.user;
+        let mealIsAlreadyLiked = false;
+        const recipeName = req.body.recipeName;
+
+        const recipe = await Recipe.findByName(recipeName);
+
+        if(!recipe){
+            return res.status(400).send("Recipe does not exist");
+        }
+
+        if(user.likedRecipes !== null){
+            if(user.likedRecipes.includes(recipe._id)){
+                mealIsAlreadyLiked = true;
+            }
+        }
+        if(!mealIsAlreadyLiked){
+            user.likedRecipes.push(recipe._id);
+            await user.save();
+            return res.status(200).send("The meal is liked successfully");
+        }
+        else {
+            return res.status(400).send("The meal is already liked");
+        }
+    }
+    catch(error){
+        return res.status(400).send(error);
+    }
+})
+
+// TODO needs to tested
+// TODO needs to be documented
+router.get('/users/myLikedRecipes', auth, async(req, res) => {
+    let user = req.user;
+
+    try {
+        // only return the name field of the liked recipes
+        const populatedUser = await user.populate("likedRecipes", "name").execPopulate();
+        return res.status(200).send(populatedUser.likedRecipes);
+    }
+    catch(e){
+        return res.status(404).send("Recipes were not found. " + e);
+    }
+})
+
+
 
 router.get('/users/list', auth, permission('userList'),
     /*    #swagger.tags = ['User']

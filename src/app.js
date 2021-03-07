@@ -9,6 +9,7 @@ const userRouter = require('./routers/user');
 const mealRouter = require('./routers/meal');
 const dbRouter = require('./routers/db');
 const recipeRouter = require('./routers/recipe');
+const ingredientRouter = require('./routers/ingredient')
 const swaggerUi = require('swagger-ui-express')
 
 const swaggerFile = require('./docs/swagger_output.json')
@@ -27,6 +28,7 @@ app.use('/', userRouter);
 app.use('/', mealRouter);
 app.use('/', dbRouter);
 app.use('/', recipeRouter);
+app.use('/', ingredientRouter);
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 

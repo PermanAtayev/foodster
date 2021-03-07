@@ -12,6 +12,7 @@ if (process.env.NODE_ENV === 'DEV_LOCAL'){
     conn_string = process.env.CONNECTION_STRING_DEV_LOCAL;
 }
 
+
 mongoose.connect(conn_string, connectionOptions);
 mongoose.Promise = global.Promise;
 
