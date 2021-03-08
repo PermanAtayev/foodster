@@ -8,7 +8,6 @@ let schema = new Schema({
     name: {
         type: String,
         required: true,
-        unique: true
     },
     type: {
         type: String,
@@ -55,7 +54,11 @@ let schema = new Schema({
     likedUsers: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
-    }]
+    }],
+    numberOfLikes: {
+        type: Number,
+        default: 0
+    }
 });
 
 module.exports = schema;
