@@ -1,8 +1,10 @@
 const mongoose = require('mongoose');
 const schema = require('../schema/user');
 const jwt = require("jsonwebtoken");
-
+const EmailToken = require('./emailToken');
 const bcrypt = require('bcryptjs');
+const cryptoRandomString = require('crypto-random-string');
+const sgMail = require('@sendgrid/mail');
 
 schema.methods.generateAuthToken = async function () {
     const user = this;
@@ -22,6 +24,33 @@ schema.methods.generateAuthToken = async function () {
 
 }
 
+schema.methods.sendEmailVerification = async function (req) {
+    // generate token and save
+    const user = this;
+    
+    var emailToken = new EmailToken({ _userId: user._id, token: cryptoRandomString({length: 24}).toString('hex') });
+    emailToken.save(function (err) {
+        if(err){
+            throw new Error(err.message);
+        }
+        
+        sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+        const msg = {
+        to: user.email, // Change to your recipient
+        from: process.env.SENDGRID_SENDER, // Change to your verified sender
+        subject: 'Foodster Email Verification',
+        text: 'Hello '+ user.email +',\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/users\/confirmation\/' + user.email + '\/' + emailToken.token + '\n\nThank You!\n',
+        html: 'Hello '+ user.email +',\n\n' + 'Please verify your account by clicking the link: \nhttp:\/\/' + req.headers.host + '\/users\/confirmation\/' + user.email + '\/' + emailToken.token + '\n\nThank You!\n',
+        }
+
+        sgMail
+        .send(msg)
+        .catch((error) => {
+            console.error(error)
+        })
+    });
+}
 schema.methods.hasPermission = async function (permission) {
     const user = this;
     let hasPermission = false;
@@ -85,7 +114,9 @@ schema.statics.findByCredentials = async (email, password) => {
     if (!isMatch) {
         throw new Error("Unable to login, Password is wrong");
     }
-
+    if (!user.isVerified){
+        throw new Error("Unable to login, please verify the account");
+    }
     return user;
 }
 

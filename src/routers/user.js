@@ -4,6 +4,7 @@ const User = require('../mongo/model/user');
 const Recipe = require('../mongo/model/recipe')
 const auth = require('../middleware/auth');
 const permission = require('../middleware/permission');
+const EmailToken = require('../mongo/model/emailToken');
 
 router.post('/users/signup', async (req, res) =>{
     /*
@@ -43,22 +44,84 @@ router.post('/users/signup', async (req, res) =>{
             }
         }
     */
-
-    const user = new User(req.body);
+    
     try{
+        const existingUser = await User.findOne({email: req.body.email});
+        if (existingUser){
+            throw new Error('Already signed up email, please try with another email');
+        }
+        const user = new User(req.body);
+        user.isVerified = false;
         await user.save();
         await user.generateAuthToken();
-
-        return res.status(201).send({
-            id: user._id,
-            token: user.token
-        });
+        await user.sendEmailVerification(req);
+        
+        return res.status(201).send('A verification email has been sent to ' + user.email + '. It will be expire after one day. If you not get verification email, use "resend" endpoint. Check API documentation for endpoint details.');
     }
     catch (e){
         res.status(406).send(e + "");
     }
 });
+router.get('/users/confirmation/:email/:token', async(req, res) => {
+    EmailToken.findOne({ token: req.params.token }, function (err, token) {
+        // token is not found into database i.e. token may have expired 
+        if (!token){
+            return res.status(400).send('Your verification link may have expired. Please use "resend" endpoint to resend the verification link. Check API documentation for endpoint details.');
+        }
+        // if token is found then check valid user 
+        else{
+            User.findOne({ _id: token._userId, email: req.params.email }, function (err, user) {
+                if (err){
+                    return res.status(500).send(err.message);
+                }
+                // not valid user
+                if (!user){
+                    return res.status(401).send('We were unable to find a user for this verification. Please SignUp!');
+                } 
+                // user is already verified
+                else if (user.isVerified){
+                    return res.status(200).send('User has been already verified. Please Login');
+                }
+                // verify user
+                else{
+                    // change isVerified to true
+                    user.isVerified = true;
+                    user.save(function (err) {
+                        // error occur
+                        if(err){
+                            return res.status(500).send(err.message);
+                        }
+                        // account successfully verified
+                        else{
+                          return res.status(200).send('Your account has been successfully verified');
+                        }
+                    });
+                }
+            });
+        }
+        
+    });
+});
 
+router.post('/users/confirmation/resend', async (req, res) => {
+    User.findOne({ email: req.body.email }, function (err, user) {
+        // user is not found into database
+        if (!user){
+            return res.status(400).send({msg:'We were unable to find a user with that email. Make sure your Email is correct!'});
+        }
+        // user has been already verified
+        else if (user.isVerified){
+            return res.status(200).send('This account has been already verified. Please log in.');
+    
+        } 
+        // send verification link
+        else{
+            // generate token and save
+            user.sendEmailVerification(req);
+            return res.status(201).send('A verification email has been sent to ' + user.email + '. It will be expire after one day. If you not get verification email, use "resend" endpoint. Check API documentation for endpoint details.');
+        }
+    });
+});
 router.post('/users/login', async (req, res) => {
     /*    #swagger.tags = ['User']
           #swagger.description = 'Endpoint for a user to login. Will get a token back if successful.'
