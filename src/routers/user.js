@@ -5,6 +5,9 @@ const Recipe = require('../mongo/model/recipe')
 const auth = require('../middleware/auth');
 const permission = require('../middleware/permission');
 const EmailToken = require('../mongo/model/emailToken');
+const cache = require('../middleware/cache')
+const constants = require("../data/constants");
+
 
 router.post('/users/signup', async (req, res) =>{
     /*
@@ -176,7 +179,7 @@ router.post('/users/login', async (req, res) => {
     }
 });
 
-router.patch('/users/updateinfo', auth, async(req, res) => {
+router.post('/users/updateinfo', auth, async(req, res) => {
     /*
           #swagger.tags = ['User']
           #swagger.description = 'Endpoint to update the user info'
@@ -230,7 +233,7 @@ router.post('/users/likeRecipe', auth, async(req, res) => {
 
 // TODO needs to tested
 // TODO needs to be documented
-router.get('/users/myLikedRecipes', auth, async(req, res) => {
+router.get('/users/myLikedRecipes', auth, cache(constants.CACHEPERIOD), async(req, res) => {
     let user = req.user;
 
     try {
@@ -241,6 +244,14 @@ router.get('/users/myLikedRecipes', auth, async(req, res) => {
     catch(e){
         return res.status(404).send("Recipes were not found. " + e);
     }
+})
+
+// TODO test
+// TODO document
+router.get('/users/myLikedIngredientFrequencies', auth, cache(constants.CACHEPERIOD), async(req, res) => {
+    let user = req.user;
+    const result = await user.getIngredientFrequencyOfLikedMeals();
+    res.status(200).send(result);
 })
 
 
@@ -260,7 +271,7 @@ router.get('/users/list', auth, permission('userList'),
     }
 })
 
-router.delete('/users/deleteAll',  auth, permission('deleteAllUsers'),
+router.delete('/users/deleteAll', auth, permission('deleteAllUsers'),
     /*
         #swagger.tags = ['User']
         #swagger.description = 'Endpoint to delete all users'

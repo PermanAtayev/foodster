@@ -4,6 +4,10 @@ const Recipe = require('../mongo/model/recipe');
 const auth = require('../middleware/auth');
 const permission = require('../middleware/permission');
 const migrateRecipe = require('../_helpers/s3_manager');
+const cache = require("../middleware/cache");
+const constants = require("../data/constants");
+
+// The cache will be alive for 1 hour
 
 router.get('/recipes/migrateAll', auth, permission('migrateAll'), async(req, res) => {
     try{
@@ -75,7 +79,6 @@ router.post('/recipes/nutritionFilter', auth, async (req, res) =>{
     }
 });
 
-// TODO implement
 // TODO test
 // TODO document
 router.post('/recipes/addRecipe', async(req, res) => {
@@ -90,9 +93,17 @@ router.post('/recipes/addRecipe', async(req, res) => {
     }
 })
 
-router.post('/recipes/getRecipe', async(req, res) => {
+// TODO test
+// TODO document
+// query string parameter limit can be passed, otherwise the default value would be provided
+router.get('/recipes/getRecipeRecommendation', auth, cache(constants.CACHEPERIOD), async(req, res) => {
+    const recommendedRecipes = await req.user.recommendRecipes(req.query.limit || constants.RECOMMENDATION_LIMIT);
+    res.status(200).send(JSON.stringify(recommendedRecipes));
+})
+
+router.get('/recipes/:recipeName', cache(constants.CACHEPERIOD), async(req, res) => {
     try {
-        const recipe = await Recipe.findByName(req.body.name);
+        const recipe = await Recipe.findByName(req.params.recipeName);
         return res.status(200).send(recipe);
     }
     catch(e){
@@ -103,6 +114,7 @@ router.post('/recipes/getRecipe', async(req, res) => {
 // TODO implement
 // TODO test
 // TODO document
+// Do we need this?
 router.post('/recipes/prefillRecipes', async(req, res) => {
     const dummyRecipes = require('../data/recipes');
 

@@ -5,6 +5,7 @@ const EmailToken = require('./emailToken');
 const bcrypt = require('bcryptjs');
 const cryptoRandomString = require('crypto-random-string');
 const sgMail = require('@sendgrid/mail');
+const Ingredient = require("./ingredient");
 
 schema.methods.generateAuthToken = async function () {
     const user = this;
@@ -80,25 +81,86 @@ schema.methods.willKillMe = async function (recipe) {
     return isAllergic;
 }
 
-// TODO Needs to be implemented
 // TODO needs to be tested
+// TODO document
 schema.methods.getIngredientFrequencyOfLikedMeals = async function(){
     const user = this;
-    const populatedUser = await user.populate("likedRecipes", "name").execPopulate();
+    const populatedUser = await user.populate("likedRecipes", "name, ingredients").execPopulate();
     const likedRecipes = populatedUser.likedRecipes;
-
     let ingredientFrequencyCounter = {};
 
     likedRecipes.forEach((recipe) => {
+        let ingredients = recipe.ingredients;
 
-    })
+        ingredients.forEach((ingredient) => {
+            if(ingredientFrequencyCounter[ingredient.name]){
+                ingredientFrequencyCounter[ingredient.name] += 1;
+            }
+            else{
+                ingredientFrequencyCounter[ingredient.name] = 1;
+            }
+        })
+    });
 
+    return ingredientFrequencyCounter;
 }
 
 // TODO Needs to be implemented
 // TODO needs to be tested
-schema.methods.recommendRecipes = async function(ingredientFrequency){
+// TODO document
+// TODO need to timestamp these recommendations so that we don't generate them from scratch every time
+function min(a, b) {
+    return (a < b ? a : b);
+}
 
+/*
+
+check whether a meal you are going to recommend is allergetic for me
+ */
+schema.methods.recommendRecipes = async function(limit){
+    const ingredientFrequencyCounter = await this.getIngredientFrequencyOfLikedMeals();
+    let recipeScores = {};
+    const ingredientNames = Object.keys(ingredientFrequencyCounter);
+
+    let similarRecipes = new Set();
+
+    for(let i = 0; i < ingredientNames.length; i++){
+        const ingredientName = ingredientNames[i];
+        const ingredient = await Ingredient.findByName(ingredientName);
+
+        if(ingredient) {
+            const populatedIngredient = await ingredient.populate("inRecipes", "name ingredients.name").execPopulate();
+
+            populatedIngredient.inRecipes.forEach((recipe) => {
+                const score = ingredientFrequencyCounter[ingredientName];
+                if(recipeScores[recipe.name]){
+                    recipeScores[recipe.name] += score;
+                }
+                else{
+                    recipeScores[recipe.name] = score;
+                }
+                similarRecipes.add(recipe);
+            })
+        }
+    }
+
+    //    remove the similarRecipes that have allergetic ingredients
+
+    for(let similarRecipe of similarRecipes){
+        const willKillMe = await this.willKillMe(similarRecipe);
+
+        if(willKillMe === true)
+            delete recipeScores[similarRecipe.name];
+    }
+
+    recipeScores = Object.entries(recipeScores).sort((a, b) => b[1] - a[1]);
+
+    let result = [];
+
+    for(let i = 0; i < min(limit, Object.keys(recipeScores).length); i++)
+        result.push(recipeScores[i][0]);
+
+    return result;
 }
 
 
@@ -122,14 +184,12 @@ schema.statics.findByCredentials = async (email, password) => {
 
 
 schema.pre("save", async function (next) {
-    // console.log( this );
     const user = this;
 
     if (user.isModified('password')) {
         user.password = await bcrypt.hash(user.password, 8);
     }
 
-    // important, because pre is a middleware that needs to point to the function that will be executed next
     next();
 });
 
