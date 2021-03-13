@@ -49,15 +49,10 @@ router.post('/users/signup', async (req, res) =>{
     */
     
     try{
-        const existingUser = await User.findOne({email: req.body.email});
-        if (existingUser){
-            throw new Error('Already signed up email, please try with another email');
-        }
         const user = new User(req.body);
-        user.isVerified = false;
         await user.save();
         await user.generateAuthToken();
-        await user.sendEmailVerification(req);
+        user.sendEmailVerification(req);
         
         return res.status(201).send('A verification email has been sent to ' + user.email + '. It will be expire after one day. If you not get verification email, use "resend" endpoint. Check API documentation for endpoint details.');
     }
