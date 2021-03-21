@@ -7,11 +7,15 @@ To run a docker instance of mongodb in a local machine go [here](https://www.cod
 ## Documentation
 
 ### To Run the backend
+
 ## Using Docker locally
+
 In the foodster directory run:
+
 ```
 docker-compose up -d
 ```
+
 Then go to [http://localhost:8077/](http://localhost:8077/)
 
 ### Deployment
@@ -85,6 +89,7 @@ npm run test
 ```
 
 ### Environment variables:
+
 ```
 NODE_ENV=development
 PORT=8077
@@ -93,4 +98,7 @@ CONNECTION_STRING_DEV=YOUR LOCAL MONGODB URI
 CONNECTION_STRING_TEST=YOUR CLOUD TEST ENVIRONMENT MONGODB URI
 CONNECTION_STRING_DEPLOYMENT=YOUR CLOUD DEVELOPMENT MONGODB URI
 JWT_SECRET=FOODSTER_SECRET
+SENDGRID_API_KEY=YOUR SENDGRID API KEY
+SENDGRID_SENDER=YOUR VERIFIED SENDER EMAIL ADRESS
+
 ```
