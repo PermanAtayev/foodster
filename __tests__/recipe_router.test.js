@@ -30,19 +30,23 @@ afterEach(async(done) => {
 
 
 test('Should get recipe', async (done) => {
-    const res = await request(app)
+    await request(app)
         .post('/recipes/addRecipe')
-        .set('Authorization', token) //set header for this test
+        .set('Authorization', token)
         .send(test_recipe);
+
     const res2 = await request(app)
         .post('/recipes/nameFilter')
-        .set('Authorization', token) //set header for this test
+        .set('Authorization', token)
         .send({
-            recipe_name: test_recipe.name
+            name: test_recipe.name
         });
+
     const recipe = await Recipe.findOne({name: test_recipe.name});
     await recipe.delete();
+
     expect(res2.statusCode).toEqual(201);
+
     done();
 });
 
@@ -51,6 +55,7 @@ test('Should add recipe', async (done) => {
         .post('/recipes/addRecipe')
         .set('Authorization', token) //set header for this test
         .send(test_recipe2);
+
     const recipe = await Recipe.findOne({name: test_recipe2.name});
     if (recipe)
         await Recipe.deleteOne({name: test_recipe2.name});

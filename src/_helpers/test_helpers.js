@@ -5,7 +5,6 @@ const test_user = {
     password : "testPassword"
 };
 
-
 const test_recipe = {
     "imgPath": "",
     "servingSize": 4,
@@ -15,18 +14,16 @@ const test_recipe = {
     "name": "A",
     "prepTime": 5,
     "cookTime": 35,
-    ingredients: [
+    "ingredients": [
         {
-            // "_id": {
-            //     "$oid": "x"
-            // },
             "text": "1 tbsp of sugar and a lot of salt",
             "unit": "tbsp",
             "name": "pepper",
             "originID": "604533cedd23980b2203f017"
         }
     ],
-    "__v": 0};
+    "__v": 0
+};
 
     const test_recipe2 = {
         "imgPath": "",
@@ -37,6 +34,7 @@ const test_recipe = {
         "name": "B",
         "prepTime": 5,
         "cookTime": 35,
-        ingredients: [],
+        "ingredients": [],
         "__v": 0};
+
 module.exports = {test_user, test_recipe, test_recipe2};

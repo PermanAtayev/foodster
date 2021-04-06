@@ -47,20 +47,6 @@ router.post('/users/signup', async (req, res) => {
             }
         }
     */
-<<<<<<< HEAD
-
-    const user = new User(req.body);
-    try {
-        await user.save();
-        await user.generateAuthToken();
-
-        return res.status(201).send({
-            id: user._id,
-            token: user.token
-        });
-    } catch (e) {
-=======
-    
     try{
         const user = new User(req.body);
         await user.save();
@@ -70,7 +56,6 @@ router.post('/users/signup', async (req, res) => {
         return res.status(201).send('A verification email has been sent to ' + user.email + '. It will be expire after one day. If you not get verification email, use "resend" endpoint. Check API documentation for endpoint details.');
     }
     catch (e){
->>>>>>> 84246fa94624e9b6c546259a7a1e9df3ee788fbb
         res.status(406).send(e + "");
     }
 });

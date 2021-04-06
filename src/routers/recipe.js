@@ -44,7 +44,7 @@ router.post('/recipes/nameFilter', auth, async (req, res) => {
     #swagger.description = 'Find details of a recipe using its name'
     */
     try {
-        const recipe = await Recipe.findByName(req.body.recipe_name);
+        const recipe = await Recipe.findByName(req.body.name);
         if (recipe) {
             // if the image is migrated to s3, then it should not be sent as a response
             if (recipe.imgPath !== "") {
