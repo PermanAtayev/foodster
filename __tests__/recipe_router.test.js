@@ -22,6 +22,7 @@ beforeEach(async(done) => {
         });
     }
 });
+
 afterEach((done) => {
     mongoose.connection.close(() => done());
 });

@@ -3,21 +3,21 @@ const Schema = mongoose.Schema;
 
 let schema = new Schema({
     calories: {
-        type: Number,
+        type: String,
         required: false
     },
-    carbs: {
-        type: Number,
+    carbohydrateContent: {
+        type: String,
         required: false
     },
-    proteins: {
-        type: Number,
+    proteinContent: {
+        type: String,
         required: false
     },
-    fats: {
-        type: Number,
+    fatContent: {
+        type: String,
         required: false
-    }
+    },
 })
 
 module.exports = schema;

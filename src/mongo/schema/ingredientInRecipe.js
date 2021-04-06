@@ -1,9 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const ingredientGenericSchema = require('./ingredientGeneric');
-
-
 let schema = new Schema({
     name: {
         type: String,

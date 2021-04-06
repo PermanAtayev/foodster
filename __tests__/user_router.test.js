@@ -14,7 +14,6 @@ afterEach((done) => {
     mongoose.connection.close(() => done());
 });
 
-
 test('Should login', async (done) => {
     const res = await request(app)
         .post('/users/login')

@@ -1,6 +1,7 @@
 
 const mcache = require('memory-cache');
 
+// TODO needs to also save the format of the file and add that information to the header of the response.
 const cache = (duration) => {
     return (req, res, next) => {
         let key = '__express__' + (req.originalUrl || req.url) + "/" + (req.user ? req.user._id : "any");

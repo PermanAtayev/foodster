@@ -152,7 +152,7 @@
       }
     },
     "/users/updateinfo": {
-      "patch": {
+      "post": {
         "tags": [
           "User"
         ],
@@ -164,6 +164,115 @@
           },
           "400": {
             "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/users/likeRecipe": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "description": "Endpoint for a user to like a recipe",
+        "parameters": [
+          {
+            "name": "recipeName",
+            "in": "body",
+            "description": "Name of the recipe to be liked",
+            "required": true,
+            "type": "string",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "example": {
+                  "type": "string",
+                  "example": "Pasta with mozarella cheese"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "example": "The meal is liked successfully"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "example": "The meal is already liked"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "example": "Recipe does not exist"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/myLikedRecipes": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/users/myLikedIngredientFrequencies": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
           },
           "401": {
             "description": "Unauthorized"
@@ -228,6 +337,20 @@
         }
       }
     },
+    "/db/addMeal": {
+      "post": {
+        "tags": [
+          "DB"
+        ],
+        "description": "Add a meal to the db and store the image in s3.",
+        "parameters": [],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
     "/meals/generate": {
       "post": {
         "tags": [
@@ -245,12 +368,10 @@
         }
       }
     },
-    "/recipe/nameFilter": {
-      "post": {
-        "tags": [
-          "Recipe"
-        ],
-        "description": "Find a recipe using its name",
+    "/recipes/migrateAll": {
+      "get": {
+        "tags": [],
+        "description": "",
         "parameters": [],
         "responses": {
           "201": {
@@ -265,7 +386,51 @@
         }
       }
     },
-    "/recipe/nutritionFilter": {
+    "/recipes/migrateToS3": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "406": {
+            "description": "Not Acceptable"
+          }
+        }
+      }
+    },
+    "/recipes/nameFilter": {
+      "post": {
+        "tags": [
+          "Recipe"
+        ],
+        "description": "Find details of a recipe using its name",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "406": {
+            "description": "Not Acceptable"
+          }
+        }
+      }
+    },
+    "/recipes/nutritionFilter": {
       "post": {
         "tags": [
           "Recipe"
@@ -279,10 +444,181 @@
           "401": {
             "description": "Unauthorized"
           },
+          "404": {
+            "description": "Not Found"
+          },
           "406": {
             "description": "Not Acceptable"
           }
         }
+      }
+    },
+    "/recipes/addRecipe": {
+      "post": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/recipes/getRecipeRecommendation": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/recipes/{recipeName}": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "recipeName",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/recipes/top/{numberOfRecipes}": {
+      "get": {
+        "tags": [
+          "Recipe"
+        ],
+        "description": "Endpoint to get top K recipes for the moment when user signup happens",
+        "parameters": [
+          {
+            "name": "numberOfRecipes",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "imgPath": {
+                  "type": "string",
+                  "example": ""
+                },
+                "servingSize": {
+                  "type": "number",
+                  "example": 4
+                },
+                "instructions": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "likedUsers": {
+                  "type": "array",
+                  "items": {}
+                },
+                "numberOfLikes": {
+                  "type": "number",
+                  "example": 0
+                },
+                "_id": {
+                  "type": "string",
+                  "example": "606c754439dada0e70e438d4"
+                },
+                "type": {
+                  "type": "string",
+                  "example": "lunch"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "A"
+                },
+                "prepTime": {
+                  "type": "number",
+                  "example": 55
+                },
+                "cookTime": {
+                  "type": "number",
+                  "example": 35
+                },
+                "ingredients": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "example": "606c754439dada0e70e438d6"
+                      },
+                      "text": {
+                        "type": "string",
+                        "example": "1 tbsp of sugar and a lot of salt"
+                      },
+                      "unit": {
+                        "type": "string",
+                        "example": "tbsp"
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "sugar"
+                      },
+                      "originID": {
+                        "type": "string",
+                        "example": "606c754439dada0e70e438d3"
+                      }
+                    }
+                  }
+                },
+                "__v": {
+                  "type": "number",
+                  "example": 0
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recipes/prefillRecipes": {
+      "post": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {}
       }
     }
   },

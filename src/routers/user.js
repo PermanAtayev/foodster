@@ -8,7 +8,7 @@ const cache = require('../middleware/cache')
 const constants = require("../data/constants");
 
 
-router.post('/users/signup', async (req, res) =>{
+router.post('/users/signup', async (req, res) => {
     /*
         #swagger.tags = ['User']
         #swagger.description = 'Endpoint for a user to signup'
@@ -48,7 +48,7 @@ router.post('/users/signup', async (req, res) =>{
     */
 
     const user = new User(req.body);
-    try{
+    try {
         await user.save();
         await user.generateAuthToken();
 
@@ -56,8 +56,7 @@ router.post('/users/signup', async (req, res) =>{
             id: user._id,
             token: user.token
         });
-    }
-    catch (e){
+    } catch (e) {
         res.status(406).send(e + "");
     }
 });
@@ -79,17 +78,17 @@ router.post('/users/login', async (req, res) => {
         }
     */
 
-        /*
-        #swagger.parameters['password'] = {
-        in: 'body',
-        description: 'User password',
-        required: true,
-        type: 'string',
-        schema: {
-            example: 'password'
-        }
-        }
-        */
+    /*
+    #swagger.parameters['password'] = {
+    in: 'body',
+    description: 'User password',
+    required: true,
+    type: 'string',
+    schema: {
+        example: 'password'
+    }
+    }
+    */
 
 
     /*
@@ -103,20 +102,19 @@ router.post('/users/login', async (req, res) => {
     description: 'Error: Unable to login'
 }
 */
-    try{
+    try {
         const user = await User.findByCredentials(req.body.email, req.body.password);
         await user.generateAuthToken();
         res.status(200).send(
             {
                 token: user.token
             });
-    }
-    catch(e){
+    } catch (e) {
         res.status(400).send(e + "");
     }
 });
 
-router.post('/users/updateinfo', auth, async(req, res) => {
+router.post('/users/updateinfo', auth, async (req, res) => {
     /*
           #swagger.tags = ['User']
           #swagger.description = 'Endpoint to update the user info'
@@ -130,67 +128,99 @@ router.post('/users/updateinfo', auth, async(req, res) => {
         })
         await user.save();
         return res.status(201).send(user);
-    }
-    catch(error){
+    } catch (error) {
         return res.status(400).send(error);
     }
 })
 
 // TODO needs to be documented
-router.post('/users/likeRecipe', auth, async(req, res) => {
-    try{
+router.post('/users/likeRecipe', auth, async (req, res) => {
+    /*
+    #swagger.tags = ['User']
+    #swagger.description = 'Endpoint for a user to like a recipe'
+*/
+    /*
+        #swagger.parameters['recipeName'] = {
+            in: 'body',
+            description: 'Name of the recipe to be liked',
+            required: true,
+            type: 'string',
+            schema: {
+                example: 'Pasta with mozarella cheese'
+            }
+         }
+        #swagger.responses[200] = {
+            schema: {
+                "text": "The meal is liked successfully"
+            }
+        }
+        #swagger.responses[404] = {
+            schema: {
+                "text": "Recipe does not exist"
+            }
+        }
+        #swagger.responses[400] = {
+            schema: {
+                "text": "The meal is already liked"
+            }
+        }
+
+*/
+
+
+    try {
         const user = req.user;
         let mealIsAlreadyLiked = false;
         const recipeName = req.body.recipeName;
 
         const recipe = await Recipe.findByName(recipeName);
 
-        if(!recipe){
-            return res.status(400).send("Recipe does not exist");
+        if (!recipe) {
+            return res.status(404).send("Recipe does not exist");
         }
 
-        if(user.likedRecipes !== null){
-            if(user.likedRecipes.includes(recipe._id)){
+        if (user.likedRecipes !== null) {
+            if (user.likedRecipes.includes(recipe._id)) {
                 mealIsAlreadyLiked = true;
             }
         }
-        if(!mealIsAlreadyLiked){
+        if (!mealIsAlreadyLiked) {
             user.likedRecipes.push(recipe._id);
             await user.save();
+
+            recipe.numberOfLikes = recipe.numberOfLikes + 1;
+            // recipe.likedUsers.append(user._id);
+            await recipe.save();
+
             return res.status(200).send("The meal is liked successfully");
-        }
-        else {
+        } else {
             return res.status(400).send("The meal is already liked");
         }
-    }
-    catch(error){
+    } catch (error) {
         return res.status(400).send(error);
     }
 })
 
 // TODO needs to tested
 // TODO needs to be documented
-router.get('/users/myLikedRecipes', auth, cache(constants.CACHEPERIOD), async(req, res) => {
+router.get('/users/myLikedRecipes', auth, cache(constants.CACHEPERIOD), async (req, res) => {
     let user = req.user;
-
     try {
         // only return the name field of the liked recipes
         const populatedUser = await user.populate("likedRecipes", "name").execPopulate();
         return res.status(200).send(populatedUser.likedRecipes);
-    }
-    catch(e){
+    } catch (e) {
         return res.status(404).send("Recipes were not found. " + e);
     }
 })
 
 // TODO test
 // TODO document
-router.get('/users/myLikedIngredientFrequencies', auth, cache(constants.CACHEPERIOD), async(req, res) => {
+router.get('/users/myLikedIngredientFrequencies', auth, cache(constants.CACHEPERIOD), async (req, res) => {
     let user = req.user;
     const result = await user.getIngredientFrequencyOfLikedMeals();
     res.status(200).send(result);
 })
-
 
 
 router.get('/users/list', auth, permission('userList'),
@@ -198,15 +228,14 @@ router.get('/users/list', auth, permission('userList'),
       #swagger.description = 'Endpoint to get a list of users, requires authentication.'
     */
     async (req, res) => {
-    try{
-        const users = await User.find({});
-        console.log(users);
-        return res.status(200).send(users);
-    }
-    catch(e){
-        res.status(404).send(e + "");
-    }
-})
+        try {
+            const users = await User.find({});
+            console.log(users);
+            return res.status(200).send(users);
+        } catch (e) {
+            res.status(404).send(e + "");
+        }
+    })
 
 router.delete('/users/deleteAll', auth, permission('deleteAllUsers'),
     /*
@@ -214,15 +243,14 @@ router.delete('/users/deleteAll', auth, permission('deleteAllUsers'),
         #swagger.description = 'Endpoint to delete all users'
     */
 
-    async(req, res) => {
-    try{
-        await User.deleteMany({});
-        res.send("Successfully delete all users");
-    }
-    catch(e){
-        res.status(500).send(e + "");
-    }
-})
+    async (req, res) => {
+        try {
+            await User.deleteMany({});
+            res.send("Successfully delete all users");
+        } catch (e) {
+            res.status(500).send(e + "");
+        }
+    })
 
 
 module.exports = router;

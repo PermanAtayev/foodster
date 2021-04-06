@@ -54,7 +54,7 @@ schema.statics.addRecipe = async (recipe) => {
     let ingredientsOutDBObj = [];
 
 
-    // categorize whether ingredients are already in DB or not
+    // categorize whether ingredients already exist in DB or not
     for (let i = 0; i < recipeIngredients.length; i++) {
         const ingredient = recipeIngredients[i];
         const ingredientInDb = await Ingredient.findByName(ingredient.name);

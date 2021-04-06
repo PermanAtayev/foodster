@@ -3,11 +3,11 @@ const Schema = mongoose.Schema;
 const nutiritionSchema = require("./nutrition")
 const ingredientInRecipeSchema = require("./ingredientInRecipe")
 
-// TODO need to work on this one
 let schema = new Schema({
     name: {
         type: String,
         required: true,
+        unique: true
     },
     type: {
         type: String,
@@ -47,7 +47,7 @@ let schema = new Schema({
         type: [String],
         required: false
     },
-    nutrition: {
+    nutrients: {
         type: nutiritionSchema,
         required: false
     },
