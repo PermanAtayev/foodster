@@ -7,6 +7,16 @@ const cryptoRandomString = require('crypto-random-string');
 const sgMail = require('@sendgrid/mail');
 const Ingredient = require("./ingredient");
 
+// TODO test this thoroughly, so that problems in other fields do not occur.
+// The fields that are deleted here will be hidden when the user model is returned back
+schema.methods.toJSON = function() {
+    let user = this.toObject()
+    delete user.permissions
+    delete user.__v
+    delete user.password
+    return user
+}
+
 schema.methods.generateAuthToken = async function () {
     const user = this;
     const token = jwt.sign({_id: user._id.toString()}, process.env.JWT_SECRET, {expiresIn: '1h'});
@@ -105,18 +115,15 @@ schema.methods.getIngredientFrequencyOfLikedMeals = async function(){
     return ingredientFrequencyCounter;
 }
 
-// TODO Needs to be implemented
-// TODO needs to be tested
-// TODO document
-// TODO need to timestamp these recommendations so that we don't generate them from scratch every time
+
 function min(a, b) {
     return (a < b ? a : b);
 }
 
-/*
-
-check whether a meal you are going to recommend is allergetic for me
- */
+// TODO Needs to be implemented
+// TODO needs to be tested
+// TODO document
+// TODO need to timestamp these recommendations so that we don't generate them from scratch every time
 schema.methods.recommendRecipes = async function(limit){
     const ingredientFrequencyCounter = await this.getIngredientFrequencyOfLikedMeals();
     let recipeScores = {};
@@ -145,7 +152,6 @@ schema.methods.recommendRecipes = async function(limit){
     }
 
     //    remove the similarRecipes that have allergetic ingredients
-
     for(let similarRecipe of similarRecipes){
         const willKillMe = await this.willKillMe(similarRecipe);
 

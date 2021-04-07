@@ -6,10 +6,10 @@ let schema = new Schema({
         type: Number,
         required: false
     },
-    calRange: {
-        type: [Number],
+    calRange: [{
+        type: Number,
         required: false
-    },
+    }],
     protRange: {
         type: [Number],
         required: false
@@ -36,5 +36,14 @@ let schema = new Schema({
         ref: 'Ingredient'
     }]
 })
+
+// TODO test this thoroughly, so that problems in other fields do not occur.
+// The fields that are deleted here will be hidden when the preference model is returned back
+schema.methods.toJSON = function() {
+    let preference = this.toObject()
+    delete preference._id
+    return preference
+}
+
 
 module.exports = schema;

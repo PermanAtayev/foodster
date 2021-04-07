@@ -89,6 +89,58 @@
         }
       }
     },
+    "/users/confirmation/{email}/{token}": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/users/confirmation/resend": {
+      "post": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
     "/users/login": {
       "post": {
         "tags": [
@@ -105,7 +157,7 @@
             "schema": {
               "type": "object",
               "properties": {
-                "example": {
+                "email": {
                   "type": "string",
                   "example": "antonio@gmail.com"
                 }
@@ -121,9 +173,9 @@
             "schema": {
               "type": "object",
               "properties": {
-                "example": {
+                "password": {
                   "type": "string",
-                  "example": "password"
+                  "example": "example"
                 }
               }
             }
@@ -151,19 +203,340 @@
         }
       }
     },
-    "/users/updateinfo": {
-      "post": {
+    "/users": {
+      "get": {
         "tags": [
           "User"
         ],
-        "description": "Endpoint to update the user info",
+        "description": "Endpoint to get available information related to the user",
         "parameters": [],
         "responses": {
-          "201": {
-            "description": "Created"
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "allergies": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "isVerified": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "likedRecipes": {
+                  "type": "array",
+                  "items": {}
+                },
+                "dislikedRecipes": {
+                  "type": "array",
+                  "items": {}
+                },
+                "_id": {
+                  "type": "string",
+                  "example": "606db95f4aba966eccd85648"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "perman.atayev17@gmail.com"
+                },
+                "token": {
+                  "type": "string",
+                  "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDZkYjk1ZjRhYmE5NjZlY2NkODU2NDgiLCJpYXQiOjE2MTc4MDM2MTUsImV4cCI6MTYxNzgwNzIxNX0.9hbXeasTPBVvqhaz9AdYZBdZ4HR1vODjlx3ks7Y1nmU"
+                },
+                "preferences": {
+                  "type": "object",
+                  "properties": {
+                    "calRange": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "protRange": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "costRange": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "dietType": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "cookingTime": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "restrictions": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "_id": {
+                      "type": "string",
+                      "example": "606dbf8426bac5635c7bd255"
+                    },
+                    "mealsPerDay": {
+                      "type": "number",
+                      "example": 10
+                    },
+                    "difficulty": {
+                      "type": "string",
+                      "example": "ExtraHard"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           },
           "400": {
             "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Please authenticate"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "User"
+        ],
+        "description": "Endpoint to update the user info that includes: username, age, gender, height, allergies, preferences",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "body",
+            "description": "Users username",
+            "required": false,
+            "type": "string",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "example": "boss"
+                }
+              }
+            }
+          },
+          {
+            "name": "age",
+            "in": "body",
+            "description": "User age",
+            "required": false,
+            "type": "number",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "age": {
+                  "type": "number",
+                  "example": 20
+                }
+              }
+            }
+          },
+          {
+            "name": "height",
+            "in": "body",
+            "description": "User height in meters",
+            "required": false,
+            "type": "number",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "height": {
+                  "type": "number",
+                  "example": 1.85
+                }
+              }
+            }
+          },
+          {
+            "name": "allergies",
+            "in": "body",
+            "description": "Users allergies. This value will overwrite the old allergies value of the user",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "allergies": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "name": "preferences",
+            "in": "body",
+            "description": "Users preferences update in the signup or anytime afterwards. Following fields can be added / updated: calRange, protRange, costRange, dietType,  cookingTime, restrictions, mealsPerDay, difficulty",
+            "required": false,
+            "type": "JSON object",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "preferences": {
+                  "type": "object",
+                  "properties": {
+                    "mealsPerDay": {
+                      "type": "number",
+                      "example": 10
+                    },
+                    "calRange": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "difficulty": {
+                      "type": "string",
+                      "example": "ExtraHard"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "name": "gender",
+            "in": "body",
+            "description": "Users gender which can be: male, female, other",
+            "required": false,
+            "type": "string",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "gender": {
+                  "type": "string",
+                  "example": "female"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "allergies": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "isVerified": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "likedRecipes": {
+                  "type": "array",
+                  "items": {}
+                },
+                "dislikedRecipes": {
+                  "type": "array",
+                  "items": {}
+                },
+                "_id": {
+                  "type": "string",
+                  "example": "606db95f4aba966eccd85648"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "perman.atayev17@gmail.com"
+                },
+                "token": {
+                  "type": "string",
+                  "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDZkYjk1ZjRhYmE5NjZlY2NkODU2NDgiLCJpYXQiOjE2MTc4MDM2MTUsImV4cCI6MTYxNzgwNzIxNX0.9hbXeasTPBVvqhaz9AdYZBdZ4HR1vODjlx3ks7Y1nmU"
+                },
+                "preferences": {
+                  "type": "object",
+                  "properties": {
+                    "calRange": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "protRange": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "costRange": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "dietType": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "cookingTime": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "restrictions": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "_id": {
+                      "type": "string",
+                      "example": "606dbf8426bac5635c7bd255"
+                    },
+                    "mealsPerDay": {
+                      "type": "number",
+                      "example": 10
+                    },
+                    "difficulty": {
+                      "type": "string",
+                      "example": "ExtraHard"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "example": "Error: Field email is not allowed to be updated or does not exist"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           },
           "401": {
             "description": "Unauthorized"
