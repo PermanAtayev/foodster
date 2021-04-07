@@ -34,20 +34,6 @@ schema.statics.findByName = async (recipe_name) => {
 }
 
 // TODO test
-// TODO document
-/*
-Go over ingredients and find the ones that do not exist in our db
-Save ids of ingredients that already exist in the db
-
-Go and create every ingredient that does not exist in the db
-Save ids of every ingredient when you are creating them
-Add ids of every ingredient to the recipes ingredient section
-
-For every ingredient that has been added to the current recipe, go add the id of this recipe after saving
-the recipe
-
-Save the recipe in the end
- */
 schema.statics.addRecipe = async (recipe) => {
     const recipeIngredients = recipe.ingredients;
     let ingredientsInDB = {};

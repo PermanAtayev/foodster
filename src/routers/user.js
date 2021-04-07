@@ -120,11 +120,10 @@ router.post('/users/confirmation/resend', async (req, res) => {
     });
 });
 router.post('/users/login', async (req, res) => {
-    /*    #swagger.tags = ['User']
-          #swagger.description = 'Endpoint for a user to login. Will get a token back if successful.'
-    */
-
     /*
+    #swagger.tags = ['User']
+    #swagger.description = 'Endpoint for a user to login. Will get a token back if successful.'
+
     #swagger.parameters['email'] = {
         in: 'body',
         description: 'User email',
@@ -133,32 +132,27 @@ router.post('/users/login', async (req, res) => {
         schema: {
             example: 'antonio@gmail.com'
         }
-        }
-    */
+     }
 
-    /*
     #swagger.parameters['password'] = {
-    in: 'body',
-    description: 'User password',
-    required: true,
-    type: 'string',
-    schema: {
-        example: 'password'
+        in: 'body',
+        description: 'User password',
+        required: true,
+        type: 'string',
+        schema: {
+            example: 'password'
+        }
     }
+
+    #swagger.responses[200] = {
+        schema: {
+            "token": "token_string"
+        }
     }
-    */
 
-
-    /*
-#swagger.responses[200] = {
-    schema: {
-        "token": "token_string"
+    #swagger.responses[400] = {
+        description: 'Error: Unable to login'
     }
-}
-
-#swagger.responses[400] = {
-    description: 'Error: Unable to login'
-}
 */
     try {
         const user = await User.findByCredentials(req.body.email, req.body.password);
@@ -191,41 +185,36 @@ router.post('/users/updateinfo', auth, async (req, res) => {
     }
 })
 
-// TODO needs to be documented
 router.post('/users/likeRecipe', auth, async (req, res) => {
     /*
     #swagger.tags = ['User']
     #swagger.description = 'Endpoint for a user to like a recipe'
+
+    #swagger.parameters['recipeName'] = {
+        in: 'body',
+        description: 'Name of the recipe to be liked',
+        required: true,
+        type: 'string',
+        schema: {
+            example: 'Pasta with mozarella cheese'
+        }
+     }
+    #swagger.responses[200] = {
+        schema: {
+            "text": "The meal is liked successfully"
+        }
+    }
+    #swagger.responses[404] = {
+        schema: {
+            "text": "Recipe does not exist"
+        }
+    }
+    #swagger.responses[400] = {
+        schema: {
+            "text": "The meal is already liked"
+        }
+    }
 */
-    /*
-        #swagger.parameters['recipeName'] = {
-            in: 'body',
-            description: 'Name of the recipe to be liked',
-            required: true,
-            type: 'string',
-            schema: {
-                example: 'Pasta with mozarella cheese'
-            }
-         }
-        #swagger.responses[200] = {
-            schema: {
-                "text": "The meal is liked successfully"
-            }
-        }
-        #swagger.responses[404] = {
-            schema: {
-                "text": "Recipe does not exist"
-            }
-        }
-        #swagger.responses[400] = {
-            schema: {
-                "text": "The meal is already liked"
-            }
-        }
-
-*/
-
-
     try {
         const user = req.user;
         let mealIsAlreadyLiked = false;
@@ -244,11 +233,11 @@ router.post('/users/likeRecipe', auth, async (req, res) => {
         }
         if (!mealIsAlreadyLiked) {
             user.likedRecipes.push(recipe._id);
-            await user.save();
+            user.save();
 
             recipe.numberOfLikes = recipe.numberOfLikes + 1;
-            // recipe.likedUsers.append(user._id);
-            await recipe.save();
+            recipe.likedUsers.push(user._id);
+            recipe.save();
 
             return res.status(200).send("The meal is liked successfully");
         } else {
