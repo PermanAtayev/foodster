@@ -9,7 +9,7 @@ const constants = require("../data/constants");
 
 // TODO migrate should not be an endpoint
 // TODO test
-router.get('/recipes/migrateAll', auth, permission('migrateAll'), async (req, res) => {
+router.get('/recipes/migrate_all', auth, permission('migrateAll'), async (req, res) => {
     /*
         #swagger.tags = ['Recipe']
         #swagger.description = 'Endpoint to transport the images of all the remaining recipes to S3 storage'
@@ -44,7 +44,7 @@ router.get('/recipes/migrateAll', auth, permission('migrateAll'), async (req, re
 
 // TODO migrate should not be an endpoint
 // TODO test
-router.get('/recipes/migrateToS3', auth, permission('migrateToS3'), async (req, res) => {
+router.get('/recipes/migrate_to_s3', auth, permission('migrateToS3'), async (req, res) => {
     /* 
         #swagger.tags = ['Recipe']
         #swagger.description = 'Endpoint to transport the image of a recipe to S3 storage'
@@ -94,7 +94,7 @@ router.get('/recipes/migrateToS3', auth, permission('migrateToS3'), async (req, 
 
 
 // TODO test
-router.post('/recipes/nutritionFilter', auth, async (req, res) => {
+router.post('/recipes/nutrition_filter', auth, async (req, res) => {
     /*
         #swagger.tags = ['Recipe']
         #swagger.description = 'Endpoint to find a recipe with nutrition constraints'
@@ -526,7 +526,7 @@ router.get('/recipes/top/:numberOfRecipes', auth, cache(constants.CACHEPERIOD), 
 // TODO implement
 // TODO test
 // Do we need this?
-router.post('/recipes/prefillRecipes', auth, async (req, res) => {
+router.post('/recipes/prefill', auth, async (req, res) => {
     /*
     #swagger.tags = ['Recipe']
     #swagger.description = 'Endpoint to add the recipes in local to db'

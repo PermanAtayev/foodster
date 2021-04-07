@@ -5,7 +5,7 @@ const Ingredient = require('../mongo/model/ingredient');
 
 // TODO implement
 // TODO test
-router.post('/ingredients/addIngredient', async (req, res) => {
+router.post('/ingredients', async (req, res) => {
     /*
         #swagger.tags = ['Ingredient']
         #swagger.description = 'Endpoint to add a ingredient'
@@ -49,7 +49,7 @@ router.post('/ingredients/addIngredient', async (req, res) => {
 // TODO implement
 // TODO test
 // TODO document
-router.post('/ingredients/updateIngredient', (req, res) => {
+router.patch('/ingredients/:ingredientName', (req, res) => {
 
 })
 

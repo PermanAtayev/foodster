@@ -445,7 +445,7 @@ router.get('/users/liked_recipes', auth, cache(constants.CACHEPERIOD), async (re
 })
 
 
-router.get('/users/myLikedIngredientFrequencies', auth, cache(constants.CACHEPERIOD), async (req, res) => {
+router.get('/users/liked_ingredient_frequencies', auth, cache(constants.CACHEPERIOD), async (req, res) => {
     /*
         #swagger.tags = ['User']
         #swagger.description = 'Endpoint for a user to list the ingredient frequency of liked meals'
@@ -471,79 +471,5 @@ router.get('/users/myLikedIngredientFrequencies', auth, cache(constants.CACHEPER
         return res.status(404).send("Database error " + e);
     }
 })
-
-router.get('/users/list', auth, permission('userList'),
-    /*    
-        #swagger.tags = ['User']
-        #swagger.description = 'Endpoint to get a list of users'
-        #swagger.responses[200] = {
-            schema: [
-                        {
-                            "permissions": ['permission1'],
-                            "allergies": ["c"],
-                            "isVerified": false,
-                            "likedRecipes": [
-                                "recipe_id"
-                            ],
-                            "dislikedRecipes": ["recipe_id"],
-                            "_id": "user_id",
-                            "email": "user@gmail.com",
-                            "password": "user_password",
-                            "__v": 1,
-                            "token": "some_token"
-                        }
-                    ]
-            
-        }
-        #swagger.responses[404] = {
-            schema: {
-                "text": "Database error + [error]"
-            }
-        }
-        #swagger.responses[403] = {
-            schema: {
-                "text": "Permission Denied!"
-            }
-        }
-    */
-    async (req, res) => {
-        try {
-            const users = await User.find({});
-            return res.status(200).send(users);
-        } catch (e) {
-            return res.status(404).send(e + "");
-        }
-    });
-
-router.delete('/users/deleteAll', auth, permission('deleteAllUsers'),
-    /*
-        #swagger.tags = ['User']
-        #swagger.description = 'Endpoint to delete all users'
-        #swagger.responses[200] = {
-            schema: {
-                "text": "Successfully delete all users"
-            }
-        }
-        #swagger.responses[500] = {
-            schema: {
-                "text": "Database error + [error]"
-            }
-        }
-        #swagger.responses[403] = {
-            schema: {
-                "text": "Permission Denied!"
-            }
-        }
-    */
-
-    async (req, res) => {
-        try {
-            await User.deleteMany({});
-            res.status(200).send("Successfully delete all users");
-        } catch (e) {
-            res.status(500).send(e + "");
-        }
-    });
-
 
 module.exports = router;
