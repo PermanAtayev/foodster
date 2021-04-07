@@ -110,55 +110,49 @@ function min(a, b) {
 }
 
 // TODO test
-// TODO document
-// Need to optimise with the cache / timestamps to not produce results too often.
 router.get('/recipes/top/:numberOfRecipes', cache(constants.CACHEPERIOD), async (req, res) => {
     /*
     #swagger.tags = ['Recipe']
     #swagger.description = 'Endpoint to get top K recipes for the moment when user signup happens'
-*/
-    /*
-        #swagger.responses[200] = {
-            schema: {
-                "imgPath": "",
-                "servingSize": 4,
-                "instructions": [
-                    "Whisk vinegar, soy sauce, garlic, olive oil, brown sugar, and crushed peppercorns in a bowl until sugar is dissolved. Stir bay leaves into the sauce"
-                ],
-                "likedUsers": [],
-                "numberOfLikes": 0,
-                "_id": "606c754439dada0e70e438d4",
-                "type": "lunch",
-                "name": "A",
-                "prepTime": 55,
-                "cookTime": 35,
-                "ingredients": [
-                    {
-                        "_id": "606c754439dada0e70e438d5",
-                        "text": "1 tbsp of sugar and a lot of salt",
-                        "unit": "tbsp",
-                        "name": "pepper",
-                        "originID": "606c754339dada0e70e438d2"
-                    },
-                    {
-                        "_id": "606c754439dada0e70e438d6",
-                        "text": "1 tbsp of sugar and a lot of salt",
-                        "unit": "tbsp",
-                        "name": "sugar",
-                        "originID": "606c754439dada0e70e438d3"
-                    }
-                ],
-                "__v": 0
-            }
+    #swagger.responses[200] = {
+        schema: {
+            "imgPath": "",
+            "servingSize": 4,
+            "instructions": [
+                "Whisk vinegar, soy sauce, garlic, olive oil, brown sugar, and crushed peppercorns in a bowl until sugar is dissolved. Stir bay leaves into the sauce"
+            ],
+            "likedUsers": [],
+            "numberOfLikes": 0,
+            "_id": "606c754439dada0e70e438d4",
+            "type": "lunch",
+            "name": "A",
+            "prepTime": 55,
+            "cookTime": 35,
+            "ingredients": [
+                {
+                    "_id": "606c754439dada0e70e438d5",
+                    "text": "1 tbsp of sugar and a lot of salt",
+                    "unit": "tbsp",
+                    "name": "pepper",
+                    "originID": "606c754339dada0e70e438d2"
+                },
+                {
+                    "_id": "606c754439dada0e70e438d6",
+                    "text": "1 tbsp of sugar and a lot of salt",
+                    "unit": "tbsp",
+                    "name": "sugar",
+                    "originID": "606c754439dada0e70e438d3"
+                }
+            ],
+            "__v": 0
         }
+    }
     */
-
-
     const kTopRecipesNumber = req.params.numberOfRecipes;
     const availableRecipes = await Recipe.countDocuments({});
-    const returnNumber = min(availableRecipes, kTopRecipesNumber);
+    const returnNumberOfRecipes = min(availableRecipes, kTopRecipesNumber);
     const topRecipes = await Recipe.find({}).sort({numberOfLikes: -1});
-    const kTopRecipes = topRecipes.slice(0, returnNumber);
+    const kTopRecipes = topRecipes.slice(0, returnNumberOfRecipes);
     res.status(200).send(kTopRecipes);
 })
 
