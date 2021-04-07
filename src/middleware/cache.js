@@ -10,6 +10,7 @@ const cache = (duration) => {
 
         let cachedBody = mcache.get(key)
         if (cachedBody) {
+            res.set({"Content-Type": "application/json"});
             return res.send(cachedBody);
         } else {
             res.sendResponse = res.send;

@@ -841,19 +841,33 @@
         }
       }
     },
-    "/recipes/getRecipeRecommendation": {
+    "/recipes/getRecommendation": {
       "get": {
-        "tags": [],
-        "description": "",
+        "tags": [
+          "Recipe"
+        ],
+        "description": "Endpoint for a user to get a Recipe / meal recommendation. If user has saved information about the preferred number of meals per day, that \\\r number will be used. Otherwise if limit is passed as a path parameter it will be used. If that is also not passed, then a constant number 3 will be used.",
         "parameters": [
           {
             "name": "limit",
-            "in": "query"
+            "in": "query",
+            "description": "maximum number of recipes to return",
+            "required": false,
+            "type": "string",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "limit": {
+                  "type": "string",
+                  "example": "2"
+                }
+              }
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "List of recipe names is returned"
           },
           "401": {
             "description": "Unauthorized"
@@ -879,6 +893,21 @@
           },
           "404": {
             "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/recipes": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
           }
         }
       }
