@@ -13,9 +13,6 @@ router.post('/users/signup', async (req, res) => {
     /*
         #swagger.tags = ['User']
         #swagger.description = 'Endpoint for a user to signup'
-    */
-
-    /*
         #swagger.parameters['email'] = {
             in: 'body',
             description: 'User email',
@@ -25,9 +22,6 @@ router.post('/users/signup', async (req, res) => {
                 example: 'antonio@gmail.com'
             }
          }
-    */
-
-    /*
         #swagger.parameters['password'] = {
             in: 'body',
             description: 'User password',
@@ -37,9 +31,6 @@ router.post('/users/signup', async (req, res) => {
                 example: 'password'
             }
         }
-    */
-
-    /*
         #swagger.responses[201] = {
             schema: {
                 "id" : 1234,
@@ -59,7 +50,50 @@ router.post('/users/signup', async (req, res) => {
         res.status(406).send(e + "");
     }
 });
+
 router.get('/users/confirmation/:email/:token', async(req, res) => {
+    /*
+        #swagger.tags = ['User']
+        #swagger.description = 'Endpoint for a user to signup'
+        #swagger.parameters['email'] = {
+            in: 'path',
+            description: 'User email',
+            required: true,
+            type: 'string',
+            schema: {
+                example: 'antonio@gmail.com'
+            }
+         }
+        #swagger.parameters['token'] = {
+            in: 'path',
+            description: 'Verification token',
+            required: true,
+            type: 'string',
+            schema: {
+                example: 'verification_token'
+            }
+        }
+        #swagger.responses[200] = {
+            schema: {
+                "token": "User is verified."
+            }
+        }
+        #swagger.responses[500] = {
+            schema: {
+                "text": "[Database error]"
+            }
+        }
+        #swagger.responses[401] = {
+            schema: {
+                "text" : "We were unable to find a user for this verification. Please SignUp!"
+            }
+        }
+        #swagger.responses[400] = {
+            schema: {
+                "text" : "Your verification link may have expired. Please use "resend" endpoint to resend the verification link. Check API documentation for endpoint details."
+            }
+        }
+    */
     EmailToken.findOne({ token: req.params.token }, function (err, token) {
         // token is not found into database i.e. token may have expired 
         if (!token){
@@ -100,7 +134,36 @@ router.get('/users/confirmation/:email/:token', async(req, res) => {
     });
 });
 
+
 router.post('/users/confirmation/resend', async (req, res) => {
+    /*
+        #swagger.tags = ['User']
+        #swagger.description = 'Endpoint for a user to signup'
+        #swagger.parameters['email'] = {
+            in: 'body',
+            description: 'User email',
+            required: true,
+            type: 'string',
+            schema: {
+                example: 'antonio@gmail.com'
+            }
+         }
+        #swagger.responses[200] = {
+            schema: {
+                "text": "This account has been already verified. Please log in."
+            }
+        }
+        #swagger.responses[201] = {
+            schema: {
+                "text": "A verification email has been sent to [user.email]. It will be expire after one day. If you not get verification email, use 'resend' endpoint. Check API documentation for endpoint details."
+            }
+        }
+        #swagger.responses[400] = {
+            schema: {
+                "msg" : "We were unable to find a user with that email. Make sure your Email is correct!"
+            }
+        }
+    */
     User.findOne({ email: req.body.email }, function (err, user) {
         // user is not found into database
         if (!user){
@@ -119,48 +182,41 @@ router.post('/users/confirmation/resend', async (req, res) => {
         }
     });
 });
+
+
 router.post('/users/login', async (req, res) => {
-    /*    #swagger.tags = ['User']
-          #swagger.description = 'Endpoint for a user to login. Will get a token back if successful.'
-    */
-
-    /*
-    #swagger.parameters['email'] = {
-        in: 'body',
-        description: 'User email',
-        required: true,
-        type: 'string',
-        schema: {
-            example: 'antonio@gmail.com'
+    /*    
+        #swagger.tags = ['User']
+        #swagger.description = 'Endpoint for a user to login. Will get a token back if successful.'
+        #swagger.parameters['email'] = {
+            in: 'boddsadsady',
+            description: 'User email',
+            required: true,
+            type: 'string',
+            schema: {
+                example: 'antonio@gmail.com'
+            }
         }
+        #swagger.parameters['password'] = {
+            in: 'body',
+            description: 'User password',
+            required: true,
+            type: 'string',
+            schema: {
+                example: 'password'
+            }
+        }
+        #swagger.responses[200] = {
+            schema: {
+                "token": "token_string"
+            }
+        }
+        #swagger.responses[400] = {
+            description: 'Error: Unable to login'
         }
     */
-
-    /*
-    #swagger.parameters['password'] = {
-    in: 'body',
-    description: 'User password',
-    required: true,
-    type: 'string',
-    schema: {
-        example: 'password'
-    }
-    }
-    */
-
-
-    /*
-#swagger.responses[200] = {
-    schema: {
-        "token": "token_string"
-    }
-}
-
-#swagger.responses[400] = {
-    description: 'Error: Unable to login'
-}
-*/
     try {
+        console.log(req.body.email + ", " + req.body.password);
         const user = await User.findByCredentials(req.body.email, req.body.password);
         await user.generateAuthToken();
         res.status(200).send(
@@ -174,8 +230,47 @@ router.post('/users/login', async (req, res) => {
 
 router.post('/users/updateinfo', auth, async (req, res) => {
     /*
-          #swagger.tags = ['User']
-          #swagger.description = 'Endpoint to update the user info'
+        #swagger.tags = ['User']
+        #swagger.description = 'Endpoint to update the user info. Request body should include the fields to be updated and their new values.'
+        #swagger.parameters['email'] = {
+            in: 'body',
+            description: 'User email',
+            required: false,
+            type: 'string',
+            schema: {
+                example: 'antonio@gmail.com'
+            }
+        }
+        #swagger.parameters['age'] = {
+            in: 'body',
+            description: 'User age',
+            required: false,
+            type: 'integer',
+            schema: {
+                example: 18
+            }
+        }
+
+        #swagger.responses[201] = {
+            description: 'OK',
+            schema: {
+                "permissions": ['permission1'],
+                "allergies": ["c"],
+                "isVerified": false,
+                "likedRecipes": [
+                    "recipe_id"
+                ],
+                "dislikedRecipes": ["recipe_id"],
+                "_id": "user_id",
+                "email": "user@gmail.com",
+                "password": "user_password",
+                "__v": 1,
+                "token": "some_token"
+            }
+        }
+        #swagger.responses[400] = {
+            description: 'Error: Unable to login'
+        }
     */
     const updates = Object.keys(req.body);
 
@@ -191,13 +286,10 @@ router.post('/users/updateinfo', auth, async (req, res) => {
     }
 })
 
-// TODO needs to be documented
 router.post('/users/likeRecipe', auth, async (req, res) => {
     /*
-    #swagger.tags = ['User']
-    #swagger.description = 'Endpoint for a user to like a recipe'
-*/
-    /*
+        #swagger.tags = ['User']
+        #swagger.description = 'Endpoint for a user to like a recipe'
         #swagger.parameters['recipeName'] = {
             in: 'body',
             description: 'Name of the recipe to be liked',
@@ -223,9 +315,7 @@ router.post('/users/likeRecipe', auth, async (req, res) => {
             }
         }
 
-*/
-
-
+    */
     try {
         const user = req.user;
         let mealIsAlreadyLiked = false;
@@ -259,9 +349,25 @@ router.post('/users/likeRecipe', auth, async (req, res) => {
     }
 })
 
-// TODO needs to tested
-// TODO needs to be documented
 router.get('/users/myLikedRecipes', auth, cache(constants.CACHEPERIOD), async (req, res) => {
+    /*
+        #swagger.tags = ['User']
+        #swagger.description = 'Endpoint for a user to list the recipe's that s/he liked'
+        #swagger.responses[200] = {
+            schema:  [
+                        {
+                            "name": "recipe_name1"
+                        }
+                    ]
+            
+        }
+        #swagger.responses[404] = {
+            schema: {
+                "text": "Recipes were not found + [error]"
+            }
+        }
+
+    */
     let user = req.user;
     try {
         // only return the name field of the liked recipes
@@ -273,42 +379,105 @@ router.get('/users/myLikedRecipes', auth, cache(constants.CACHEPERIOD), async (r
 })
 
 // TODO test
-// TODO document
 router.get('/users/myLikedIngredientFrequencies', auth, cache(constants.CACHEPERIOD), async (req, res) => {
+    /*
+        #swagger.tags = ['User']
+        #swagger.description = 'Endpoint for a user to list the ingredient frequency of liked meals'
+        #swagger.responses[200] = {
+            schema: {
+                    "ingredient1": 5,
+                    "ingredient2": 2,
+                    "ingredient3": 1
+            }
+        }
+        #swagger.responses[404] = {
+            schema: {
+                "text": "Database error + [error]"
+            }
+        }
+
+    */
     let user = req.user;
-    const result = await user.getIngredientFrequencyOfLikedMeals();
-    res.status(200).send(result);
+    try {
+        const result = await user.getIngredientFrequencyOfLikedMeals();
+        res.status(200).send(result);
+    }catch (e) {
+        return res.status(404).send("Database error " + e);
+    }
 })
 
-
 router.get('/users/list', auth, permission('userList'),
-    /*    #swagger.tags = ['User']
-      #swagger.description = 'Endpoint to get a list of users, requires authentication.'
+    /*    
+        #swagger.tags = ['User']
+        #swagger.description = 'Endpoint to get a list of users'
+        #swagger.responses[200] = {
+            schema: [
+                        {
+                            "permissions": ['permission1'],
+                            "allergies": ["c"],
+                            "isVerified": false,
+                            "likedRecipes": [
+                                "recipe_id"
+                            ],
+                            "dislikedRecipes": ["recipe_id"],
+                            "_id": "user_id",
+                            "email": "user@gmail.com",
+                            "password": "user_password",
+                            "__v": 1,
+                            "token": "some_token"
+                        }
+                    ]
+            
+        }
+        #swagger.responses[404] = {
+            schema: {
+                "text": "Database error + [error]"
+            }
+        }
+        #swagger.responses[403] = {
+            schema: {
+                "text": "Permission Denied!"
+            }
+        }
     */
     async (req, res) => {
         try {
             const users = await User.find({});
-            console.log(users);
             return res.status(200).send(users);
         } catch (e) {
             res.status(404).send(e + "");
         }
-    })
+    });
 
 router.delete('/users/deleteAll', auth, permission('deleteAllUsers'),
     /*
         #swagger.tags = ['User']
         #swagger.description = 'Endpoint to delete all users'
+        #swagger.responses[200] = {
+            schema: {
+                "text": "Successfully delete all users"
+            }
+        }
+        #swagger.responses[500] = {
+            schema: {
+                "text": "Database error + [error]"
+            }
+        }
+        #swagger.responses[403] = {
+            schema: {
+                "text": "Permission Denied!"
+            }
+        }
     */
 
     async (req, res) => {
         try {
             await User.deleteMany({});
-            res.send("Successfully delete all users");
+            res.status(200).send("Successfully delete all users");
         } catch (e) {
             res.status(500).send(e + "");
         }
-    })
+    });
 
 
 module.exports = router;
