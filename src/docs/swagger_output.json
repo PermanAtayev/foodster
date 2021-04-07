@@ -544,19 +544,234 @@
         }
       }
     },
-    "/users/likeRecipe": {
+    "/users/liked_recipes": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/db/drop": {
+      "delete": {
+        "tags": [
+          "DB"
+        ],
+        "description": "Drop a database",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/db/addMeal": {
       "post": {
         "tags": [
-          "User"
+          "DB"
+        ],
+        "description": "Add a meal to the db and store the image in s3.",
+        "parameters": [],
+        "responses": {
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/meals/generate": {
+      "post": {
+        "tags": [
+          "Meal"
+        ],
+        "description": "generate a meal",
+        "parameters": [],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/recipes/migrate_all": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "406": {
+            "description": "Not Acceptable"
+          }
+        }
+      }
+    },
+    "/recipes/migrate_to_S3": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "406": {
+            "description": "Not Acceptable"
+          }
+        }
+      }
+    },
+    "/recipes/nutrition_filter": {
+      "post": {
+        "tags": [
+          "Recipe"
+        ],
+        "description": "Filter a recipe according to its nutritional info",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "406": {
+            "description": "Not Acceptable"
+          }
+        }
+      }
+    },
+    "/recipes": {
+      "post": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/recipes/recommendation": {
+      "get": {
+        "tags": [
+          "Recipe"
+        ],
+        "description": "Endpoint for a user to get a Recipe / meal recommendation. If user has saved information about the preferred number of meals per day, that \\\r number will be used. Otherwise if limit is passed as a path parameter it will be used. If that is also not passed, then a constant number 3 will be used.",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "maximum number of recipes to return",
+            "required": false,
+            "type": "string",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "limit": {
+                  "type": "string",
+                  "example": "2"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of recipe names is returned"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/recipes/{recipeName}": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "recipeName",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/recipes/like/{recipeName}": {
+      "post": {
+        "tags": [
+          "Recipe"
         ],
         "description": "Endpoint for a user to like a recipe",
         "parameters": [
           {
             "name": "recipeName",
-            "in": "body",
-            "description": "Name of the recipe to be liked",
+            "in": "query",
             "required": true,
             "type": "string",
+            "description": "Name of the recipe to be liked",
             "schema": {
               "type": "object",
               "properties": {
@@ -616,298 +831,6 @@
                 "name": "main"
               }
             }
-          }
-        }
-      }
-    },
-    "/users/myLikedRecipes": {
-      "get": {
-        "tags": [],
-        "description": "",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      }
-    },
-    "/users/myLikedIngredientFrequencies": {
-      "get": {
-        "tags": [],
-        "description": "",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Unauthorized"
-          }
-        }
-      }
-    },
-    "/users/list": {
-      "get": {
-        "tags": [
-          "User"
-        ],
-        "description": "Endpoint to get a list of users, requires authentication.",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      }
-    },
-    "/users/deleteAll": {
-      "delete": {
-        "tags": [
-          "User"
-        ],
-        "description": "Endpoint to delete all users",
-        "parameters": [],
-        "responses": {
-          "401": {
-            "description": "Unauthorized"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      }
-    },
-    "/db/drop": {
-      "delete": {
-        "tags": [
-          "DB"
-        ],
-        "description": "Drop a database",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          }
-        }
-      }
-    },
-    "/db/addMeal": {
-      "post": {
-        "tags": [
-          "DB"
-        ],
-        "description": "Add a meal to the db and store the image in s3.",
-        "parameters": [],
-        "responses": {
-          "401": {
-            "description": "Unauthorized"
-          }
-        }
-      }
-    },
-    "/meals/generate": {
-      "post": {
-        "tags": [
-          "Meal"
-        ],
-        "description": "generate a meal",
-        "parameters": [],
-        "responses": {
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          }
-        }
-      }
-    },
-    "/recipes/migrateAll": {
-      "get": {
-        "tags": [],
-        "description": "",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "406": {
-            "description": "Not Acceptable"
-          }
-        }
-      }
-    },
-    "/recipes/migrateToS3": {
-      "get": {
-        "tags": [],
-        "description": "",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "406": {
-            "description": "Not Acceptable"
-          }
-        }
-      }
-    },
-    "/recipes/nameFilter": {
-      "post": {
-        "tags": [
-          "Recipe"
-        ],
-        "description": "Find details of a recipe using its name",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "406": {
-            "description": "Not Acceptable"
-          }
-        }
-      }
-    },
-    "/recipes/nutritionFilter": {
-      "post": {
-        "tags": [
-          "Recipe"
-        ],
-        "description": "Filter a recipe according to its nutritional info",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "406": {
-            "description": "Not Acceptable"
-          }
-        }
-      }
-    },
-    "/recipes/addRecipe": {
-      "post": {
-        "tags": [],
-        "description": "",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Bad Request"
-          }
-        }
-      }
-    },
-    "/recipes/getRecommendation": {
-      "get": {
-        "tags": [
-          "Recipe"
-        ],
-        "description": "Endpoint for a user to get a Recipe / meal recommendation. If user has saved information about the preferred number of meals per day, that \\\r number will be used. Otherwise if limit is passed as a path parameter it will be used. If that is also not passed, then a constant number 3 will be used.",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "maximum number of recipes to return",
-            "required": false,
-            "type": "string",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "limit": {
-                  "type": "string",
-                  "example": "2"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "List of recipe names is returned"
-          },
-          "401": {
-            "description": "Unauthorized"
-          }
-        }
-      }
-    },
-    "/recipes/{recipeName}": {
-      "get": {
-        "tags": [],
-        "description": "",
-        "parameters": [
-          {
-            "name": "recipeName",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
-          }
-        }
-      }
-    },
-    "/recipes": {
-      "get": {
-        "tags": [],
-        "description": "",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
           }
         }
       }

@@ -8,8 +8,8 @@ const cache = require("../middleware/cache");
 const constants = require("../data/constants");
 
 // The cache will be alive for 1 hour
-
-router.get('/recipes/migrateAll', auth, permission('migrateAll'), async (req, res) => {
+// TODO migrate should not be an endpoint
+router.get('/recipes/migrate_all', auth, permission('migrateAll'), async (req, res) => {
     try {
         const allRecipes = await Recipe.find({}).select("name img img_path");
         for (const recipe of allRecipes) {
@@ -23,7 +23,8 @@ router.get('/recipes/migrateAll', auth, permission('migrateAll'), async (req, re
     }
 });
 
-router.get('/recipes/migrateToS3', auth, permission('migrateToS3'), async (req, res) => {
+// TODO migrate should not be an endpoint
+router.get('/recipes/migrate_to_S3', auth, permission('migrateToS3'), async (req, res) => {
     try {
         // getting recipe
         const recipe = await Recipe.findRecipeWithName(req.body.recipe_name);
@@ -38,27 +39,9 @@ router.get('/recipes/migrateToS3', auth, permission('migrateToS3'), async (req, 
     }
 });
 
-router.post('/recipes/nameFilter', auth, async (req, res) => {
-    /*
-    #swagger.tags = ['Recipe']
-    #swagger.description = 'Find details of a recipe using its name'
-    */
-    try {
-        const recipe = await Recipe.findByName(req.body.name);
-        if (recipe) {
-            // if the image is migrated to s3, then it should not be sent as a response
-            if (recipe.imgPath !== "") {
-                delete recipe.img;
-            }
-            return res.status(201).send(recipe);
-        } else
-            res.status(404).send("Recipe with this name is not found");
-    } catch (e) {
-        res.status(406).send(e + "Something went wrong with finding a recipe");
-    }
-});
-
-router.post('/recipes/nutritionFilter', auth, async (req, res) => {
+// TODO needs to documented properly
+// TODO needs to be tested
+router.post('/recipes/nutrition_filter', auth, async (req, res) => {
     /*
         #swagger.tags = ['Recipe']
         #swagger.description = 'Filter a recipe according to its nutritional info'
@@ -71,13 +54,13 @@ router.post('/recipes/nutritionFilter', auth, async (req, res) => {
         else
             return res.status(404).send("Recipe with required nutritions was not found");
     } catch (e) {
-        return res.status(406).send("Something went wrong with find a recipe");
+        return res.status(406).send("Something went wrong with finding a recipe");
     }
 });
 
 // TODO test
 // TODO document
-router.post('/recipes/addRecipe', async (req, res) => {
+router.post('/recipes', async (req, res) => {
     const newRecipe = req.body;
     try {
         Recipe.addRecipe(newRecipe);
@@ -90,7 +73,7 @@ router.post('/recipes/addRecipe', async (req, res) => {
 // TODO test
 // TODO document
 // query string parameter limit can be passed, otherwise the default value would be provided
-router.get('/recipes/getRecommendation', auth, cache(constants.CACHEPERIOD), async (req, res) => {
+router.get('/recipes/recommendation', auth, cache(constants.CACHEPERIOD), async (req, res) => {
     /*
         #swagger.tags = ['Recipe']
         #swagger.description = 'Endpoint for a user to get a Recipe / meal recommendation. If user has saved information about the preferred number of meals per day, that \
@@ -120,16 +103,79 @@ router.get('/recipes/getRecommendation', auth, cache(constants.CACHEPERIOD), asy
     }
 
     const recommendedRecipes = await req.user.recommendRecipes(req.query.limit || preferenceNumberFromUser || constants.RECOMMENDATION_LIMIT);
-    res.status(200).send(JSON.stringify(recommendedRecipes));
+    res.status(200).json(recommendedRecipes);
 })
 
 // TODO document
 router.get('/recipes/:recipeName', cache(constants.CACHEPERIOD), async (req, res) => {
     try {
         const recipe = await Recipe.findByName(req.params.recipeName);
-        return res.status(200).send(recipe);
+        return res.status(200).json(recipe);
     } catch (e) {
-        return res.status(404).send("The recipe is not found. " + e);
+        return res.status(404).json(e + "");
+    }
+})
+
+router.post('/recipes/like/:recipeName', auth, async (req, res) => {
+    /*
+    #swagger.tags = ['Recipe']
+    #swagger.description = 'Endpoint for a user to like a recipe'
+
+    #swagger.parameters['recipeName'] = {
+        in: 'query',
+        description: 'Name of the recipe to be liked',
+        required: true,
+        type: 'string',
+        schema: {
+            example: 'Pasta with mozarella cheese'
+        }
+     }
+    #swagger.responses[200] = {
+        schema: {
+            "text": "The meal is liked successfully"
+        }
+    }
+    #swagger.responses[404] = {
+        schema: {
+            "text": "Recipe does not exist"
+        }
+    }
+    #swagger.responses[400] = {
+        schema: {
+            "text": "The meal is already liked"
+        }
+    }
+*/
+    try {
+        const user = req.user;
+        let mealIsAlreadyLiked = false;
+        const recipeName = req.params.recipeName;
+
+        const recipe = await Recipe.findByName(recipeName);
+
+        if (!recipe) {
+            return res.status(404).send("Recipe does not exist");
+        }
+
+        if (user.likedRecipes !== null) {
+            if (user.likedRecipes.includes(recipe._id)) {
+                mealIsAlreadyLiked = true;
+            }
+        }
+        if (!mealIsAlreadyLiked) {
+            user.likedRecipes.push(recipe._id);
+            user.save();
+
+            recipe.numberOfLikes = recipe.numberOfLikes + 1;
+            recipe.likedUsers.push(user._id);
+            recipe.save();
+
+            return res.status(200).send("The meal is liked successfully");
+        } else {
+            return res.status(400).send("The meal is already liked");
+        }
+    } catch (error) {
+        return res.status(400).send(error);
     }
 })
 

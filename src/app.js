@@ -3,6 +3,7 @@ const app = express();
 const morgan = require('morgan');
 const dotenv = require('dotenv');
 dotenv.config();
+
 const bodyParser = require('body-parser');
 
 const userRouter = require('./routers/user');
@@ -11,13 +12,15 @@ const dbRouter = require('./routers/db');
 const recipeRouter = require('./routers/recipe');
 const ingredientRouter = require('./routers/ingredient')
 const swaggerUi = require('swagger-ui-express')
-
 const swaggerFile = require('./docs/swagger_output.json')
+
+const compression = require('compression');
 
 const cors = require('cors');
 
 app.use(cors());
 app.use(morgan(':method :url Status\: :status Response_Time\: :response-time'));
+app.use(compression());
 
 // parse the incoming request
 app.use(bodyParser.json());

@@ -13,7 +13,6 @@ const fatTolarance = commonTempTolarance;
 
 schema.statics.findRecipeWithNutritions = async (type, calories, protein, carbs, fat) => {
     try {
-        //console.log("type: " + type + ", caloeries: " + calories + ", protein: " + protein + ", carbs: " + carbs + ", fat: " + fat);
         return await Recipe.findOne({
             type: type
             , 'nutritions.calories': {$lt: calories + calorieTolarance, $gt: calories - calorieTolarance}
@@ -26,11 +25,10 @@ schema.statics.findRecipeWithNutritions = async (type, calories, protein, carbs,
     }
 }
 schema.statics.findByName = async (recipe_name) => {
-    try {
-        return await Recipe.findOne({name: recipe_name}).exec();
-    } catch (e) {
-        throw Error(e + " something went wrong with finding a recipe");
-    }
+    const recipe = await Recipe.findOne({name: recipe_name}).exec();
+    if(!recipe)
+        throw("Recipe was not found");
+    return recipe;
 }
 
 // TODO test
