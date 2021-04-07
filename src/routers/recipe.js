@@ -7,9 +7,28 @@ const migrateRecipe = require('../_helpers/s3_manager');
 const cache = require("../middleware/cache");
 const constants = require("../data/constants");
 
-// The cache will be alive for 1 hour
 // TODO migrate should not be an endpoint
-router.get('/recipes/migrate_all', auth, permission('migrateAll'), async (req, res) => {
+// TODO test
+router.get('/recipes/migrateAll', auth, permission('migrateAll'), async (req, res) => {
+    /*
+        #swagger.tags = ['Recipe']
+        #swagger.description = 'Endpoint to transport the images of all the remaining recipes to S3 storage'
+        #swagger.responses[201] = {
+            schema: {
+                "text" : "All migrated"
+            }
+        }
+        #swagger.responses[406] = {
+            schema: {
+                "text" : "Database error:  [error]"
+            }
+        }
+        #swagger.responses[403] = {
+            schema: {
+                "text" : "Permission Denied!"
+            }
+        }
+    */
     try {
         const allRecipes = await Recipe.find({}).select("name img img_path");
         for (const recipe of allRecipes) {
@@ -19,12 +38,46 @@ router.get('/recipes/migrate_all', auth, permission('migrateAll'), async (req, r
         }
         return res.status(201).send("All migrated");
     } catch (err) {
-        return res.status(406).send(err + "");
+        return res.status(406).send("Databse error : " + err);
     }
 });
 
 // TODO migrate should not be an endpoint
-router.get('/recipes/migrate_to_S3', auth, permission('migrateToS3'), async (req, res) => {
+// TODO test
+router.get('/recipes/migrateToS3', auth, permission('migrateToS3'), async (req, res) => {
+    /* 
+        #swagger.tags = ['Recipe']
+        #swagger.description = 'Endpoint to transport the image of a recipe to S3 storage'
+        #swagger.parameters['recipe_name'] = {
+            in: 'body',
+            description: 'Recipe name',
+            required: true,
+            type: 'string',
+            schema: {
+                example: 'Menemen'
+            }
+         }
+        #swagger.responses[201] = {
+            schema: {
+                "text" : "All migrated"
+            }
+        }
+        #swagger.responses[406] = {
+            schema: {
+                "text" : "Database error:  [error]"
+            }
+        }
+        #swagger.responses[404] = {
+            schema: {
+                "text" : "Recipe was not found"
+            }
+        }
+        #swagger.responses[403] = {
+            schema: {
+                "text" : "Permission Denied!"
+            }
+        }
+    */
     try {
         // getting recipe
         const recipe = await Recipe.findRecipeWithName(req.body.recipe_name);
@@ -35,16 +88,113 @@ router.get('/recipes/migrate_to_S3', auth, permission('migrateToS3'), async (req
         await migrateRecipe(recipe);
         return res.status(201).send("Recipe's image is migrated to S3");
     } catch (e) {
-        res.status(406).send(e + "");
+        res.status(406).send("Database error: " + e);
     }
 });
 
-// TODO needs to documented properly
-// TODO needs to be tested
-router.post('/recipes/nutrition_filter', auth, async (req, res) => {
+
+// TODO test
+router.post('/recipes/nutritionFilter', auth, async (req, res) => {
     /*
         #swagger.tags = ['Recipe']
-        #swagger.description = 'Filter a recipe according to its nutritional info'
+        #swagger.description = 'Endpoint to find a recipe with nutrition constraints'
+        #swagger.parameters['type'] = {
+            in: 'body',
+            description: 'Recipe name',
+            required: true,
+            type: 'string',
+            schema: {
+                example: 'Breakfast'
+            }
+         }
+          #swagger.parameters['calories'] = {
+            in: 'body',
+            description: 'Recipe name',
+            required: true,
+            type: 'integer',
+            schema: {
+                example: 2000
+            }
+         }
+         #swagger.parameters['protein'] = {
+            in: 'body',
+            description: 'Recipe name',
+            required: true,
+            type: 'integer',
+            schema: {
+                example: 200
+            }
+         }
+         #swagger.parameters['carbs'] = {
+            in: 'body',
+            description: 'Recipe name',
+            required: true,
+            type: 'integer',
+            schema: {
+                example: 100
+            }
+         }
+         #swagger.parameters['fat'] = {
+            in: 'body',
+            description: 'Recipe name',
+            required: true,
+            type: 'integer',
+            schema: {
+                example: 50
+            }
+         }
+        #swagger.responses[201] = {
+            schema: {
+                    "imgPath": "",
+                    "servingSize": 4,
+                    "instructions": ["Whisk vinegar, soy sauce, garlic, olive oil, brown sugar, and crushed peppercorns in a bowl until sugar is dissolved. Stir bay leaves into the sauce"],
+                    "likedUsers": [{
+                        "$oid": "user_id"
+                    }],
+                    "numberOfLikes": 2,
+                    "type": "lunch",
+                    "name": "C",
+                    "prepTime": 55,
+                    "cookTime": 35,
+                    "ingredients": [{
+                        "_id": {
+                            "$oid": "ingredient_id"
+                        },
+                        "text": "1 tbsp of sugar and a lot of salt",
+                        "unit": "tbsp",
+                        "name": "pepper",
+                        "originID": {
+                            "$oid": "ingredient_original_id"
+                        }
+                    }, {
+                        "_id": {
+                            "$oid": "ingredient_id2"
+                        },
+                        "text": "1 tbsp of sugar and a lot of salt",
+                        "unit": "tbsp",
+                        "name": "sugar",
+                        "originID": {
+                            "$oid": "ingredient_original_id2"
+                        }
+                    }],
+                    "__v": 1
+                    }
+        }
+        #swagger.responses[406] = {
+            schema: {
+                "text" : "Something went wrong with find a recipe"
+            }
+        }
+        #swagger.responses[404] = {
+            schema: {
+                "text" : "Recipe with required nutritions was not found"
+            }
+        }
+        #swagger.responses[403] = {
+            schema: {
+                "text" : "Permission Denied!"
+            }
+        }
     */
     try {
         const recipeFilter = req.body;
@@ -59,8 +209,48 @@ router.post('/recipes/nutrition_filter', auth, async (req, res) => {
 });
 
 // TODO test
-// TODO document
-router.post('/recipes', async (req, res) => {
+router.post('/recipes', auth, async (req, res) => {
+    /*
+        #swagger.tags = ['Recipe']
+        #swagger.description = 'Endpoint to add a recipe'
+        #swagger.parameters['name'] = {
+            in: 'body',
+            description: 'Recipe name',
+            required: true,
+            type: 'string',
+            schema: {
+                    example: "Menemen"
+            }
+        }
+        #swagger.parameters['prepTime'] = {
+            in: 'body',
+            description: 'Recipe preperation time',
+            required: true,
+            type: 'integer',
+            schema: {
+                    example: 30
+            }
+        }
+        #swagger.parameters['cookTime'] = {
+            in: 'body',
+            description: 'Recipe cook time',
+            required: true,
+            type: 'integer',
+            schema: {
+                    example: 50
+            }
+        }
+        #swagger.responses[201] = {
+            schema: {
+                "text" : "Recipe is added"
+            }
+        }
+        #swagger.responses[400] = {
+            schema: {
+                "text" : "Did not add the recipe"
+            }
+        }
+    */
     const newRecipe = req.body;
     try {
         Recipe.addRecipe(newRecipe);
@@ -70,14 +260,14 @@ router.post('/recipes', async (req, res) => {
     }
 })
 
+
 // TODO test
-// TODO document
 // query string parameter limit can be passed, otherwise the default value would be provided
 router.get('/recipes/recommendation', auth, cache(constants.CACHEPERIOD), async (req, res) => {
     /*
         #swagger.tags = ['Recipe']
         #swagger.description = 'Endpoint for a user to get a Recipe / meal recommendation. If user has saved information about the preferred number of meals per day, that \
-        number will be used. Otherwise if limit is passed as a path parameter it will be used. If that is also not passed, then a constant number 3 will be used.'
+number will be used. Otherwise if limit is passed as a path parameter it will be used. If that is also not passed, then a constant number 3 will be used.'
 
         #swagger.parameters['limit'] = {
             in: 'query',
@@ -96,8 +286,8 @@ router.get('/recipes/recommendation', auth, cache(constants.CACHEPERIOD), async 
 
     let preferenceNumberFromUser = null;
 
-    if('preferences' in req.user){
-        if('mealsPerDay' in req.user.preferences){
+    if ('preferences' in req.user) {
+        if ('mealsPerDay' in req.user.preferences) {
             preferenceNumberFromUser = req.user.preferences.mealsPerDay;
         }
     }
@@ -108,6 +298,71 @@ router.get('/recipes/recommendation', auth, cache(constants.CACHEPERIOD), async 
 
 // TODO document
 router.get('/recipes/:recipeName', cache(constants.CACHEPERIOD), async (req, res) => {
+    /*
+        #swagger.tags = ['Recipe']
+        #swagger.description = 'Endpoint to find a recipe with it's name'
+        #swagger.parameters['name'] = {
+            in: 'query',
+            description: 'Recipe name',
+            required: true,
+            type: 'string',
+            schema: {
+                example: 'Menemen'
+            }
+         }
+        #swagger.responses[201] = {
+            schema: {
+                        "imgPath": "",
+                        "servingSize": 4,
+                        "instructions": ["Whisk vinegar, soy sauce, garlic, olive oil, brown sugar, and crushed peppercorns in a bowl until sugar is dissolved. Stir bay leaves into the sauce"],
+                        "likedUsers": [{
+                            "$oid": "user_id"
+                        }],
+                        "numberOfLikes": 2,
+                        "type": "lunch",
+                        "name": "C",
+                        "prepTime": 55,
+                        "cookTime": 35,
+                        "ingredients": [{
+                            "_id": {
+                                "$oid": "ingredient_id"
+                            },
+                            "text": "1 tbsp of sugar and a lot of salt",
+                            "unit": "tbsp",
+                            "name": "pepper",
+                            "originID": {
+                                "$oid": "ingredient_original_id"
+                            }
+                        }, {
+                            "_id": {
+                                "$oid": "ingredient_id2"
+                            },
+                            "text": "1 tbsp of sugar and a lot of salt",
+                            "unit": "tbsp",
+                            "name": "sugar",
+                            "originID": {
+                                "$oid": "ingredient_original_id2"
+                            }
+                        }],
+                        "__v": 1
+                    }
+        }
+        #swagger.responses[406] = {
+            schema: {
+                "text" : "[error] Something went wrong with finding a recipe"
+            }
+        }
+        #swagger.responses[404] = {
+            schema: {
+                "text" : "Recipe with this name is not found"
+            }
+        }
+        #swagger.responses[403] = {
+            schema: {
+                "text" : "Permission Denied!"
+            }
+        }
+    */
     try {
         const recipe = await Recipe.findByName(req.params.recipeName);
         return res.status(200).json(recipe);
@@ -182,15 +437,27 @@ router.post('/recipes/like/:recipeName', auth, async (req, res) => {
 // TODO document
 // Useful to get all recipes
 router.get('/recipes', cache(constants.CACHEPERIOD), async (req, res) => {
-    try{
+    /*
+        #swagger.tags = ['Recipe']
+        #swagger.description = 'Endpoint for a user to get a Recipe / meal recommendation. If user has saved information about the preferred number of meals per day, that \
+number will be used. Otherwise if limit is passed as a path parameter it will be used. If that is also not passed, then a constant number 3 will be used.'
+
+
+        #swagger.responses[200] = {
+            description: "the List of all recipe names is returned"
+        }
+        #swagger.responses[400] = {
+            description: "Either no recipe or no authorization"
+        }
+
+    */
+    try {
         const recipeList = await Recipe.find({});
         return res.status(200).send(recipeList);
-    }
-    catch(e){
+    } catch (e) {
         return res.status(400).send("Either no recipe or no authorization");
     }
 })
-
 
 
 function min(a, b) {
@@ -198,42 +465,54 @@ function min(a, b) {
 }
 
 // TODO test
-router.get('/recipes/top/:numberOfRecipes', cache(constants.CACHEPERIOD), async (req, res) => {
+// Need to optimise with the cache / timestamps to not produce results too often.
+router.get('/recipes/top/:numberOfRecipes', auth, cache(constants.CACHEPERIOD), async (req, res) => {
     /*
     #swagger.tags = ['Recipe']
     #swagger.description = 'Endpoint to get top K recipes for the moment when user signup happens'
-    #swagger.responses[200] = {
+    #swagger.parameters["numberOfRecipes"] = {
+        in: 'path',
+        description: 'Number of recipes',
+        required: true,
+        type: 'integer',
         schema: {
-            "imgPath": "",
-            "servingSize": 4,
-            "instructions": [
-                "Whisk vinegar, soy sauce, garlic, olive oil, brown sugar, and crushed peppercorns in a bowl until sugar is dissolved. Stir bay leaves into the sauce"
-            ],
-            "likedUsers": [],
-            "numberOfLikes": 0,
-            "_id": "606c754439dada0e70e438d4",
-            "type": "lunch",
-            "name": "A",
-            "prepTime": 55,
-            "cookTime": 35,
-            "ingredients": [
-                {
-                    "_id": "606c754439dada0e70e438d5",
-                    "text": "1 tbsp of sugar and a lot of salt",
-                    "unit": "tbsp",
-                    "name": "pepper",
-                    "originID": "606c754339dada0e70e438d2"
-                },
-                {
-                    "_id": "606c754439dada0e70e438d6",
-                    "text": "1 tbsp of sugar and a lot of salt",
-                    "unit": "tbsp",
-                    "name": "sugar",
-                    "originID": "606c754439dada0e70e438d3"
-                }
-            ],
-            "__v": 0
+                example: 15
         }
+    }
+    #swagger.responses[200] = {
+        schema: [
+            {
+                "imgPath": "",
+                "servingSize": 4,
+                "instructions": [
+                    "Whisk vinegar, soy sauce, garlic, olive oil, brown sugar, and crushed peppercorns in a bowl until sugar is dissolved. Stir bay leaves into the sauce"
+                ],
+                "likedUsers": [],
+                "numberOfLikes": 0,
+                "_id": "recipe_id",
+                "type": "lunch",
+                "name": "A",
+                "prepTime": 55,
+                "cookTime": 35,
+                "ingredients": [
+                    {
+                        "_id": "ingredient_id1",
+                        "text": "1 tbsp of sugar and a lot of salt",
+                        "unit": "tbsp",
+                        "name": "pepper",
+                        "originID": "ingredient_original_id1"
+                    },
+                    {
+                        "_id": "ingredient_id2",
+                        "text": "1 tbsp of sugar and a lot of salt",
+                        "unit": "tbsp",
+                        "name": "sugar",
+                        "originID": "ingredient_original_id2"
+                    }
+                ],
+                "__v": 0
+            }
+        ]
     }
     */
     const kTopRecipesNumber = req.params.numberOfRecipes;
@@ -246,9 +525,17 @@ router.get('/recipes/top/:numberOfRecipes', cache(constants.CACHEPERIOD), async 
 
 // TODO implement
 // TODO test
-// TODO document
 // Do we need this?
-router.post('/recipes/prefillRecipes', async (req, res) => {
+router.post('/recipes/prefillRecipes', auth, async (req, res) => {
+    /*
+    #swagger.tags = ['Recipe']
+    #swagger.description = 'Endpoint to add the recipes in local to db'
+    #swagger.responses[200] = {
+        schema: {
+            "text" : "Recipes are added!"
+        }
+    }
+    */
     const dummyRecipes = require('../data/recipes');
 
     await Recipe.insertMany(dummyRecipes, (err, docs) => {
@@ -259,6 +546,7 @@ router.post('/recipes/prefillRecipes', async (req, res) => {
             console.log(docs);
         }
     })
+    return res.status(200).send("Recipes are added!");
 })
 
 

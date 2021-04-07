@@ -3,12 +3,12 @@ const permission = function (permission) {
         const user = req.user;
         if (!user) {
             console.log('Authorization Failed!');
-            res.status(401).send({error: "Authorization required!"});
+            return res.status(401).send({error: "Authorization required!"});
         }
         const hasPermission = await user.hasPermission(permission);
         if (!hasPermission) {
             console.log('User does not have this permission: ' + permission);
-            res.status(401).send({error: "Permission Denied!"});
+            return res.status(403).send({error: "Permission Denied!"});
         }
         next();
     }

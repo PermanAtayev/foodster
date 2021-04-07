@@ -27,3 +27,4 @@ router.get('/users/list', auth, permission('userList'),
             res.status(404).send(e + "");
         }
     })
+
