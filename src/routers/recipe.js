@@ -335,30 +335,67 @@ router.post('/recipes/addRecipe', auth, async (req, res) => {
     }
 })
 
-// TODO test
-// query string parameter limit can be passed, otherwise the default value would be provided
-router.get('/recipes/getRecipeRecommendation', auth, cache(constants.CACHEPERIOD), async (req, res) => {
+
+router.get('/recipes/getRecommendation', auth, cache(constants.CACHEPERIOD), async (req, res) => {
     /*
         #swagger.tags = ['Recipe']
-        #swagger.description = 'Endpoint to get recipe recommendations'
-        #swagger.parameters["limit"] = {
+        #swagger.description = 'Endpoint for a user to get a Recipe / meal recommendation. If user has saved information about the preferred number of meals per day, that \
+        number will be used. Otherwise if limit is passed as a path parameter it will be used. If that is also not passed, then a constant number 3 will be used.'
+
+        #swagger.parameters['limit'] = {
             in: 'query',
-            description: 'Limit for number of recipes to recommended',
+            description: 'maximum number of recipes to return',
             required: false,
-            type: 'integer',
+            type: 'string',
             schema: {
-                    example: 4
+                "limit":"2"
             }
-        }
+         }
+
         #swagger.responses[200] = {
-            schema: [
-                "Recipe_name1"
-            ]
+            description: "List of recipe names is returned"
         }
     */
-    const recommendedRecipes = await req.user.recommendRecipes(req.query.limit || constants.RECOMMENDATION_LIMIT);
+
+    let preferenceNumberFromUser = null;
+
+    if('preferences' in req.user){
+        if('mealsPerDay' in req.user.preferences){
+            preferenceNumberFromUser = req.user.preferences.mealsPerDay;
+        }
+    }
+
+    const recommendedRecipes = await req.user.recommendRecipes(req.query.limit || preferenceNumberFromUser || constants.RECOMMENDATION_LIMIT);
     res.status(200).send(JSON.stringify(recommendedRecipes));
 })
+
+// TODO document
+// Useful to get all recipes
+router.get('/recipes', cache(constants.CACHEPERIOD), async (req, res) => {
+    /*
+        #swagger.tags = ['Recipe']
+        #swagger.description = 'Endpoint for a user to get a Recipe / meal recommendation. If user has saved information about the preferred number of meals per day, that \
+        number will be used. Otherwise if limit is passed as a path parameter it will be used. If that is also not passed, then a constant number 3 will be used.'
+
+
+        #swagger.responses[200] = {
+            description: "the List of all recipe names is returned"
+        }
+        #swagger.responses[400] = {
+            description: "Either no recipe or no authorization"
+        }
+
+    */
+    try{
+        const recipeList = await Recipe.find({});
+        return res.status(200).send(recipeList);
+    }
+    catch(e){
+        return res.status(400).send("Either no recipe or no authorization");
+    }
+})
+
+
 
 function min(a, b) {
     return (a < b) ? a : b;
@@ -415,13 +452,11 @@ router.get('/recipes/top/:numberOfRecipes', auth, cache(constants.CACHEPERIOD), 
         ]
     }
     */
-
-
     const kTopRecipesNumber = req.params.numberOfRecipes;
     const availableRecipes = await Recipe.countDocuments({});
-    const returnNumber = min(availableRecipes, kTopRecipesNumber);
+    const returnNumberOfRecipes = min(availableRecipes, kTopRecipesNumber);
     const topRecipes = await Recipe.find({}).sort({numberOfLikes: -1});
-    const kTopRecipes = topRecipes.slice(0, returnNumber);
+    const kTopRecipes = topRecipes.slice(0, returnNumberOfRecipes);
     res.status(200).send(kTopRecipes);
 })
 

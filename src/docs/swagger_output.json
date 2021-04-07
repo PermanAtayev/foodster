@@ -91,165 +91,52 @@
     },
     "/users/confirmation/{email}/{token}": {
       "get": {
-        "tags": [
-          "User"
-        ],
-        "description": "Endpoint for a user to signup",
+        "tags": [],
+        "description": "",
         "parameters": [
           {
             "name": "email",
             "in": "path",
             "required": true,
-            "type": "string",
-            "description": "User email",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "example": {
-                  "type": "string",
-                  "example": "antonio@gmail.com"
-                }
-              }
-            }
+            "type": "string"
           },
           {
             "name": "token",
-            "in": "token",
+            "in": "path",
             "required": true,
-            "type": "string",
-            "description": "Verification token",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "example": {
-                  "type": "string",
-                  "example": "password"
-                }
-              }
-            }
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "token": {
-                  "type": "string",
-                  "example": "User is verified."
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request"
           },
           "401": {
-            "description": "Unauthorized",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "text": {
-                  "type": "string",
-                  "example": "We were unable to find a user for this verification. Please SignUp!"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Unauthorized"
           },
           "500": {
-            "description": "Internal Server Error",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "text": {
-                  "type": "string",
-                  "example": "[Database error]"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Internal Server Error"
           }
         }
       }
     },
     "/users/confirmation/resend": {
       "post": {
-        "tags": [
-          "User"
-        ],
-        "description": "Endpoint for a user to signup",
-        "parameters": [
-          {
-            "name": "email",
-            "in": "body",
-            "description": "User email",
-            "required": true,
-            "type": "string",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "example": {
-                  "type": "string",
-                  "example": "antonio@gmail.com"
-                }
-              }
-            }
-          }
-        ],
+        "tags": [],
+        "description": "",
+        "parameters": [],
         "responses": {
           "200": {
-            "description": "OK",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "text": {
-                  "type": "string",
-                  "example": "This account has been already verified. Please log in."
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "OK"
           },
           "201": {
-            "description": "Created",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "text": {
-                  "type": "string",
-                  "example": "A verification email has been sent to [user.email]. It will be expire after one day. If you not get verification email, use 'resend' endpoint. Check API documentation for endpoint details."
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Created"
           },
           "400": {
-            "description": "Bad Request",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "text": {
-                  "type": "string",
-                  "example": "We were unable to find a user with that email. Make sure your Email is correct!"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Bad Request"
           }
         }
       }
@@ -263,14 +150,14 @@
         "parameters": [
           {
             "name": "email",
-            "in": "boddsadsady",
+            "in": "body",
             "description": "User email",
             "required": true,
             "type": "string",
             "schema": {
               "type": "object",
               "properties": {
-                "example": {
+                "email": {
                   "type": "string",
                   "example": "antonio@gmail.com"
                 }
@@ -286,9 +173,9 @@
             "schema": {
               "type": "object",
               "properties": {
-                "example": {
+                "password": {
                   "type": "string",
-                  "example": "password"
+                  "example": "example"
                 }
               }
             }
@@ -316,25 +203,136 @@
         }
       }
     },
-    "/users/updateinfo": {
-      "post": {
+    "/users": {
+      "get": {
         "tags": [
           "User"
         ],
-        "description": "Endpoint to update the user info. Request body should include the fields to be updated and their new values.",
+        "description": "Endpoint to get available information related to the user",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "allergies": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "isVerified": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "likedRecipes": {
+                  "type": "array",
+                  "items": {}
+                },
+                "dislikedRecipes": {
+                  "type": "array",
+                  "items": {}
+                },
+                "_id": {
+                  "type": "string",
+                  "example": "606db95f4aba966eccd85648"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "perman.atayev17@gmail.com"
+                },
+                "token": {
+                  "type": "string",
+                  "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDZkYjk1ZjRhYmE5NjZlY2NkODU2NDgiLCJpYXQiOjE2MTc4MDM2MTUsImV4cCI6MTYxNzgwNzIxNX0.9hbXeasTPBVvqhaz9AdYZBdZ4HR1vODjlx3ks7Y1nmU"
+                },
+                "preferences": {
+                  "type": "object",
+                  "properties": {
+                    "calRange": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "protRange": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "costRange": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "dietType": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "cookingTime": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "restrictions": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "_id": {
+                      "type": "string",
+                      "example": "606dbf8426bac5635c7bd255"
+                    },
+                    "mealsPerDay": {
+                      "type": "number",
+                      "example": 10
+                    },
+                    "difficulty": {
+                      "type": "string",
+                      "example": "ExtraHard"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Please authenticate"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "User"
+        ],
+        "description": "Endpoint to update the user info that includes: username, age, gender, height, allergies, preferences",
         "parameters": [
           {
-            "name": "email",
+            "name": "username",
             "in": "body",
-            "description": "User email",
+            "description": "Users username",
             "required": false,
             "type": "string",
             "schema": {
               "type": "object",
               "properties": {
-                "example": {
+                "username": {
                   "type": "string",
-                  "example": "antonio@gmail.com"
+                  "example": "boss"
                 }
               }
             }
@@ -344,13 +342,97 @@
             "in": "body",
             "description": "User age",
             "required": false,
-            "type": "integer",
+            "type": "number",
             "schema": {
               "type": "object",
               "properties": {
-                "example": {
+                "age": {
                   "type": "number",
-                  "example": 18
+                  "example": 20
+                }
+              }
+            }
+          },
+          {
+            "name": "height",
+            "in": "body",
+            "description": "User height in meters",
+            "required": false,
+            "type": "number",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "height": {
+                  "type": "number",
+                  "example": 1.85
+                }
+              }
+            }
+          },
+          {
+            "name": "allergies",
+            "in": "body",
+            "description": "Users allergies. This value will overwrite the old allergies value of the user",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "allergies": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "name": "preferences",
+            "in": "body",
+            "description": "Users preferences update in the signup or anytime afterwards. Following fields can be added / updated: calRange, protRange, costRange, dietType,  cookingTime, restrictions, mealsPerDay, difficulty",
+            "required": false,
+            "type": "JSON object",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "preferences": {
+                  "type": "object",
+                  "properties": {
+                    "mealsPerDay": {
+                      "type": "number",
+                      "example": 10
+                    },
+                    "calRange": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "difficulty": {
+                      "type": "string",
+                      "example": "ExtraHard"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "name": "gender",
+            "in": "body",
+            "description": "Users gender which can be: male, female, other",
+            "required": false,
+            "type": "string",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "gender": {
+                  "type": "string",
+                  "example": "female"
                 }
               }
             }
@@ -358,16 +440,10 @@
         ],
         "responses": {
           "201": {
-            "description": "OK",
+            "description": "Created",
             "schema": {
               "type": "object",
               "properties": {
-                "permissions": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
                 "allergies": {
                   "type": "array",
                   "items": {
@@ -376,39 +452,70 @@
                 },
                 "isVerified": {
                   "type": "boolean",
-                  "example": false
+                  "example": true
                 },
                 "likedRecipes": {
                   "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
+                  "items": {}
                 },
                 "dislikedRecipes": {
                   "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
+                  "items": {}
                 },
                 "_id": {
                   "type": "string",
-                  "example": "user_id"
+                  "example": "606db95f4aba966eccd85648"
                 },
                 "email": {
                   "type": "string",
-                  "example": "user@gmail.com"
-                },
-                "password": {
-                  "type": "string",
-                  "example": "user_password"
-                },
-                "__v": {
-                  "type": "number",
-                  "example": 1
+                  "example": "perman.atayev17@gmail.com"
                 },
                 "token": {
                   "type": "string",
-                  "example": "some_token"
+                  "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDZkYjk1ZjRhYmE5NjZlY2NkODU2NDgiLCJpYXQiOjE2MTc4MDM2MTUsImV4cCI6MTYxNzgwNzIxNX0.9hbXeasTPBVvqhaz9AdYZBdZ4HR1vODjlx3ks7Y1nmU"
+                },
+                "preferences": {
+                  "type": "object",
+                  "properties": {
+                    "calRange": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "protRange": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "costRange": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "dietType": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "cookingTime": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "restrictions": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "_id": {
+                      "type": "string",
+                      "example": "606dbf8426bac5635c7bd255"
+                    },
+                    "mealsPerDay": {
+                      "type": "number",
+                      "example": 10
+                    },
+                    "difficulty": {
+                      "type": "string",
+                      "example": "ExtraHard"
+                    }
+                  }
                 }
               },
               "xml": {
@@ -417,7 +524,19 @@
             }
           },
           "400": {
-            "description": "Error: Unable to login"
+            "description": "Bad Request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "example": "Error: Field email is not allowed to be updated or does not exist"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           },
           "401": {
             "description": "Unauthorized"
@@ -503,99 +622,33 @@
     },
     "/users/myLikedRecipes": {
       "get": {
-        "tags": [
-          "User"
-        ],
-        "description": "Endpoint for a user to list the recipe",
+        "tags": [],
+        "description": "",
         "parameters": [],
         "responses": {
           "200": {
-            "description": "OK",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "example": "recipe_name1"
-                  }
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "OK"
           },
           "401": {
             "description": "Unauthorized"
           },
           "404": {
-            "description": "Not Found",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "text": {
-                  "type": "string",
-                  "example": "Recipes were not found + [error]"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Not Found"
           }
         }
       }
     },
     "/users/myLikedIngredientFrequencies": {
       "get": {
-        "tags": [
-          "User"
-        ],
-        "description": "Endpoint for a user to list the ingredient frequency of liked meals",
+        "tags": [],
+        "description": "",
         "parameters": [],
         "responses": {
           "200": {
-            "description": "OK",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "ingredient1": {
-                  "type": "number",
-                  "example": 5
-                },
-                "ingredient2": {
-                  "type": "number",
-                  "example": 2
-                },
-                "ingredient3": {
-                  "type": "number",
-                  "example": 1
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "OK"
           },
           "401": {
             "description": "Unauthorized"
-          },
-          "404": {
-            "description": "Not Found",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "text": {
-                  "type": "string",
-                  "example": "Database error + [error]"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
           }
         }
       }
@@ -605,103 +658,17 @@
         "tags": [
           "User"
         ],
-        "description": "Endpoint to get a list of users",
+        "description": "Endpoint to get a list of users, requires authentication.",
         "parameters": [],
         "responses": {
           "200": {
-            "description": "OK",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "permissions": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "allergies": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "isVerified": {
-                    "type": "boolean",
-                    "example": false
-                  },
-                  "likedRecipes": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "dislikedRecipes": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "_id": {
-                    "type": "string",
-                    "example": "user_id"
-                  },
-                  "email": {
-                    "type": "string",
-                    "example": "user@gmail.com"
-                  },
-                  "password": {
-                    "type": "string",
-                    "example": "user_password"
-                  },
-                  "__v": {
-                    "type": "number",
-                    "example": 1
-                  },
-                  "token": {
-                    "type": "string",
-                    "example": "some_token"
-                  }
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "OK"
           },
           "401": {
             "description": "Unauthorized"
           },
-          "403": {
-            "description": "Forbidden",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "text": {
-                  "type": "string",
-                  "example": "Permission Denied!"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          },
           "404": {
-            "description": "Not Found",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "text": {
-                  "type": "string",
-                  "example": "Database error + [error]"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Not Found"
           }
         }
       }
@@ -714,53 +681,11 @@
         "description": "Endpoint to delete all users",
         "parameters": [],
         "responses": {
-          "200": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                "text": {
-                  "type": "string",
-                  "example": "Successfully delete all users"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            },
-            "description": "OK"
-          },
           "401": {
             "description": "Unauthorized"
           },
-          "403": {
-            "description": "Forbidden",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "text": {
-                  "type": "string",
-                  "example": "Permission Denied!"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          },
           "500": {
-            "description": "Internal Server Error",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "text": {
-                  "type": "string",
-                  "example": "Database error + [error]"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Internal Server Error"
           }
         }
       }
@@ -781,9 +706,6 @@
           },
           "401": {
             "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
           }
         }
       }
@@ -821,150 +743,39 @@
     },
     "/recipes/migrateAll": {
       "get": {
-        "tags": [
-          "Recipe"
-        ],
-        "description": "Endpoint to transport the images of all the remaining recipes to S3 storage",
+        "tags": [],
+        "description": "",
         "parameters": [],
         "responses": {
           "201": {
-            "description": "Created",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "text": {
-                  "type": "string",
-                  "example": "All migrated"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Created"
           },
           "401": {
             "description": "Unauthorized"
           },
-          "403": {
-            "description": "Forbidden",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "text": {
-                  "type": "string",
-                  "example": "Permission Denied!"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          },
           "406": {
-            "description": "Not Acceptable",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "text": {
-                  "type": "string",
-                  "example": "Database error: [error]"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Not Acceptable"
           }
         }
       }
     },
     "/recipes/migrateToS3": {
       "get": {
-        "tags": [
-          "Recipe"
-        ],
-        "description": "Endpoint to transport the image of a recipe to S3 storage",
-        "parameters": [
-          {
-            "name": "recipe_name",
-            "in": "body",
-            "description": "Recipe name",
-            "required": true,
-            "type": "string",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "example": {
-                  "type": "string",
-                  "example": "Menemen"
-                }
-              }
-            }
-          }
-        ],
+        "tags": [],
+        "description": "",
+        "parameters": [],
         "responses": {
           "201": {
-            "description": "Created",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "text": {
-                  "type": "string",
-                  "example": "All migrated"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Created"
           },
           "401": {
             "description": "Unauthorized"
           },
-          "403": {
-            "description": "Forbidden",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "text": {
-                  "type": "string",
-                  "example": "Permission Denied!"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          },
           "404": {
-            "description": "Not Found",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "text": {
-                  "type": "string",
-                  "example": "Recipe was not found"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Not Found"
           },
           "406": {
-            "description": "Not Acceptable",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "text": {
-                  "type": "string",
-                  "example": "Database error: [error]"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Not Acceptable"
           }
         }
       }
@@ -974,181 +785,20 @@
         "tags": [
           "Recipe"
         ],
-        "description": "Endpoint to find a recipe with it",
-        "parameters": [
-          {
-            "name": "name",
-            "in": "body",
-            "description": "Recipe name",
-            "required": true,
-            "type": "string",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "example": {
-                  "type": "string",
-                  "example": "Menemen"
-                }
-              }
-            }
-          }
-        ],
+        "description": "Find details of a recipe using its name",
+        "parameters": [],
         "responses": {
           "201": {
-            "description": "Created",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "imgPath": {
-                  "type": "string",
-                  "example": ""
-                },
-                "servingSize": {
-                  "type": "number",
-                  "example": 4
-                },
-                "instructions": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "likedUsers": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "oid": {
-                        "type": "string",
-                        "example": "user_id"
-                      }
-                    },
-                    "required": [
-                      "oid"
-                    ]
-                  }
-                },
-                "numberOfLikes": {
-                  "type": "number",
-                  "example": 2
-                },
-                "type": {
-                  "type": "string",
-                  "example": "lunch"
-                },
-                "name": {
-                  "type": "string",
-                  "example": "C"
-                },
-                "prepTime": {
-                  "type": "number",
-                  "example": 55
-                },
-                "cookTime": {
-                  "type": "number",
-                  "example": 35
-                },
-                "ingredients": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "_id": {
-                        "type": "object",
-                        "properties": {
-                          "oid": {
-                            "type": "string",
-                            "example": "ingredient_id2"
-                          }
-                        },
-                        "required": [
-                          "oid"
-                        ]
-                      },
-                      "text": {
-                        "type": "string",
-                        "example": "1 tbsp of sugar and a lot of salt"
-                      },
-                      "unit": {
-                        "type": "string",
-                        "example": "tbsp"
-                      },
-                      "name": {
-                        "type": "string",
-                        "example": "sugar"
-                      },
-                      "originID": {
-                        "type": "object",
-                        "properties": {
-                          "oid": {
-                            "type": "string",
-                            "example": "ingredient_original_id2"
-                          }
-                        },
-                        "required": [
-                          "oid"
-                        ]
-                      }
-                    }
-                  }
-                },
-                "__v": {
-                  "type": "number",
-                  "example": 1
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Created"
           },
           "401": {
             "description": "Unauthorized"
           },
-          "403": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                "text": {
-                  "type": "string",
-                  "example": "Permission Denied!"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            },
-            "description": "Forbidden"
-          },
           "404": {
-            "description": "Not Found",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "text": {
-                  "type": "string",
-                  "example": "Recipe with this name is not found"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Not Found"
           },
           "406": {
-            "description": "Not Acceptable",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "text": {
-                  "type": "string",
-                  "example": "[error] Something went wrong with finding a recipe"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Not Acceptable"
           }
         }
       }
@@ -1158,361 +808,58 @@
         "tags": [
           "Recipe"
         ],
-        "description": "Endpoint to find a recipe with it",
-        "parameters": [
-          {
-            "name": "type",
-            "in": "body",
-            "description": "Recipe name",
-            "required": true,
-            "type": "string",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "example": {
-                  "type": "string",
-                  "example": "Breakfast"
-                }
-              }
-            }
-          },
-          {
-            "name": "calories",
-            "in": "body",
-            "description": "Recipe name",
-            "required": true,
-            "type": "integer",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "example": {
-                  "type": "number",
-                  "example": 2000
-                }
-              }
-            }
-          },
-          {
-            "name": "protein",
-            "in": "body",
-            "description": "Recipe name",
-            "required": true,
-            "type": "integer",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "example": {
-                  "type": "number",
-                  "example": 200
-                }
-              }
-            }
-          },
-          {
-            "name": "carbs",
-            "in": "body",
-            "description": "Recipe name",
-            "required": true,
-            "type": "integer",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "example": {
-                  "type": "number",
-                  "example": 100
-                }
-              }
-            }
-          },
-          {
-            "name": "fat",
-            "in": "body",
-            "description": "Recipe name",
-            "required": true,
-            "type": "integer",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "example": {
-                  "type": "number",
-                  "example": 50
-                }
-              }
-            }
-          }
-        ],
+        "description": "Filter a recipe according to its nutritional info",
+        "parameters": [],
         "responses": {
           "201": {
-            "description": "Created",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "imgPath": {
-                  "type": "string",
-                  "example": ""
-                },
-                "servingSize": {
-                  "type": "number",
-                  "example": 4
-                },
-                "instructions": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "likedUsers": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "oid": {
-                        "type": "string",
-                        "example": "user_id"
-                      }
-                    },
-                    "required": [
-                      "oid"
-                    ]
-                  }
-                },
-                "numberOfLikes": {
-                  "type": "number",
-                  "example": 2
-                },
-                "type": {
-                  "type": "string",
-                  "example": "lunch"
-                },
-                "name": {
-                  "type": "string",
-                  "example": "C"
-                },
-                "prepTime": {
-                  "type": "number",
-                  "example": 55
-                },
-                "cookTime": {
-                  "type": "number",
-                  "example": 35
-                },
-                "ingredients": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "_id": {
-                        "type": "object",
-                        "properties": {
-                          "oid": {
-                            "type": "string",
-                            "example": "ingredient_id2"
-                          }
-                        },
-                        "required": [
-                          "oid"
-                        ]
-                      },
-                      "text": {
-                        "type": "string",
-                        "example": "1 tbsp of sugar and a lot of salt"
-                      },
-                      "unit": {
-                        "type": "string",
-                        "example": "tbsp"
-                      },
-                      "name": {
-                        "type": "string",
-                        "example": "sugar"
-                      },
-                      "originID": {
-                        "type": "object",
-                        "properties": {
-                          "oid": {
-                            "type": "string",
-                            "example": "ingredient_original_id2"
-                          }
-                        },
-                        "required": [
-                          "oid"
-                        ]
-                      }
-                    }
-                  }
-                },
-                "__v": {
-                  "type": "number",
-                  "example": 1
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Created"
           },
           "401": {
             "description": "Unauthorized"
           },
-          "403": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                "text": {
-                  "type": "string",
-                  "example": "Permission Denied!"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            },
-            "description": "Forbidden"
-          },
           "404": {
-            "description": "Not Found",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "text": {
-                  "type": "string",
-                  "example": "Recipe with required nutritions was not found"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Not Found"
           },
           "406": {
-            "description": "Not Acceptable",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "text": {
-                  "type": "string",
-                  "example": "Something went wrong with find a recipe"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Not Acceptable"
           }
         }
       }
     },
     "/recipes/addRecipe": {
       "post": {
-        "tags": [
-          "Recipe"
-        ],
-        "description": "Endpoint to add a recipe",
-        "parameters": [
-          {
-            "name": "name",
-            "in": "body",
-            "description": "Recipe name",
-            "required": true,
-            "type": "string",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "example": {
-                  "type": "string",
-                  "example": "Menemen"
-                }
-              }
-            }
-          },
-          {
-            "name": "prepTime",
-            "in": "body",
-            "description": "Recipe preperation time",
-            "required": true,
-            "type": "integer",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "example": {
-                  "type": "number",
-                  "example": 30
-                }
-              }
-            }
-          },
-          {
-            "name": "cookTime",
-            "in": "body",
-            "description": "Recipe cook time",
-            "required": true,
-            "type": "string",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "example": {
-                  "type": "number",
-                  "example": 50
-                }
-              }
-            }
-          }
-        ],
+        "tags": [],
+        "description": "",
+        "parameters": [],
         "responses": {
           "201": {
-            "description": "Created",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "text": {
-                  "type": "string",
-                  "example": "Recipe is added"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Created"
           },
           "400": {
-            "description": "Bad Request",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "text": {
-                  "type": "string",
-                  "example": "Did not add the recipe"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized"
+            "description": "Bad Request"
           }
         }
       }
     },
-    "/recipes/getRecipeRecommendation": {
+    "/recipes/getRecommendation": {
       "get": {
         "tags": [
           "Recipe"
         ],
-        "description": "Endpoint to get recipe recommendations",
+        "description": "Endpoint for a user to get a Recipe / meal recommendation. If user has saved information about the preferred number of meals per day, that \\\r number will be used. Otherwise if limit is passed as a path parameter it will be used. If that is also not passed, then a constant number 3 will be used.",
         "parameters": [
           {
             "name": "limit",
             "in": "query",
-            "description": "Limit for number of recipes to recommended",
+            "description": "maximum number of recipes to return",
             "required": false,
-            "type": "integer",
+            "type": "string",
             "schema": {
               "type": "object",
               "properties": {
-                "example": {
-                  "type": "number",
-                  "example": 4
+                "limit": {
+                  "type": "string",
+                  "example": "2"
                 }
               }
             }
@@ -1520,19 +867,47 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "List of recipe names is returned"
           },
           "401": {
             "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/recipes/{recipeName}": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [
+          {
+            "name": "recipeName",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/recipes": {
+      "get": {
+        "tags": [],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
           }
         }
       }
@@ -1548,141 +923,104 @@
             "name": "numberOfRecipes",
             "in": "path",
             "required": true,
-            "type": "integer",
-            "description": "Number of recipes",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "example": {
-                  "type": "number",
-                  "example": 15
-                }
-              }
-            }
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
             "description": "OK",
             "schema": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "imgPath": {
-                    "type": "string",
-                    "example": ""
-                  },
-                  "servingSize": {
-                    "type": "number",
-                    "example": 4
-                  },
-                  "instructions": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "likedUsers": {
-                    "type": "array",
-                    "items": {}
-                  },
-                  "numberOfLikes": {
-                    "type": "number",
-                    "example": 0
-                  },
-                  "_id": {
-                    "type": "string",
-                    "example": "recipe_id"
-                  },
-                  "type": {
-                    "type": "string",
-                    "example": "lunch"
-                  },
-                  "name": {
-                    "type": "string",
-                    "example": "A"
-                  },
-                  "prepTime": {
-                    "type": "number",
-                    "example": 55
-                  },
-                  "cookTime": {
-                    "type": "number",
-                    "example": 35
-                  },
-                  "ingredients": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "_id": {
-                          "type": "string",
-                          "example": "ingredient_id2"
-                        },
-                        "text": {
-                          "type": "string",
-                          "example": "1 tbsp of sugar and a lot of salt"
-                        },
-                        "unit": {
-                          "type": "string",
-                          "example": "tbsp"
-                        },
-                        "name": {
-                          "type": "string",
-                          "example": "sugar"
-                        },
-                        "originID": {
-                          "type": "string",
-                          "example": "ingredient_original_id2"
-                        }
+              "type": "object",
+              "properties": {
+                "imgPath": {
+                  "type": "string",
+                  "example": ""
+                },
+                "servingSize": {
+                  "type": "number",
+                  "example": 4
+                },
+                "instructions": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "likedUsers": {
+                  "type": "array",
+                  "items": {}
+                },
+                "numberOfLikes": {
+                  "type": "number",
+                  "example": 0
+                },
+                "_id": {
+                  "type": "string",
+                  "example": "606c754439dada0e70e438d4"
+                },
+                "type": {
+                  "type": "string",
+                  "example": "lunch"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "A"
+                },
+                "prepTime": {
+                  "type": "number",
+                  "example": 55
+                },
+                "cookTime": {
+                  "type": "number",
+                  "example": 35
+                },
+                "ingredients": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "example": "606c754439dada0e70e438d6"
+                      },
+                      "text": {
+                        "type": "string",
+                        "example": "1 tbsp of sugar and a lot of salt"
+                      },
+                      "unit": {
+                        "type": "string",
+                        "example": "tbsp"
+                      },
+                      "name": {
+                        "type": "string",
+                        "example": "sugar"
+                      },
+                      "originID": {
+                        "type": "string",
+                        "example": "606c754439dada0e70e438d3"
                       }
                     }
-                  },
-                  "__v": {
-                    "type": "number",
-                    "example": 0
                   }
+                },
+                "__v": {
+                  "type": "number",
+                  "example": 0
                 }
               },
               "xml": {
                 "name": "main"
               }
             }
-          },
-          "401": {
-            "description": "Unauthorized"
           }
         }
       }
     },
     "/recipes/prefillRecipes": {
       "post": {
-        "tags": [
-          "Recipe"
-        ],
-        "description": "Endpoint to add the recipes in local to db",
+        "tags": [],
+        "description": "",
         "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "text": {
-                  "type": "string",
-                  "example": "Recipes are added!"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized"
-          }
-        }
+        "responses": {}
       }
     }
   },

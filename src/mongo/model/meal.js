@@ -3,7 +3,6 @@ const schema = require('../schema/meal');
 const Recipe = require('./recipe');
 
 const createMultipleMeal = async (user_id, date, type, nutritions) => {
-    
     const recipe = await Recipe.findRecipeWithNutritions(type, nutritions.calories, nutritions.protein, nutritions.carbs, nutritions.fat);
     if (recipe){
         const mealDetails = {type, user_id, day: date.toLocaleDateString(), recipe_id: recipe._id };
@@ -27,7 +26,6 @@ schema.statics.generateMealPlan = async function(planFilter, user_id){
                 dailyPlan.breakfast = await createMultipleMeal(user_id, date, "breakfast", planFilter);
                 planFilter.breakfast_number--;
             }
-                
 
             //lunch
             if (planFilter.lunch_number > 0){
