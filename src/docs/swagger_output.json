@@ -1450,6 +1450,9 @@
             },
             "description": "Created"
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "403": {
             "schema": {
               "type": "object",

@@ -253,7 +253,7 @@ router.post('/recipes', auth, async (req, res) => {
     */
     const newRecipe = req.body;
     try {
-        Recipe.addRecipe(newRecipe);
+        await Recipe.addRecipe(newRecipe);
         return res.status(201).send("Recipe is added");
     } catch (e) {
         return res.status(400).send("Did not add the recipe");
@@ -296,8 +296,7 @@ number will be used. Otherwise if limit is passed as a path parameter it will be
     res.status(200).json(recommendedRecipes);
 })
 
-// TODO document
-router.get('/recipes/:recipeName', cache(constants.CACHEPERIOD), async (req, res) => {
+router.get('/recipes/:recipeName', auth, cache(constants.CACHEPERIOD), async (req, res) => {
     /*
         #swagger.tags = ['Recipe']
         #swagger.description = 'Endpoint to find a recipe with it's name'
@@ -371,6 +370,7 @@ router.get('/recipes/:recipeName', cache(constants.CACHEPERIOD), async (req, res
     }
 })
 
+// TODO decide whether we need "await"'s here. without await, tests are harder to handle.
 router.post('/recipes/like/:recipeName', auth, async (req, res) => {
     /*
     #swagger.tags = ['Recipe']
@@ -418,23 +418,23 @@ router.post('/recipes/like/:recipeName', auth, async (req, res) => {
             }
         }
         if (!mealIsAlreadyLiked) {
-            user.likedRecipes.push(recipe._id);
-            user.save();
+            await user.likedRecipes.push(recipe._id);
+            await user.save();
 
             recipe.numberOfLikes = recipe.numberOfLikes + 1;
-            recipe.likedUsers.push(user._id);
-            recipe.save();
+            await recipe.likedUsers.push(user._id);
+            await recipe.save();
 
             return res.status(200).send("The meal is liked successfully");
         } else {
             return res.status(400).send("The meal is already liked");
         }
     } catch (error) {
+        console.log(error);
         return res.status(400).send(error);
     }
 })
 
-// TODO document
 // Useful to get all recipes
 router.get('/recipes', cache(constants.CACHEPERIOD), async (req, res) => {
     /*

@@ -214,7 +214,7 @@ router.post('/users/login', async (req, res) => {
     }
 */
     try {
-        console.log(req.body.email + ", " + req.body.password);
+        //console.log(req.body.email + ", " + req.body.password);
         const user = await User.findByCredentials(req.body.email, req.body.password);
         await user.generateAuthToken();
 
@@ -414,7 +414,6 @@ router.patch('/users', auth, async (req, res) => {
 })
 
 // TODO needs to tested
-// TODO needs to be documented
 router.get('/users/liked_recipes', auth, cache(constants.CACHEPERIOD), async (req, res) => {
     /*
         #swagger.tags = ['User']
@@ -443,7 +442,6 @@ router.get('/users/liked_recipes', auth, cache(constants.CACHEPERIOD), async (re
         return res.status(404).send("Recipes were not found. " + e);
     }
 })
-
 
 router.get('/users/liked_ingredient_frequencies', auth, cache(constants.CACHEPERIOD), async (req, res) => {
     /*

@@ -21,7 +21,6 @@ const cors = require('cors');
 app.use(cors());
 app.use(morgan(':method :url Status\: :status Response_Time\: :response-time'));
 app.use(compression());
-
 // parse the incoming request
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
