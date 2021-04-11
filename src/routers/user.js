@@ -418,7 +418,7 @@ router.patch('/users', auth, async (req, res) => {
 router.get('/users/liked_recipes', auth, cache(constants.CACHEPERIOD), async (req, res) => {
     /*
         #swagger.tags = ['User']
-        #swagger.description = 'Endpoint for a user to list the recipe's that s/he liked'
+        #swagger.description = 'List the recipe that user liked'
         #swagger.responses[200] = {
             schema:  [
                         {

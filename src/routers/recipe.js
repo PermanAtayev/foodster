@@ -54,7 +54,7 @@ router.get('/recipes/migrate_to_s3', auth, permission('migrateToS3'), async (req
             required: true,
             type: 'string',
             schema: {
-                example: 'Menemen'
+                "recipe_name": "Menemen"
             }
          }
         #swagger.responses[201] = {
@@ -219,7 +219,7 @@ router.post('/recipes', auth, async (req, res) => {
             required: true,
             type: 'string',
             schema: {
-                    example: "Menemen"
+                    "name": "Menemen"
             }
         }
         #swagger.parameters['prepTime'] = {
@@ -228,7 +228,7 @@ router.post('/recipes', auth, async (req, res) => {
             required: true,
             type: 'integer',
             schema: {
-                    example: 30
+                    "prepTime": 30
             }
         }
         #swagger.parameters['cookTime'] = {
@@ -237,7 +237,7 @@ router.post('/recipes', auth, async (req, res) => {
             required: true,
             type: 'integer',
             schema: {
-                    example: 50
+                    "cookTime": 50
             }
         }
         #swagger.responses[201] = {
@@ -307,7 +307,7 @@ router.get('/recipes/:recipeName', cache(constants.CACHEPERIOD), async (req, res
             required: true,
             type: 'string',
             schema: {
-                example: 'Menemen'
+                "name": "Menemen"
             }
          }
         #swagger.responses[201] = {
@@ -382,7 +382,7 @@ router.post('/recipes/like/:recipeName', auth, async (req, res) => {
         required: true,
         type: 'string',
         schema: {
-            example: 'Pasta with mozarella cheese'
+            "recipeName": "Pasta with mozarella cheese"
         }
      }
     #swagger.responses[200] = {

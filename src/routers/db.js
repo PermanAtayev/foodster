@@ -11,29 +11,29 @@ const fs = require('fs');
 // let recipes = JSON.parse(rawdata);
 
 
+//
+// router.delete('/db/drop', auth, permission('dropUsersDb'), async(req, res) => {
+//     /*
+//     #swagger.tags = ['DB']
+//     #swagger.description = 'Drop a database'
+//     */
+//     try{
+//         await db.dropCollection("Users");
+//         res.status(200).send("Collections dropped successfully");
+//     }
+//     catch(e){
+//         res.status(400).send(e + '');
+//     }
+// })
 
-router.delete('/db/drop', auth, permission('dropUsersDb'), async(req, res) => {
-    /*
-    #swagger.tags = ['DB']
-    #swagger.description = 'Drop a database'
-    */
-    try{
-        await db.dropCollection("Users");
-        res.status(200).send("Collections dropped successfully");
-    }
-    catch(e){
-        res.status(400).send(e + '');
-    }
-})
-
-router.post('/db/addMeal', auth, async(req, res) => {
-    /*
-    #swagger.tags = ['DB']
-    #swagger.description = 'Add a meal to the db and store the image in s3.'
-    */
-
-
-})
+// router.post('/db/addMeal', auth, async(req, res) => {
+//     /*
+//     #swagger.tags = ['DB']
+//     #swagger.description = 'Add a meal to the db and store the image in s3.'
+//     */
+//
+//
+// })
 
 // router.get('/db/upload/:number', async(req, res) => {
 //         const n = (req.params.number > recipes.length ? recipes.length : req.params.number);
