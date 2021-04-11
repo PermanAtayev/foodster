@@ -75,7 +75,7 @@ schema.methods.hasPermission = async function (permission) {
 }
 
 // here we check whether ingredients of the recipe are among users allergies or not
-// TODO needs to be tested
+// TODO needs to be tested after the last refactoring of modeling
 schema.methods.willKillMe = async function (recipe) {
     const user = this;
     let isAllergic = false;
@@ -91,7 +91,7 @@ schema.methods.willKillMe = async function (recipe) {
     return isAllergic;
 }
 
-// TODO needs to be tested
+// TODO needs to be tested after the last refactoring of modeling
 // TODO document
 schema.methods.getIngredientFrequencyOfLikedMeals = async function(){
     const user = this;
@@ -120,8 +120,7 @@ function min(a, b) {
     return (a < b ? a : b);
 }
 
-// TODO Needs to be implemented
-// TODO needs to be tested
+// TODO needs to be tested after the last remodeling of things.
 // TODO document
 // TODO need to timestamp these recommendations so that we don't generate them from scratch every time
 schema.methods.recommendRecipes = async function(limit){

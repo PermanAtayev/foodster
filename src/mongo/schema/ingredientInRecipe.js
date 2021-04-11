@@ -1,28 +1,42 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const nutritionSchema = require('./nutrition')
+const measureSchema = require('./measure')
+
+// TODO do we just get rid of this one?
 let schema = new Schema({
-    name: {
-        type: String,
-        required: true
-    },
     originID: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Ingredient",
         required: true
     },
-// full ingredient text information
-    text: {
-        type: String,
-        required: false
+    // required by the frontend
+    ingredient: {
+        name: {
+            type: String,
+            required: true
+        },
+        imgUrl: {
+            type: mongoose.SchemaTypes.Url,
+            default: null
+        },
+        nutrition: {
+            type: nutritionSchema,
+            default: null
+        },
+        estimatedPrice: {
+            type: Number,
+            default: null
+        },
+        labels: [{
+            type: String,
+            default: null
+        }],
     },
-    unit: {
-        type: String,
-        required: false
-    },
-    quantity: {
-        type: Number,
-        required: false
+    measure: {
+        type: measureSchema,
+        default: null
     }
 })
 

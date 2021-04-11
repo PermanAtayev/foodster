@@ -5,12 +5,13 @@ const measureSchema = require('measure');
 let schema = new Schema({
     ingredient: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'ingredient',
+        ref: 'Ingredient',
         required: true
     },
     measure: {
         type: measureSchema,
-        required: true
+        required: true,
+        default: null
     }
 })
 

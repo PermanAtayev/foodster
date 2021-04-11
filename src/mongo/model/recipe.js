@@ -24,6 +24,7 @@ schema.statics.findRecipeWithNutritions = async (type, calories, protein, carbs,
         throw new Error("Recipe could note find");
     }
 }
+
 schema.statics.findByName = async (recipe_name) => {
     const recipe = await Recipe.findOne({name: recipe_name}).exec();
     if(!recipe)
@@ -31,12 +32,11 @@ schema.statics.findByName = async (recipe_name) => {
     return recipe;
 }
 
-// TODO test
+// TODO test after the last remodeling
 schema.statics.addRecipe = async (recipe) => {
     const recipeIngredients = recipe.ingredients;
     let ingredientsInDB = {};
     let ingredientsOutDBObj = [];
-
 
     // categorize whether ingredients already exist in DB or not
     for (let i = 0; i < recipeIngredients.length; i++) {

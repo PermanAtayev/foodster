@@ -7,10 +7,10 @@ let schema = new Schema({
         type: String,
         required: false
     },
-    servings: {
-        type: [servingSchema],
+    servings: [{
+        type: servingSchema,
         required: true
-    }
+    }]
 });
 
 module.exports = schema;

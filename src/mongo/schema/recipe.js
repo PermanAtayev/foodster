@@ -1,14 +1,10 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const nutiritionSchema = require("./nutrition")
-const ingredientInRecipeSchema = require("./ingredientInRecipe")
+const edibleSchema = require('./edible')
 
+//TODO check if there are any side effects because of the changes made
 let schema = new Schema({
-    name: {
-        type: String,
-        required: true,
-        unique: true
-    },
     type: {
         type: String,
         required: false
@@ -17,39 +13,14 @@ let schema = new Schema({
         type: String,
         required: false
     },
-    imgPath: {
-        type: String,
-        required: false,
-        default: ""
-    },
     img: {
         type: Buffer,
         required: false
-    },
-    prepTime: {
-        type: Number,
-        required: true
-    },
-    cookTime: {
-        type: Number,
-        required: true
     },
     servingSize: {
         type: Number,
         required: false,
         default: 1
-    },
-    ingredients: [{
-        type: ingredientInRecipeSchema,
-        required: false,
-    }],
-    instructions: {
-        type: [String],
-        required: false
-    },
-    nutrients: {
-        type: nutiritionSchema,
-        required: false
     },
     likedUsers: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -58,7 +29,47 @@ let schema = new Schema({
     numberOfLikes: {
         type: Number,
         default: 0
-    }
+    },
+    // required by front end
+    prep: {
+        type: Number,
+        required: true
+    },
+    cookTime: {
+        type: Number,
+        required: true
+    },
+    difficulty: {
+        type: String,
+        default: null
+    },
+    name: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    imgUrl: {
+        type: String,
+        required: false,
+        default: null
+    },
+    instructions: [{
+        type: String,
+        required: false
+    }],
+    nutrition: {
+        type: nutiritionSchema,
+        required: false
+    },
+    estimatedPrice: {
+        type: Number,
+        default: null
+    },
+    ingredients: [{
+        type: edibleSchema,
+        required: false,
+    }]
+
 });
 
 module.exports = schema;
