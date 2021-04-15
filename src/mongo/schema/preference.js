@@ -6,11 +6,23 @@ let schema = new Schema({
         type: Number,
         required: false
     },
-    calRange: [{
+    mealPlanDuration: {
         type: Number,
         required: false
-    }],
+    },
+    calRange: {
+        type: [Number],
+        required: false
+    },
     protRange: {
+        type: [Number],
+        required: false
+    },
+    fatRange: {
+        type: [Number],
+        required: false
+    },
+    carbRange: {
         type: [Number],
         required: false
     },
@@ -22,19 +34,10 @@ let schema = new Schema({
         type: [String],
         required: false
     },
-    difficulty: {
-        type: String,
-        required: false
-    },
     cookingTime: {
         type: [Number],
         required: false
-    },
-    restrictions: [{
-        type: mongoose.Schema.Types.ObjectId,
-        required: false,
-        ref: 'Ingredient'
-    }]
+    }
 })
 
 // TODO test this thoroughly, so that problems in other fields do not occur.

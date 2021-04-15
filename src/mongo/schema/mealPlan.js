@@ -2,10 +2,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 let schema = new Schema({
-    duration: {
-        type: Number,
-        required: false
-    },
     startDate: {
         type: Date,
         required: true

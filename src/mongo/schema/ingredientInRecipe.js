@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const nutritionSchema = require('./nutrition')
 const measureSchema = require('./measure')
 
+// TODO we do not need this schema anymore, righT?
 // TODO do we just get rid of this one?
 let schema = new Schema({
     originID: {

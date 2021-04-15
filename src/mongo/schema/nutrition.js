@@ -5,31 +5,34 @@ const measureSchema = require('./measure')
 
 let schema = new Schema({
     // required by front end
-    base: {
-        type: measureSchema,
-        default: null
-    },
     calories: {
         type: String,
         required: false
     },
     carbs: {
-        type: String,
+        type: measureSchema,
         required: false
     },
     proteins: {
-        type: String,
+        type: measureSchema,
         required: false
     },
     fats: {
-        type: String,
+        type: measureSchema,
         required: false
     },
     // If we end up having this data, needs to be changed to the format needed.
-    micros: [{
-        type: String,
-        default: null
-    }]
+    micros:{ 
+        type:   [
+                    {
+                        name: String,
+                        value: {
+                            type: measureSchema,
+                        }
+                    }
+                ],
+        required = false
+    }
 })
 
 module.exports = schema;

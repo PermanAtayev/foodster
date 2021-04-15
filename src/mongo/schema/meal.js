@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 const servingSchema = require('./serving')
 
 let schema = new Schema({
-    label: {
+    name: {
         type: String,
         required: false
     },

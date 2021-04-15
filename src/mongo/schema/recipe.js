@@ -31,7 +31,7 @@ let schema = new Schema({
         default: 0
     },
     // required by front end
-    prep: {
+    prepTime: {
         type: Number,
         required: true
     },
@@ -68,6 +68,10 @@ let schema = new Schema({
     ingredients: [{
         type: edibleSchema,
         required: false,
+    }],
+    tags: [{
+        type: String,
+        required: false
     }]
 
 });

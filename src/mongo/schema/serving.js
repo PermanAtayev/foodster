@@ -4,7 +4,8 @@ const measureSchema = require('./measure')
 
 let schema = new Schema({
     recipe: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Recipe",
         required: true
     },
     measure: {

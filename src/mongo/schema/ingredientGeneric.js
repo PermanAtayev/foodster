@@ -27,12 +27,7 @@ let schema = new Schema({
     estimatedPrice: {
         type: Number,
         required: false
-    },
-    labels: [{
-        type: String,
-        default: null
-
-    }]
+    }
 })
 
 module.exports = schema;
