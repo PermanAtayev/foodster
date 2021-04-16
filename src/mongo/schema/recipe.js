@@ -22,14 +22,14 @@ let schema = new Schema({
         required: false,
         default: 1
     },
-    likedUsers: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
-    }],
     numberOfLikes: {
         type: Number,
         default: 0
     },
+    likedUsers: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    }],
     // required by front end
     prepTime: {
         type: Number,
@@ -73,7 +73,6 @@ let schema = new Schema({
         type: String,
         required: false
     }]
-
 });
 
 module.exports = schema;

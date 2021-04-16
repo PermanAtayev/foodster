@@ -6,7 +6,6 @@ let schema = new Schema({
         type: Date,
         required: true
     },
-    // list of meal ids stored in the db, if you want actual meals then populate this field
     meals: [{
         type: mongoose.Schema.Types.ObjectId,
         required: true,
