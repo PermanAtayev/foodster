@@ -6,7 +6,7 @@ const measureSchema = require('./measure')
 let schema = new Schema({
     // required by front end
     calories: {
-        type: String,
+        type: measureSchema,
         required: false
     },
     carbs: {
@@ -23,7 +23,7 @@ let schema = new Schema({
     },
     // If we end up having this data, needs to be changed to the format needed.
     micros:{ 
-        type:   [
+        type: [
                     {
                         name: String,
                         value: {
@@ -31,7 +31,7 @@ let schema = new Schema({
                         }
                     }
                 ],
-        required = false
+        required: false
     }
 })
 
