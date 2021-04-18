@@ -26,7 +26,7 @@ if (process.env.NODE_ENV === 'DEV_LOCAL') {
 mongoose.connect(conn_string, connectionOptions);
 mongoose.Promise = global.Promise;
 
-let scrapedRecipes = require('../../playground/ar_small_v2.json');
+let scrapedRecipes = require('../../playground/ar_small_v3.json');
 
 function getQuantity(nutrition) {
     return (nutrition ? nutrition.quantity : null);
@@ -35,125 +35,126 @@ function getQuantity(nutrition) {
 function getUnit(nutrition) {
     return (nutrition ? nutrition.unit : null);
 }
+(async () => {  // for recipes to be added one by one, top level async: https://stackoverflow.com/questions/46515764/how-can-i-use-async-await-at-the-top-level
+    let recipesSaved = 0;
+    for(i = 0; i < scrapedRecipes.length; i++){
+        let recipe = scrapedRecipes[i];
+        const recipeInDB = await Recipe.findOne({name: recipe.name}).exec();
 
-let recipesSaved = 0;
-
-scrapedRecipes.forEach(async (recipe) => {
-    const recipeInDB = await Recipe.findOne({name: recipe.name}).exec();
-
-    if (!recipeInDB) {
-        let nutrition = recipe.nutrition
-        recipeNutrition = new Nutrition({
-            calories: {
-                mag: getQuantity(nutrition.calories),
-                unit: getUnit(nutrition.calories)
-            },
-            carbs: {
-                mag: getQuantity(nutrition.carbohydrateContent),
-                unit: getUnit(nutrition.carbohydrateContent)
-            },
-            proteins: {
-                mag: getQuantity(nutrition.proteinContent),
-                unit: getUnit(nutrition.proteinContent)
-            },
-            fats: {
-                mag: getQuantity(nutrition.fatContent),
-                unit: getUnit(nutrition.fatContent)
-            },
-            micros: null
-        });
-
-        let newRecipe = new Recipe({
-            name: recipe.name,
-            prepTime: recipe.prepTime,
-            cookTime: recipe.cookTime,
-            imgUrl: recipe.imgUrl,
-            instructions: recipe.instructions,
-            nutrition: recipeNutrition,
-            estimatedPrice: null,
-            tags: recipe.tags,
-            ingredients: []
-        });
-
-        var ingredients = [];
-        let measures = [];
-
-        for (let i = 0; i < recipe.ingredients.length; i++) {
-            const ingredient = recipe.ingredients[i];
-
-            let name = null, imgUrl = null, nutrition = null, estimatedPrice = null;
-            let mag = null, unit = null;
-
-            ingredient.entities.forEach(description => {
-                if (description.label === "NAME") {
-                    name = description.text;
-                } else if (description.label === "QUANTITY") {
-                    mag = description.text;
-                } else if (description.label === "UNIT") {
-                    unit = description.text;
-                }
-            })
-            const ingredientInDb = await Ingredient.findOne({name: name}).exec();
-
-            if (!ingredientInDb) {
-                const newIngredient = new Ingredient({
-                    name,
-                    imgUrl,
-                    nutrition,
-                    estimatedPrice
-                });
-
-                ingredients.push(newIngredient);
-                try {
-                    await newIngredient.save();
-                } catch (e) {
-                    console.log("Ingredient is created although it was already there");
-                }
-            } else {
-                ingredients.push(ingredientInDb);
-            }
-
-            measures.push(new Measure({
-                mag,
-                unit
-            }));
-        }
-        ;
-
-        // add the ingredients' ids to the recipe's ingredient section
-        for (let i = 0; i < ingredients.length; i++) {
-            const newEdible = new Edible({
-                ingredient: ingredients[i]._id,
-                measure: measures[i]
+        if (!recipeInDB) {
+            let nutrition = recipe.nutrition
+            recipeNutrition = new Nutrition({
+                calories: {
+                    mag: getQuantity(nutrition.calories),
+                    unit: getUnit(nutrition.calories)
+                },
+                carbs: {
+                    mag: getQuantity(nutrition.carbohydrateContent),
+                    unit: getUnit(nutrition.carbohydrateContent)
+                },
+                proteins: {
+                    mag: getQuantity(nutrition.proteinContent),
+                    unit: getUnit(nutrition.proteinContent)
+                },
+                fats: {
+                    mag: getQuantity(nutrition.fatContent),
+                    unit: getUnit(nutrition.fatContent)
+                },
+                micros: null
             });
-            newRecipe.ingredients.push(newEdible);
-        }
 
-        let newRecipeID = 0;
+            let newRecipe = new Recipe({
+                name: recipe.name,
+                prepTime: recipe.prepTime,
+                cookTime: recipe.cookTime,
+                imgUrl: recipe.imgUrl,
+                instructions: recipe.instructions,
+                nutrition: recipeNutrition,
+                estimatedPrice: null,
+                tags: recipe.tags,
+                ingredients: []
+            });
 
-        // create a link from ingredients to recipes
-        try {
-            await newRecipe.save();
-            newRecipeID = newRecipe._id;
+            var ingredients = [];
+            let measures = [];
 
-            recipesSaved += 1;
-            console.log(`The recipe number ${recipesSaved} is saved by name ${newRecipe.name}`);
+            for (let i = 0; i < recipe.ingredients.length; i++) {
+                const ingredient = recipe.ingredients[i];
 
-            for (let i = 0; i < ingredients.length; i++) {
-                // console.log(ingredients[i].name + ` is linked to ${newRecipe.name}`);
-                try {
-                    ingredients[i].inRecipes.push(newRecipeID);
-                    await ingredients[i].save();
-                } catch (e) {
-                    console.log("Ingredient overwrite");
+                let name = null, imgUrl = null, nutrition = null, estimatedPrice = null;
+                let mag = null, unit = null;
+                let description = "";
+                ingredient.entities.forEach(ingredientDescription => {
+                    description += " " + ingredientDescription.text;
+                    if (ingredientDescription.label === "NAME") {
+                        name = ingredientDescription.text;
+                    } else if (ingredientDescription.label === "QUANTITY") {
+                        mag = ingredientDescription.text;
+                    } else if (ingredientDescription.label === "UNIT") {
+                        unit = ingredientDescription.text;
+                    }
+                })
+                const ingredientInDb = await Ingredient.findOne({name: name}).exec();
+                if (!ingredientInDb) {
+                    const newIngredient = new Ingredient({
+                        name,
+                        description,
+                        imgUrl,
+                        nutrition,
+                        estimatedPrice
+                    });
+
+                    ingredients.push(newIngredient);
+                    try {
+                        await newIngredient.save();
+                    } catch (e) {
+                        console.log("Ingredient is created although it was already there");
+                    }
+                } else {
+                    ingredients.push(ingredientInDb);
                 }
+
+                measures.push(new Measure({
+                    mag,
+                    unit
+                }));
             }
-        } catch (e) {
-            console.log("Recipe overwrite?");
+            ;
+
+            // add the ingredients' ids to the recipe's ingredient section
+            for (let i = 0; i < ingredients.length; i++) {
+                const newEdible = new Edible({
+                    ingredient: ingredients[i]._id,
+                    measure: measures[i]
+                });
+                newRecipe.ingredients.push(newEdible);
+            }
+
+            let newRecipeID = 0;
+
+            // create a link from ingredients to recipes
+            try {
+                await newRecipe.save();
+                newRecipeID = newRecipe._id;
+
+                recipesSaved += 1;
+                console.log(`The recipe number ${recipesSaved} is saved by name ${newRecipe.name}`);
+
+                for (let i = 0; i < ingredients.length; i++) {
+                    // console.log(ingredients[i].name + ` is linked to ${newRecipe.name}`);
+                    try {
+                        ingredients[i].inRecipes.push(newRecipeID);
+                        await ingredients[i].save();
+                    } catch (e) {
+                        console.log("Ingredient overwrite");
+                    }
+                }
+            } catch (e) {
+                console.log("Recipe overwrite?");
+            }
         }
     }
-})
-
+})();
 
 
 
