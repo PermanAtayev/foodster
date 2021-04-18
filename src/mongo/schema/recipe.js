@@ -3,20 +3,16 @@ const Schema = mongoose.Schema;
 const nutiritionSchema = require("./nutrition")
 const edibleSchema = require('./edible')
 
-//TODO check if there are any side effects because of the changes made
 let schema = new Schema({
-    type: {
+    category: {
         type: String,
         required: false
     },
-    url: {
-        type: String,
-        required: false
-    },
-    img: {
-        type: Buffer,
-        required: false
-    },
+    // Do we need images if all recipes is already storing them?
+    // img: {
+    //     type: Buffer,
+    //     required: false
+    // },
     servingSize: {
         type: Number,
         required: false,
@@ -31,6 +27,11 @@ let schema = new Schema({
         ref: "User"
     }],
     // required by front end
+    name: {
+        type: String,
+        required: true,
+        unique: true
+    },
     prepTime: {
         type: Number,
         required: true
@@ -38,15 +39,6 @@ let schema = new Schema({
     cookTime: {
         type: Number,
         required: true
-    },
-    difficulty: {
-        type: String,
-        default: null
-    },
-    name: {
-        type: String,
-        required: true,
-        unique: true
     },
     imgUrl: {
         type: String,

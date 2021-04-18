@@ -4,11 +4,13 @@ const Schema = mongoose.Schema;
 let schema = new Schema({
     mag: {
         type: Number,
-        required: false
+        required: false,
+        default: null
     },
     unit: {
         type: String,
-        required: false
+        required: false,
+        default: null
     }
 })
 

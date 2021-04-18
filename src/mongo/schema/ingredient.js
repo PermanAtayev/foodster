@@ -14,10 +14,9 @@ let schema = new Schema({
     name: {
         type: String,
         required: true,
-        unique: true
     },
     imgUrl: {
-        type: mongoose.SchemaTypes.Url,
+        type: String,
         required: false
     },
     nutrition: {

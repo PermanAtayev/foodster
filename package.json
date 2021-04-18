@@ -7,7 +7,10 @@
     "test": "jest --runInBand --detectOpenHandles  --testEnvironment=node --testTimeout=10000 --forceExit ",
     "dev": "nodemon -r dotenv/config src/index.js",
     "start": "node -r dotenv/config src/index.js",
-    "gendoc": "node -r dotenv/config src/swagger.js"
+    "gendoc": "node -r dotenv/config src/swagger.js",
+    "moveScrapedToDB": "node -r dotenv/config --trace-warnings src/_helpers/scrapedToDB.js",
+    "dropAllIngredients": "node -r dotenv/config src/_helpers/dropAllIngredients.js",
+    "dropAllRecipes": "node -r dotenv/config src/_helpers/dropAllRecipes.js"
   },
   "author": "",
   "license": "ISC",

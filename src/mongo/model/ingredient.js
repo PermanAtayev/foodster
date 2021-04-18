@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const schema = require('../schema/ingredientGeneric');
+const schema = require('../schema/ingredient');
 
 schema.statics.findByName = async(name) => {
     try {

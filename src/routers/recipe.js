@@ -256,6 +256,7 @@ router.post('/recipes', auth, async (req, res) => {
         await Recipe.addRecipe(newRecipe);
         return res.status(201).send("Recipe is added");
     } catch (e) {
+        console.log(e);
         return res.status(400).send("Did not add the recipe");
     }
 })
@@ -286,8 +287,8 @@ number will be used. Otherwise if limit is passed as a path parameter it will be
 
     let preferenceNumberFromUser = null;
 
-    if ('preferences' in req.user) {
-        if ('mealsPerDay' in req.user.preferences) {
+    if (req.user.preferences) {
+        if (req.user.preferences.mealsPerDay) {
             preferenceNumberFromUser = req.user.preferences.mealsPerDay;
         }
     }
@@ -522,32 +523,5 @@ router.get('/recipes/top/:numberOfRecipes', auth, cache(constants.CACHEPERIOD), 
     const kTopRecipes = topRecipes.slice(0, returnNumberOfRecipes);
     res.status(200).send(kTopRecipes);
 })
-
-// TODO implement
-// TODO test
-// Do we need this?
-router.post('/recipes/prefill', auth, async (req, res) => {
-    /*
-    #swagger.tags = ['Recipe']
-    #swagger.description = 'Endpoint to add the recipes in local to db'
-    #swagger.responses[200] = {
-        schema: {
-            "text" : "Recipes are added!"
-        }
-    }
-    */
-    const dummyRecipes = require('../data/recipes');
-
-    await Recipe.insertMany(dummyRecipes, (err, docs) => {
-        if (err) {
-            console.log(err);
-        }
-        if (docs) {
-            console.log(docs);
-        }
-    })
-    return res.status(200).send("Recipes are added!");
-})
-
 
 module.exports = router;

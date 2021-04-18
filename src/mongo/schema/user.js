@@ -26,7 +26,7 @@ let schema = new Schema({
         required: false
     },
     isVerified: {type: Boolean, required: true, default: false},
-    preferences: {type: preferenceSchema, required: false},
+    preferences: {type: preferenceSchema, required: false, default: null},
     likedRecipes: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Recipe",
