@@ -12,7 +12,11 @@ let schema = new Schema({
         type: measureSchema,
         required: true,
         default: null
-    }
+    },
+    description: {
+        type: String,
+        required: true
+    },
 })
 
 module.exports = schema;

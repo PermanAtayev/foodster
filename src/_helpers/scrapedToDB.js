@@ -26,7 +26,7 @@ if (process.env.NODE_ENV === 'DEV_LOCAL') {
 mongoose.connect(conn_string, connectionOptions);
 mongoose.Promise = global.Promise;
 
-let scrapedRecipes = require('../../playground/ar_small_v3.json');
+let scrapedRecipes = require('../../playground/ar_small_v5.json');
 
 function getQuantity(nutrition) {
     return (nutrition ? nutrition.quantity : null);
@@ -67,7 +67,7 @@ function getUnit(nutrition) {
                 name: recipe.name,
                 prepTime: recipe.prepTime,
                 cookTime: recipe.cookTime,
-                imgUrl: recipe.imgUrl,
+                imgUrl: recipe.imageUrl,
                 instructions: recipe.instructions,
                 nutrition: recipeNutrition,
                 estimatedPrice: null,
@@ -77,7 +77,7 @@ function getUnit(nutrition) {
 
             var ingredients = [];
             let measures = [];
-
+            let descriptions = [];
             for (let i = 0; i < recipe.ingredients.length; i++) {
                 const ingredient = recipe.ingredients[i];
 
@@ -94,11 +94,11 @@ function getUnit(nutrition) {
                         unit = ingredientDescription.text;
                     }
                 })
+                descriptions.push(description);
                 const ingredientInDb = await Ingredient.findOne({name: name}).exec();
                 if (!ingredientInDb) {
                     const newIngredient = new Ingredient({
                         name,
-                        description,
                         imgUrl,
                         nutrition,
                         estimatedPrice
@@ -125,6 +125,7 @@ function getUnit(nutrition) {
             for (let i = 0; i < ingredients.length; i++) {
                 const newEdible = new Edible({
                     ingredient: ingredients[i]._id,
+                    description: descriptions[i],
                     measure: measures[i]
                 });
                 newRecipe.ingredients.push(newEdible);

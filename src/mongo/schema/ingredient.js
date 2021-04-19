@@ -15,10 +15,6 @@ let schema = new Schema({
         type: String,
         required: true,
     },
-    description: {
-        type: String,
-        required: true
-    },
     imgUrl: {
         type: String,
         required: false

@@ -171,7 +171,7 @@ schema.methods.recommendRecipes = async function(limit){
 
     for(let i = 0; i < min(limit, Object.keys(recipeScores).length); i++)
         result.push(recipeScores[i][0]);
-
+    
     return result;
 }
 
