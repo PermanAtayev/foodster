@@ -14,6 +14,9 @@ router.post('/meals/generate',  auth, async(req, res) => {
         const planFilter = req.body;
         const mealPlan = await Meal.generateMealPlan(planFilter, req.user._id);
         // meal plan can be populated as the front end wants
+        await mealPlan.populate("plan").execPopulate();
+        await mealPlan.populate("plan.meals").execPopulate();
+        await mealPlan.populate("plan.meals.servings.recipe").execPopulate();
         res.send(mealPlan);
     }
     catch(e){

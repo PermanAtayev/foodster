@@ -35,10 +35,6 @@ const getDays = (startDate, endDate) => {
 const formatDate = (date) => {
     if (!date) return null;
     const formattedDate = new Date(date);
-    // formattedDate.setHours(0);
-    // formattedDate.setMinutes(0);
-    // formattedDate.setSeconds(0);
-    // formattedDate.setMilliseconds(0);
     
     return formattedDate;
 }
@@ -90,7 +86,7 @@ schema.statics.generateMealPlan = async function(planFilter, user_id){
                     mag : 1,
                     unit: "porsion"
                 };
-                
+                //console.log("day: " + day+", meal: "+mealIndex + ", recipe : " + recommendedRecipes[recipeIndex] );
                 const recipeForServing = await Recipe.findOne({name: recommendedRecipes[recipeIndex++]});
                 serving.recipe = recipeForServing._id;
                 await serving.save();
