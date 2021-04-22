@@ -150,7 +150,7 @@ schema.methods.recommendRecipes = async function(limit){
         }
     }
 
-    //    remove the similarRecipes that have allergetic ingredients
+    //    remove the similarRecipes that have allergic ingredients
     for(let similarRecipe of similarRecipes){
         const willKillMe = await this.willKillMe(similarRecipe);
 

@@ -67,7 +67,7 @@ scrapedRecipes.forEach(async (recipe) => {
             name: recipe.name,
             prepTime: recipe.prepTime,
             cookTime: recipe.cookTime,
-            imgUrl: recipe.imgUrl,
+            imgUrl: recipe.imageUrl,
             instructions: recipe.instructions,
             nutrition: recipeNutrition,
             estimatedPrice: null,

@@ -9,36 +9,6 @@
 			"name": "GET",
 			"item": [
 				{
-					"name": "list users",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{base_url}}/users/list",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"users",
-								"list"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "homepage",
 					"request": {
 						"method": "GET",
@@ -83,13 +53,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/users/myLikedRecipes",
+							"raw": "{{base_url}}/users/liked_recipes",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"users",
-								"myLikedRecipes"
+								"liked_recipes"
 							]
 						}
 					},
@@ -101,13 +71,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/recipes/getRecommendation",
+							"raw": "{{base_url}}/recipes/recommendation",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"recipes",
-								"getRecommendation"
+								"recommendation"
 							]
 						}
 					},
@@ -119,13 +89,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/users/myLikedIngredientFrequencies",
+							"raw": "{{base_url}}/users/liked_ingredient_frequencies",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"users",
-								"myLikedIngredientFrequencies"
+								"liked_ingredient_frequencies"
 							]
 						}
 					},
@@ -137,14 +107,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/recipes/getRecipe/E",
+							"raw": "{{base_url}}/recipes/High Temperature Eye-of-Round Roast",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"recipes",
-								"getRecipe",
-								"E"
+								"High Temperature Eye-of-Round Roast"
 							]
 						}
 					},
@@ -208,44 +177,7 @@
 		},
 		{
 			"name": "DELETE",
-			"item": [
-				{
-					"name": "delete all users",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/users/deleteAll",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"users",
-								"deleteAll"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "drop db",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{base_url}}/db/drop",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"db",
-								"drop"
-							]
-						}
-					},
-					"response": []
-				}
-			]
+			"item": []
 		},
 		{
 			"name": "POST",
@@ -273,7 +205,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\" : \"perman.atayev17@gmail.com\",\n    \"password\" : \"password\"\n}",
+							"raw": "{\n    \"email\" : \"murat@gmail.com\",\n    \"password\" : \"password\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -294,7 +226,7 @@
 					"response": []
 				},
 				{
-					"name": "user signup",
+					"name": "signup a user",
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -303,7 +235,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\" : \"perman.atayev17@gmail.com\",\n    \"password\" : \"password\"\n}",
+							"raw": "{\n    \"email\" : \"murat@gmail.com\",\n    \"password\" : \"password\",\n    \"name\": \"Murat\",\n    \"surname\": \"Muradov\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -330,7 +262,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"recipeName\" : \"D\"\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -338,13 +270,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/users/likeRecipe",
+							"raw": "{{base_url}}/recipes/like/High Temperature Eye-of-Round Roast",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
-								"users",
-								"likeRecipe"
+								"recipes",
+								"like",
+								"High Temperature Eye-of-Round Roast"
 							]
 						}
 					},
@@ -384,7 +317,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"type\": \"lunch\",\n    \"name\": \"D\",\n    \"prepTime\": 55,\n    \"cookTime\": 35,\n    \"servingSize\": 4,\n    \"ingredients\": [\n        {\n            \"text\": \"1 tbsp of sugar and a lot of salt\",\n            \"unit\": \"tbsp\",\n            \"name\": \"water\",\n            \"quantitity\": 9.83\n        },\n        {\n            \"text\": \"1 tbsp of sugar and a lot of salt\",\n            \"unit\": \"tbsp\",\n            \"name\": \"oil\",\n            \"quantitity\": 9.83\n        }\n        ],\n    \"instructions\": [\n        \"Whisk vinegar, soy sauce, garlic, olive oil, brown sugar, and crushed peppercorns in a bowl until sugar is dissolved. Stir bay leaves into the sauce\"\n    ],\n    \"nutritions\": {\n        \"calories\": 352,\n        \"proteinContent\": 100,\n        \"carbohydrateContent\": 100,\n        \"fatContent\": 200\n    }\n}",
+							"raw": " {\n    \"name\":\"Easy French Dip Sandwiches\",\n    \"category\":\"lunch\",\n    \"imageUrl\":\"https://imagesvc.meredithcorp.io/v3/mm/image?url=https%3A%2F%2Fimages.media-allrecipes.com%2Fuserphotos%2F3289479.jpg\",\n    \"prepTime\":5,\n    \"cookTime\":10,\n    \"servingSize\":4.0,\n    \"ingredients\":[\n      {\n        \"entities\":[\n          {\n            \"text\":\"1\",\n            \"label\":\"QUANTITY\"\n          },\n          {\n            \"text\":\"10.5\",\n            \"label\":\"QUANTITY\"\n          },\n          {\n            \"text\":\"ounce\",\n            \"label\":\"UNIT\"\n          },\n          {\n            \"text\":\"can\",\n            \"label\":\"UNIT\"\n          },\n          {\n            \"text\":\"beef consomme\",\n            \"label\":\"NAME\"\n          }\n        ]\n      },\n      {\n        \"entities\":[\n          {\n            \"text\":\"1\",\n            \"label\":\"QUANTITY\"\n          },\n          {\n            \"text\":\"cup\",\n            \"label\":\"UNIT\"\n          },\n          {\n            \"text\":\"water\",\n            \"label\":\"NAME\"\n          }\n        ]\n      },\n      {\n        \"entities\":[\n          {\n            \"text\":\"1\",\n            \"label\":\"QUANTITY\"\n          },\n          {\n            \"text\":\"pound\",\n            \"label\":\"UNIT\"\n          },\n          {\n            \"text\":\"sliced\",\n            \"label\":\"STATE\"\n          },\n          {\n            \"text\":\"deli roast beef\",\n            \"label\":\"NAME\"\n          }\n        ]\n      },\n      {\n        \"entities\":[\n          {\n            \"text\":\"8\",\n            \"label\":\"QUANTITY\"\n          },\n          {\n            \"text\":\"slices\",\n            \"label\":\"UNIT\"\n          },\n          {\n            \"text\":\"provolone cheese\",\n            \"label\":\"NAME\"\n          }\n        ]\n      },\n      {\n        \"entities\":[\n          {\n            \"text\":\"4\",\n            \"label\":\"QUANTITY\"\n          },\n          {\n            \"text\":\"hoagie rolls\",\n            \"label\":\"NAME\"\n          },\n          {\n            \"text\":\"split\",\n            \"label\":\"STATE\"\n          }\n        ]\n      }\n    ],\n    \"nutrition\":{\n      \"calories\":{\n        \"quantity\":\"547.5\",\n        \"unit\":\"calories\"\n      },\n      \"proteinContent\":{\n        \"quantity\":\"44.6\",\n        \"unit\":\"g\"\n      },\n      \"carbohydrateContent\":{\n        \"quantity\":\"40.5\",\n        \"unit\":\"g\"\n      },\n      \"fatContent\":{\n        \"quantity\":\"22.6\",\n        \"unit\":\"g\"\n      },\n      \"fiberContent\":{\n        \"quantity\":\"2\",\n        \"unit\":\"g\"\n      },\n      \"cholestrolContent\":null,\n      \"saturatedFatContent\":{\n        \"quantity\":\"12.1\",\n        \"unit\":\"g\"\n      },\n      \"sodiumContent\":{\n        \"quantity\":\"2309.6\",\n        \"unit\":\"mg\"\n      },\n      \"sugarContent\":{\n        \"quantity\":\"3.5\",\n        \"unit\":\"g\"\n      },\n      \"transFatContent\":null,\n      \"unsaturatedFatContent\":null\n    },\n    \"instructions\":[\n      \"Preheat oven to 350 degrees F (175 degrees C). Open the hoagie rolls and lay out on a baking sheet.\",\n      \"Heat beef consomme and water in a medium saucepan over medium-high heat to make a rich beef broth. Place the roast beef in the broth and warm for 3 minutes. Arrange the meat on the hoagie rolls and top each roll with 2 slices of provolone.\",\n      \"Bake the sandwiches in the preheated oven for 5 minutes, or until the cheese just begins to melt. Serve the sandwiches with small bowls of the warm broth for dipping.\"\n    ],\n    \"rating\":{\n      \"value\":4.6362773029,\n      \"count\":1053\n    },\n    \"tags\":[\n      \"Main Dish Recipes\",\n      \"Sandwich Recipes\",\n      \"Heroes, Hoagies and Subs Recipes\"\n    ],\n    \"cuisines\":null\n  }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -392,13 +325,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/recipes/addRecipe",
+							"raw": "{{base_url}}/recipes/",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"recipes",
-								"addRecipe"
+								""
 							]
 						}
 					},
