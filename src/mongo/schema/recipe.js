@@ -1,16 +1,70 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const nutiritionSchema = require("./nutrition")
+const edibleSchema = require('./edible')
 
 let schema = new Schema({
-    type: {type: String, required: false},
-    name: {type:String, required: true},
-    url: {type: String, required: false},
-    img: {type:Buffer, required: false},
-    total_time: {type: String, required: false},
-    serving_size: {type: Number, required: false},
-    ingredients: {type: [String], required: false},
-    instructions: {type: [String], required: false},
-    nutritions: {type: JSON, required: false}
+    category: {
+        type: String,
+        required: false
+    },
+    // Do we need images if all recipes is already storing them?
+    // img: {
+    //     type: Buffer,
+    //     required: false
+    // },
+    servingSize: {
+        type: Number,
+        required: false,
+        default: 1
+    },
+    numberOfLikes: {
+        type: Number,
+        default: 0
+    },
+    likedUsers: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    }],
+    // required by front end
+    name: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    prepTime: {
+        type: Number,
+        required: true
+    },
+    cookTime: {
+        type: Number,
+        required: true
+    },
+    imgUrl: {
+        type: String,
+        required: false,
+        default: null
+    },
+    instructions: [{
+        type: String,
+        required: false
+    }],
+    nutrition: {
+        type: nutiritionSchema,
+        required: false
+    },
+    estimatedPrice: {
+        type: Number,
+        default: null
+    },
+    ingredients: [{
+        type: edibleSchema,
+        required: false,
+    }],
+    tags: [{
+        type: String,
+        required: false
+    }]
 });
 
 module.exports = schema;

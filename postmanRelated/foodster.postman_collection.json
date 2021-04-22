@@ -1,0 +1,546 @@
+{
+	"info": {
+		"_postman_id": "f796ff25-734c-48ce-bdef-7b2bf07146b0",
+		"name": "foodster",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET",
+			"item": [
+				{
+					"name": "list users",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/list",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "homepage",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}",
+							"host": [
+								"{{base_url}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "generate meal",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/meals/generate",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"meals",
+								"generate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "my liked recipes list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/myLikedRecipes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"myLikedRecipes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get a recipe recommendation",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/recipes/getRecommendation",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"recipes",
+								"getRecommendation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get liked ingredient frequencies",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/myLikedIngredientFrequencies",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"myLikedIngredientFrequencies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get a recipe",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/recipes/getRecipe/E",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"recipes",
+								"getRecipe",
+								"E"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get Top K recipes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/recipes/top/4",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"recipes",
+								"top",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get user information",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all recipes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/recipes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"recipes"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "DELETE",
+			"item": [
+				{
+					"name": "delete all users",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/deleteAll",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"deleteAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "drop db",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/db/drop",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"db",
+								"drop"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "POST",
+			"item": [
+				{
+					"name": "login a user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.response.code === 200){",
+									"    pm.environment.set('token', pm.response.json().token);    ",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\" : \"perman.atayev17@gmail.com\",\n    \"password\" : \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user signup",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\" : \"perman.atayev17@gmail.com\",\n    \"password\" : \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/signup",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "like a recipe",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"recipeName\" : \"D\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/likeRecipe",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"likeRecipe"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add ingredient to db",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\" : \"salt\",\n    \"imgUrl\": \"\",\n    \"nutrition\": {\n        \"fat\": 10\n    },\n    \"estimatedPrice\": 10\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/ingredients/addIngredient",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"ingredients",
+								"addIngredient"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add a recipe",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"lunch\",\n    \"name\": \"D\",\n    \"prepTime\": 55,\n    \"cookTime\": 35,\n    \"servingSize\": 4,\n    \"ingredients\": [\n        {\n            \"text\": \"1 tbsp of sugar and a lot of salt\",\n            \"unit\": \"tbsp\",\n            \"name\": \"water\",\n            \"quantitity\": 9.83\n        },\n        {\n            \"text\": \"1 tbsp of sugar and a lot of salt\",\n            \"unit\": \"tbsp\",\n            \"name\": \"oil\",\n            \"quantitity\": 9.83\n        }\n        ],\n    \"instructions\": [\n        \"Whisk vinegar, soy sauce, garlic, olive oil, brown sugar, and crushed peppercorns in a bowl until sugar is dissolved. Stir bay leaves into the sauce\"\n    ],\n    \"nutritions\": {\n        \"calories\": 352,\n        \"proteinContent\": 100,\n        \"carbohydrateContent\": 100,\n        \"fatContent\": 200\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/recipes/addRecipe",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"recipes",
+								"addRecipe"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update a user",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"preferences\" : {\n        \"mealsPerDay\" : 100,\n        \"calRange\" : [1, 10],\n        \"difficulty\" : \"ExtraHard\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "resend email for signup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"perman.atayev17@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/confirmation/resend",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"confirmation",
+								"resend"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PATCH",
+			"item": [
+				{
+					"name": "update info",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"metadata\" : {\n        \"weight\" : 75,\n        \"height\" : 1.7,\n        \"age\" : 22\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/users/updateinfo",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"updateinfo"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

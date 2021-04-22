@@ -1,11 +1,16 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const servingSchema = require('./serving')
 
 let schema = new Schema({
-    type: {type: String, required: true},
-    user_id: {type: Schema.Types.ObjectId, required: true},
-    day: {type: mongoose.SchemaTypes.Date, required: true},
-    recipe_id: {type: Schema.Types.ObjectId, required: true}
+    name: {
+        type: String,
+        required: false
+    },
+    servings: [{
+        type: servingSchema,
+        required: true
+    }]
 });
 
 module.exports = schema;

@@ -1,24 +1,16 @@
-const jwt = require('jsonwebtoken');
-const User = require('../mongo/model/user');
-
-
 const permission = function (permission) {
     return async (req, res, next) => {
-        try {
-            const user = req.user;
-            if (!user){
-                throw new Error('Authorization Failed!');
-            }
-            const hasPermission = await user.hasPermission(permission);
-            if (!hasPermission){
-                throw new Error('User does not have this permission: ' + permission);
-            }
-            next();
+        const user = req.user;
+        if (!user) {
+            console.log('Authorization Failed!');
+            return res.status(401).send({error: "Authorization required!"});
         }
-        catch (error) {
-            console.log(error);
-            res.status(401).send({ error: "Permission Denied!" });
+        const hasPermission = await user.hasPermission(permission);
+        if (!hasPermission) {
+            console.log('User does not have this permission: ' + permission);
+            return res.status(403).send({error: "Permission Denied!"});
         }
+        next();
     }
 }
 module.exports = permission;
