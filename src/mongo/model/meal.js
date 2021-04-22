@@ -55,9 +55,7 @@ schema.statics.generateMealPlan = async function(planFilter, user_id){
     const recipePerMeal = getRandomBetween(1, 2);
     const totalRecipes = numberOfDays * mealNumberPerDay * recipePerMeal;
 
-
-
-    const recommendedRecipes = await user.recommendRecipes(totalRecipes); 
+    const recommendedRecipes = await user.recommendRecipes(totalRecipes);
 
     let plan = [];
     let mealPlan = new MealPlan();
@@ -68,7 +66,9 @@ schema.statics.generateMealPlan = async function(planFilter, user_id){
 
     let recipeIndex = 0;
     // adjusting the days
-    for(day = 1; day <= numberOfDays; day++){
+    let currentMeal = 0;
+
+    for(day = 0; day < numberOfDays; day++){
         currDate = dateAfterSomeDays(startDate, day);
         let meals = [];
         let mealDay = new MealDay();
@@ -78,7 +78,7 @@ schema.statics.generateMealPlan = async function(planFilter, user_id){
         for(mealIndex = 0; mealIndex < mealNumberPerDay; mealIndex++){
             let meal = new this.prototype.constructor();
             let servings = [];
-            meal.name = "Daily Meal"; // what should be the the value of this?
+            meal.name = `Meal ${++currentMeal}`; // what should be the the value of this?
             // adjusting the recipes in a meal
             for(recipe = 0; recipe < recipePerMeal; recipe++){
                 let serving = new Serving();
@@ -104,6 +104,7 @@ schema.statics.generateMealPlan = async function(planFilter, user_id){
     await mealPlan.save();
     return mealPlan;
 }
+
 schema.statics.generateMealPlanOld = async function(planFilter, user_id){
     try{
         let mealPlan = [];
