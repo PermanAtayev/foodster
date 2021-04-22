@@ -436,8 +436,8 @@ router.get('/users/liked_recipes', auth, cache(constants.CACHEPERIOD), async (re
     let user = req.user;
     try {
         // only return the name field of the liked recipes
-        const populatedUser = await user.populate("likedRecipes").execPopulate();
-        // console.log(user);
+        //console.log(user.likedRecipes)
+        const populatedUser = await user.populate("likedRecipes", "name").execPopulate();
         return res.status(200).send(populatedUser.likedRecipes);
     } catch (e) {
         return res.status(404).send("Recipes were not found. " + e);

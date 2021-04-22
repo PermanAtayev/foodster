@@ -292,7 +292,7 @@ number will be used. Otherwise if limit is passed as a path parameter it will be
             preferenceNumberFromUser = req.user.preferences.mealsPerDay;
         }
     }
-
+    
     const recommendedRecipes = await req.user.recommendRecipes(req.query.limit || preferenceNumberFromUser || constants.RECOMMENDATION_LIMIT);
     res.status(200).json(recommendedRecipes);
 })
@@ -365,6 +365,8 @@ router.get('/recipes/:recipeName', auth, cache(constants.CACHEPERIOD), async (re
     */
     try {
         const recipe = await Recipe.findByName(req.params.recipeName);
+        if (!recipe) throw("Recipe could not found!");
+        await recipe.populate("ingredients.ingredient").execPopulate();
         return res.status(200).json(recipe);
     } catch (e) {
         return res.status(404).json(e + "");
@@ -454,6 +456,10 @@ number will be used. Otherwise if limit is passed as a path parameter it will be
     */
     try {
         const recipeList = await Recipe.find({});
+        for(i = 0; i < recipeList.length; i++){
+            let recipe = recipeList[i];
+            await recipe.populate("ingredients.ingredient").execPopulate();
+        }
         return res.status(200).send(recipeList);
     } catch (e) {
         return res.status(400).send("Either no recipe or no authorization");

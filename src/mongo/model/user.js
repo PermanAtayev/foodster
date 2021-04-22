@@ -80,10 +80,12 @@ schema.methods.willKillMe = async function (recipe) {
     const user = this;
     let isAllergic = false;
 
+    await user.populate("allergies", "name").execPopulate();
+
     if (user.allergies !== null) {
-        user.allergies.forEach((allergyName) => {
+        user.allergies.forEach((allergicIngredient) => {
             recipe.ingredients.forEach((ingredient) => {
-                if (ingredient.name === allergyName)
+                if (ingredient.ingredient.name === allergicIngredient.name)
                     isAllergic = true;
             })
         })
@@ -95,14 +97,18 @@ schema.methods.willKillMe = async function (recipe) {
 // TODO document
 schema.methods.getIngredientFrequencyOfLikedMeals = async function(){
     const user = this;
-    const populatedUser = await user.populate("likedRecipes", "name, ingredients").execPopulate();
-    const likedRecipes = populatedUser.likedRecipes;
+    await user.populate("likedRecipes", "name ingredients").execPopulate();
+    await user.populate("likedRecipes.ingredients.ingredient").execPopulate();
+    
+    const likedRecipes = user.likedRecipes;
     let ingredientFrequencyCounter = {};
 
     likedRecipes.forEach((recipe) => {
-        let ingredients = recipe.ingredients;
-
-        ingredients.forEach((ingredient) => {
+        
+        let edibles = recipe.ingredients;
+        edibles.forEach((edible) => {
+            const ingredient = edible.ingredient;
+            
             if(ingredientFrequencyCounter[ingredient.name]){
                 ingredientFrequencyCounter[ingredient.name] += 1;
             }
@@ -135,25 +141,25 @@ schema.methods.recommendRecipes = async function(limit){
         const ingredient = await Ingredient.findByName(ingredientName);
 
         if(ingredient) {
-            const populatedIngredient = await ingredient.populate("inRecipes", "name ingredients.name").execPopulate();
-
+            const populatedIngredient = await ingredient.populate("inRecipes", "name ingredients.ingredient").execPopulate();
+            //let recipeIngredient = await populatedIngredient.inRecipes[0].ingredients[0];
+            await populatedIngredient.populate("inRecipes.ingredients.ingredient", "name").execPopulate();
+            //console.log(populatedIngredient.inRecipes[0].ingredients)
             populatedIngredient.inRecipes.forEach((recipe) => {
                 const score = ingredientFrequencyCounter[ingredientName];
                 if(recipeScores[recipe.name]){
                     recipeScores[recipe.name] += score;
                 }
                 else{
+                    similarRecipes.add(recipe);
                     recipeScores[recipe.name] = score;
                 }
-                similarRecipes.add(recipe);
             })
         }
     }
-
-    //    remove the similarRecipes that have allergic ingredients
+    //    remove the similarRecipes that have allergetic ingredients
     for(let similarRecipe of similarRecipes){
         const willKillMe = await this.willKillMe(similarRecipe);
-
         if(willKillMe === true)
             delete recipeScores[similarRecipe.name];
     }
@@ -164,7 +170,7 @@ schema.methods.recommendRecipes = async function(limit){
 
     for(let i = 0; i < min(limit, Object.keys(recipeScores).length); i++)
         result.push(recipeScores[i][0]);
-
+    
     return result;
 }
 

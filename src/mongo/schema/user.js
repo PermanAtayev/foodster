@@ -20,11 +20,11 @@ let schema = new Schema({
     height: {type: Number, required: false}, // in cm
     weight: {type: Number, required: false}, // in kg
     imgUrl: {type: mongoose.SchemaTypes.Url, required: false},
-    allergies: {
+    allergies: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Ingredient",
         required: false
-    },
+    }],
     isVerified: {type: Boolean, required: true, default: false},
     preferences: {type: preferenceSchema, required: false, default: null},
     likedRecipes: [{
