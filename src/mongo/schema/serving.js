@@ -10,7 +10,8 @@ let schema = new Schema({
     },
     measure: {
         type: measureSchema,
-        required: true
+        required: true,
+        default: null
     }
 })
 

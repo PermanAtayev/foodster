@@ -6,7 +6,8 @@ let schema = new Schema({
     ingredient: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Ingredient',
-        required: true
+        required: true,
+        default: null
     },
     measure: {
         type: measureSchema,
@@ -15,7 +16,8 @@ let schema = new Schema({
     },
     description: {
         type: String,
-        required: true
+        required: true,
+        default: null
     },
 })
 

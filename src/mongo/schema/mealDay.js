@@ -9,7 +9,8 @@ let schema = new Schema({
     },
     date: {
         type: Date,
-        required: true
+        required: true,
+        default: null
     },
     meals: [{
         type: mongoose.Schema.Types.ObjectId,

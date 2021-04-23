@@ -9,11 +9,13 @@ let schema = new Schema({
     },
     startDate: {
         type: Date,
-        required: true
+        required: true,
+        default: null
     },
     endDate: {
         type: Date,
-        required: true
+        required: true,
+        default: null
     },
     // needs to populated if you want the details of meals
     plan: [{

@@ -14,18 +14,22 @@ let schema = new Schema({
     name: {
         type: String,
         required: true,
+        default: null
     },
     imgUrl: {
         type: String,
-        required: false
+        required: false,
+        default: null
     },
     nutrition: {
         type: nutritionSchema,
-        required: false
+        required: false,
+        default: null
     },
     estimatedPrice: {
         type: Number,
-        required: false
+        required: false,
+        default: null
     }
 })
 
