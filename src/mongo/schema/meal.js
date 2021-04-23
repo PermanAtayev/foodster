@@ -5,11 +5,13 @@ const servingSchema = require('./serving')
 let schema = new Schema({
     name: {
         type: String,
-        required: false
+        required: false,
+        default: null
     },
     servings: [{
         type: servingSchema,
-        required: true
+        required: true,
+        default: null
     }]
 });
 

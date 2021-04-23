@@ -6,7 +6,8 @@ const edibleSchema = require('edible');
 let schema = new Schema({
     inventory: {
         type: [edibleSchema],
-        required: false
+        required: false,
+        default: null
     },
 })
 

@@ -6,7 +6,8 @@ const edibleSchema = require('./edible')
 let schema = new Schema({
     category: {
         type: String,
-        required: false
+        required: false,
+        default: null
     },
     // Do we need images if all recipes is already storing them?
     // img: {
@@ -34,11 +35,13 @@ let schema = new Schema({
     },
     prepTime: {
         type: Number,
-        required: true
+        required: true,
+        default: null
     },
     cookTime: {
         type: Number,
-        required: true
+        required: true,
+        default: null
     },
     imgUrl: {
         type: String,
@@ -47,11 +50,13 @@ let schema = new Schema({
     },
     instructions: [{
         type: String,
-        required: false
+        required: false,
+        default: null
     }],
     nutrition: {
         type: nutiritionSchema,
-        required: false
+        required: false,
+        default: null
     },
     estimatedPrice: {
         type: Number,
@@ -63,7 +68,8 @@ let schema = new Schema({
     }],
     tags: [{
         type: String,
-        required: false
+        required: false,
+        default: null
     }]
 });
 
