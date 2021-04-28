@@ -30,6 +30,7 @@ const endpointsFiles = [
     './src/routers/meal.js',
     './src/routers/recipe.js',
     './src/routers/ingredient.js',
+    './src/routers/auxiliary.js',
     './src/mongo/schema/user.js'
 ]
 

@@ -768,6 +768,23 @@
         }
       }
     },
+    "/meals/generate": {
+      "post": {
+        "tags": [
+          "Meal"
+        ],
+        "description": "generate a meal",
+        "parameters": [],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
     "/recipes/migrate_all": {
       "get": {
         "tags": [
@@ -1696,31 +1713,30 @@
         }
       }
     },
-    "/recipes/prefill": {
-      "post": {
+    "/aux/supported_allergies": {
+      "get": {
         "tags": [
-          "Recipe"
+          "Auxiliary"
         ],
-        "description": "Endpoint to add the recipes in local to db",
+        "description": "Endpoint to get all the supported allergy ingredients by foodster",
         "parameters": [],
         "responses": {
           "200": {
-            "description": "OK",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "text": {
-                  "type": "string",
-                  "example": "Recipes are added!"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized"
+            "description": "JSON object with 'allergies' field that has an array of all supported diets."
+          }
+        }
+      }
+    },
+    "/aux/supported_diets": {
+      "get": {
+        "tags": [
+          "Auxiliary"
+        ],
+        "description": "Endpoint to get all the supported diet names by Foodster",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "JSON object with 'diets' field that has an array of all supported diets."
           }
         }
       }

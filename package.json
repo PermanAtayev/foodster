@@ -10,7 +10,8 @@
     "gendoc": "node -r dotenv/config src/swagger.js",
     "moveScrapedToDB": "node -r dotenv/config --trace-warnings src/_helpers/scrapedToDB.js",
     "dropAllIngredients": "node -r dotenv/config src/_helpers/dropAllIngredients.js",
-    "dropAllRecipes": "node -r dotenv/config src/_helpers/dropAllRecipes.js"
+    "dropAllRecipes": "node -r dotenv/config src/_helpers/dropAllRecipes.js",
+    "addDietType": "node -r dotenv/config src/_helpers/addDietTypes.js"
   },
   "author": "",
   "license": "ISC",
@@ -25,6 +26,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-jwt": "^6.0.0",
+    "heap": "^0.2.6",
     "jest": "^26.6.3",
     "jsdoc": "^3.6.6",
     "jsonwebtoken": "^8.5.1",
