@@ -27,6 +27,10 @@ let schema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     }],
+    rating: {
+       type: JSON,
+       default: null
+    },
     // required by front end
     name: {
         type: String,
@@ -67,6 +71,11 @@ let schema = new Schema({
         required: false,
     }],
     tags: [{
+        type: String,
+        required: false,
+        default: null
+    }],
+    compatibleDiet: [{
         type: String,
         required: false,
         default: null

@@ -12,38 +12,38 @@ let schema = new Schema({
         required: false,
         default: null
     },
-    calRange: {
-        type: [Number],
+    calRange: [{
+        type: Number,
         required: false,
         default: null
-    },
-    protRange: {
-        type: [Number],
+    }],
+    protRange: [{
+        type: Number,
         required: false,
         default: null
-    },
-    fatRange: {
-        type: [Number],
+    }],
+    fatRange: [{
+        type: Number,
         required: false,
         default: null
-    },
-    carbRange: {
-        type: [Number],
+    }],
+    carbRange: [{
+        type: Number,
         required: false,
         default: null
-    },
-    costRange: {
-        type: [Number],
+    }],
+    costRange: [{
+        type: Number,
         required: false,
         default: null
-    },
+    }],
     dietType: {
-        type: [String],
+        type: String,
         required: false,
         default: null
     },
     cookingTime: {
-        type: [Number],
+        type: Number,
         required: false,
         default: null
     }

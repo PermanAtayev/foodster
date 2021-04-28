@@ -21,9 +21,7 @@ let schema = new Schema({
     weight: {type: Number, required: false, default: null}, // in kg
     imgUrl: {type: mongoose.SchemaTypes.Url, required: false, default: null},
     allergies: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Ingredient",
-        required: false,
+        type: String,
         default: null
     }],
     isVerified: {type: Boolean, required: true, default: false},

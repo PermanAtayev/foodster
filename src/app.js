@@ -11,6 +11,8 @@ const mealRouter = require('./routers/meal');
 const dbRouter = require('./routers/db');
 const recipeRouter = require('./routers/recipe');
 const ingredientRouter = require('./routers/ingredient')
+const auxRouter = require('./routers/auxiliary')
+
 const swaggerUi = require('swagger-ui-express')
 const swaggerFile = require('./docs/swagger_output.json')
 
@@ -31,11 +33,12 @@ app.use('/', mealRouter);
 app.use('/', dbRouter);
 app.use('/', recipeRouter);
 app.use('/', ingredientRouter);
+app.use('/', auxRouter);
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
 app.get('/', (req, res) => {
-    res.send("Welcome to the REST API of Foodster");
+    res.send(`Welcome to the REST API of Foodster. To visit the documentation please visit: <a href='http://localhost:${process.env.PORT}/docs'> docs </a>` );
 })
 
 module.exports = app;

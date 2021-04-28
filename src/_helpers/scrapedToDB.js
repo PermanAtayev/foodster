@@ -41,9 +41,10 @@ function getQuantity(nutrition) {
 function getUnit(nutrition) {
     return (nutrition ? nutrition.unit : null);
 }
+
 (async () => {  // for recipes to be added one by one, top level async: https://stackoverflow.com/questions/46515764/how-can-i-use-async-await-at-the-top-level
     let recipesSaved = 0;
-    for(i = 0; i < scrapedRecipes.length; i++){
+    for (i = 0; i < scrapedRecipes.length; i++) {
         let recipe = scrapedRecipes[i];
         const recipeInDB = await Recipe.findOne({name: recipe.name}).exec();
 
