@@ -10,3 +10,9 @@ services:
       - ".env"
     ports:
       - 8077:8077
+  redis:
+    container_name: redis
+    restart: always
+    image: redis:alpine
+    ports:
+      - 6379:6379

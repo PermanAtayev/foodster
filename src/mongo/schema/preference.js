@@ -42,11 +42,11 @@ let schema = new Schema({
         required: false,
         default: null
     },
-    cookingTime: {
+    cookingTime: [{
         type: Number,
         required: false,
         default: null
-    }
+    }]
 })
 
 // TODO test this thoroughly, so that problems in other fields do not occur.

@@ -402,8 +402,17 @@ router.patch('/users', auth, async (req, res) => {
         })
 
         updates.forEach((update) => {
-            user[update] = req.body[update];
+            if(update !== "preferences")
+                user[update] = req.body[update];
+            else{
+                const preferences = Object.keys(req.body[update])
+                preferences.forEach((preference) => {
+                    user[update][preference] = req.body[update][preference]
+                })
+            }
         });
+
+
 
         await user.save();
         return res.status(201).send(user);

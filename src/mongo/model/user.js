@@ -7,6 +7,8 @@ const cryptoRandomString = require('crypto-random-string');
 const sgMail = require('@sendgrid/mail');
 const Ingredient = require("./ingredient");
 const Heap = require("heap");
+const Recipe = require("./recipe");
+const MealPlan = require('./mealPlan');
 
 schema.methods.toJSON = function () {
     let user = this.toObject()
@@ -135,6 +137,13 @@ function inRange(range, number) {
     return (left <= number && number <= right);
 }
 
+schema.methods.getMealPlan = async function (){
+    const user = this;
+    const mealPlan = await MealPlan.find({user: user._id}).sort([['startDate', -1]]).limit(1);
+    if (mealPlan) return mealPlan[0];
+    else return null;
+}
+
 // TODO need to timestamp these recommendations so that we don't generate them from scratch every time
 schema.methods.recommendRecipes = async function (limit) {
     const user = this;
@@ -144,15 +153,28 @@ schema.methods.recommendRecipes = async function (limit) {
 
     let similarRecipes = new Set();
 
+    const mainstreamIngredients = ["salt", "sugar", "water", "olive oil", "butter", "garlic", "black pepper"];
+
     for (let i = 0; i < ingredientNames.length; i++) {
         const ingredientName = ingredientNames[i];
         const ingredient = await Ingredient.findByName(ingredientName);
 
         if (ingredient) {
+            let skipTheIngredient = false
+
+            for(let k = 0; k < mainstreamIngredients.length; k++){
+                if(ingredient.name.toLowerCase().includes(mainstreamIngredients[k])){
+                    skipTheIngredient = true;
+                    break;
+                }
+
+            }
+
+            if(skipTheIngredient)
+                continue;
+
             const populatedIngredient = await ingredient.populate("inRecipes").execPopulate();
-            //let recipeIngredient = await populatedIngredient.inRecipes[0].ingredients[0];
             await populatedIngredient.populate("inRecipes.ingredients.ingredient", "name").execPopulate();
-            //console.log(populatedIngredient.inRecipes[0].ingredients)
             populatedIngredient.inRecipes.forEach((recipe) => {
                 const score = ingredientFrequencyCounter[ingredientName];
                 if (recipeScores[recipe.name]) {
@@ -168,7 +190,7 @@ schema.methods.recommendRecipes = async function (limit) {
     for (let similarRecipe of similarRecipes) {
         const willKillMe = await this.willKillMe(similarRecipe);
         if (willKillMe)
-            recipeScores[similarRecipe.name] = -1000;
+            delete recipeScores[similarRecipes.name]
     }
 
     // scoring of preferences
@@ -189,7 +211,7 @@ schema.methods.recommendRecipes = async function (limit) {
             }
 
             if (recipe.compatibleDiet && user.preferences.dietType && recipe.compatibleDiet.includes(user.preferences.dietType)) {
-                recipeScores[recipe.name] += 1000;
+                recipeScores[recipe.name] += 5;
             }
         }
     }
@@ -202,14 +224,15 @@ schema.methods.recommendRecipes = async function (limit) {
     let n = min(limit, Object.keys(recipeScores).length);
 
     for(recipe of similarRecipes){
-        if(heap.size() < n){
+        if(heap.size() < n && recipe){
             heap.push({recipe, score: recipeScores[recipe.name]});
         }
         else{
             let front = heap.peek();
-            if(front[1] < recipeScores[recipe.name]){
+
+            if(front.score < recipeScores[recipe.name]){
                 heap.pop();
-                heap.push({recipe, score: recipeScores[i]});
+                heap.push({recipe, score: recipeScores[recipe.name]});
             }
         }
     }
@@ -219,8 +242,14 @@ schema.methods.recommendRecipes = async function (limit) {
     while(heap.size() > 0){
         let top = heap.pop();
         result.push(top.recipe);
+    }
 
-        console.log(top.recipe.name, top.score);
+    if(result.length === 0){
+        const kTopRecipesNumber = limit;
+        const availableRecipes = await Recipe.countDocuments({});
+        const returnNumberOfRecipes = min(availableRecipes, kTopRecipesNumber);
+        const topRecipes = await Recipe.find({}).sort({numberOfLikes: -1});
+        result = topRecipes.slice(0, returnNumberOfRecipes);
     }
 
     return result.reverse();
