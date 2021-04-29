@@ -216,8 +216,6 @@ schema.methods.recommendRecipes = async function (limit) {
 
     let result = [];
 
-    // console.log("Final list of recipes:\n");
-
     while(heap.size() > 0){
         let top = heap.pop();
         result.push(top.recipe);
@@ -225,7 +223,7 @@ schema.methods.recommendRecipes = async function (limit) {
         console.log(top.recipe.name, top.score);
     }
 
-    return result;
+    return result.reverse();
 }
 
 
