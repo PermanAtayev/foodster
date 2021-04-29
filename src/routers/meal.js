@@ -25,10 +25,10 @@ router.post('/meals/generate',  auth, async(req, res) => {
     }
 })
 
-router.get('/meals',  auth, async(req, res) => {
+router.get('/meals',  auth, cache(constants.CACHEPERIOD), async(req, res) => {
     /*
     #swagger.tags = ['Meal']
-    #swagger.description = 'get the meal'
+    #swagger.description = 'get the MealPlan'
     */
     try{
         const user = req.user;

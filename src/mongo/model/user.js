@@ -153,15 +153,28 @@ schema.methods.recommendRecipes = async function (limit) {
 
     let similarRecipes = new Set();
 
+    const mainstreamIngredients = ["salt", "sugar", "water", "olive oil", "butter", "garlic", "black pepper"];
+
     for (let i = 0; i < ingredientNames.length; i++) {
         const ingredientName = ingredientNames[i];
         const ingredient = await Ingredient.findByName(ingredientName);
 
         if (ingredient) {
+            let skipTheIngredient = false
+
+            for(let k = 0; k < mainstreamIngredients.length; k++){
+                if(ingredient.name.toLowerCase().includes(mainstreamIngredients[k])){
+                    skipTheIngredient = true;
+                    break;
+                }
+
+            }
+
+            if(skipTheIngredient)
+                continue;
+
             const populatedIngredient = await ingredient.populate("inRecipes").execPopulate();
-            //let recipeIngredient = await populatedIngredient.inRecipes[0].ingredients[0];
             await populatedIngredient.populate("inRecipes.ingredients.ingredient", "name").execPopulate();
-            //console.log(populatedIngredient.inRecipes[0].ingredients)
             populatedIngredient.inRecipes.forEach((recipe) => {
                 const score = ingredientFrequencyCounter[ingredientName];
                 if (recipeScores[recipe.name]) {
@@ -177,7 +190,7 @@ schema.methods.recommendRecipes = async function (limit) {
     for (let similarRecipe of similarRecipes) {
         const willKillMe = await this.willKillMe(similarRecipe);
         if (willKillMe)
-            recipeScores[similarRecipe.name] = -1000;
+            delete recipeScores[similarRecipes.name]
     }
 
     // scoring of preferences
@@ -211,14 +224,15 @@ schema.methods.recommendRecipes = async function (limit) {
     let n = min(limit, Object.keys(recipeScores).length);
 
     for(recipe of similarRecipes){
-        if(heap.size() < n){
+        if(heap.size() < n && recipe){
             heap.push({recipe, score: recipeScores[recipe.name]});
         }
         else{
             let front = heap.peek();
-            if(front[1] < recipeScores[recipe.name]){
+
+            if(front.score < recipeScores[recipe.name]){
                 heap.pop();
-                heap.push({recipe, score: recipeScores[i]});
+                heap.push({recipe, score: recipeScores[recipe.name]});
             }
         }
     }
@@ -228,8 +242,6 @@ schema.methods.recommendRecipes = async function (limit) {
     while(heap.size() > 0){
         let top = heap.pop();
         result.push(top.recipe);
-
-        console.log(top.recipe.name, top.score);
     }
 
     if(result.length === 0){
