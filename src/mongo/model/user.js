@@ -7,6 +7,8 @@ const cryptoRandomString = require('crypto-random-string');
 const sgMail = require('@sendgrid/mail');
 const Ingredient = require("./ingredient");
 const Heap = require("heap");
+const { async } = require('crypto-random-string');
+const MealPlan = require('./mealPlan');
 
 schema.methods.toJSON = function () {
     let user = this.toObject()
@@ -133,6 +135,13 @@ function inRange(range, number) {
     let left = range[0];
     let right = range[1];
     return (left <= number && number <= right);
+}
+
+schema.methods.getMealPlan = async function (){
+    const user = this;
+    const mealPlan = await MealPlan.find({user: user._id}).sort([['startDate', -1]]).limit(1);
+    if (mealPlan) return mealPlan[0];
+    else return null;
 }
 
 // TODO need to timestamp these recommendations so that we don't generate them from scratch every time
