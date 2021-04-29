@@ -33,10 +33,15 @@ router.get('/meals',  auth, async(req, res) => {
     try{
         const user = req.user;
         const mealPlan = await user.getMealPlan();
-        await mealPlan.populate("plan").execPopulate();
-        await mealPlan.populate("plan.meals").execPopulate();
-        await mealPlan.populate("plan.meals.servings.recipe").execPopulate();
-        res.send(mealPlan);
+        if (mealPlan){
+            await mealPlan.populate("plan").execPopulate();
+            await mealPlan.populate("plan.meals").execPopulate();
+            await mealPlan.populate("plan.meals.servings.recipe").execPopulate();
+            res.send(mealPlan);
+        }else{
+            res.status(400).send("There is no meal plan generated for this user.");
+        }
+        
     }
     catch(e){
         res.status(400).send(e + "");
