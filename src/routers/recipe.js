@@ -525,7 +525,7 @@ router.get('/recipes/top/:numberOfRecipes', auth, cache(constants.CACHEPERIOD), 
     const kTopRecipesNumber = req.params.numberOfRecipes;
     const availableRecipes = await Recipe.countDocuments({});
     const returnNumberOfRecipes = min(availableRecipes, kTopRecipesNumber);
-    const topRecipes = await Recipe.find({}).sort({numberOfLikes: -1});
+    const topRecipes = await Recipe.find({}).sort({'rating.value': -1});
     const kTopRecipes = topRecipes.slice(0, returnNumberOfRecipes);
     res.status(200).send(kTopRecipes);
 })

@@ -7,6 +7,7 @@ const cryptoRandomString = require('crypto-random-string');
 const sgMail = require('@sendgrid/mail');
 const Ingredient = require("./ingredient");
 const Heap = require("heap");
+const Recipe = require("./recipe");
 
 schema.methods.toJSON = function () {
     let user = this.toObject()
@@ -189,7 +190,7 @@ schema.methods.recommendRecipes = async function (limit) {
             }
 
             if (recipe.compatibleDiet && user.preferences.dietType && recipe.compatibleDiet.includes(user.preferences.dietType)) {
-                recipeScores[recipe.name] += 1000;
+                recipeScores[recipe.name] += 5;
             }
         }
     }
@@ -221,6 +222,14 @@ schema.methods.recommendRecipes = async function (limit) {
         result.push(top.recipe);
 
         console.log(top.recipe.name, top.score);
+    }
+
+    if(result.length === 0){
+        const kTopRecipesNumber = limit;
+        const availableRecipes = await Recipe.countDocuments({});
+        const returnNumberOfRecipes = min(availableRecipes, kTopRecipesNumber);
+        const topRecipes = await Recipe.find({}).sort({numberOfLikes: -1});
+        result = topRecipes.slice(0, returnNumberOfRecipes);
     }
 
     return result.reverse();
