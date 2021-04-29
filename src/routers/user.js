@@ -390,7 +390,7 @@ router.patch('/users', auth, async (req, res) => {
     */
     const updates = Object.keys(req.body);
 
-    const fieldsAllowedToBeUpdated = ["allergies", "username", "age", "gender", "height", "preferences"];
+    const fieldsAllowedToBeUpdated = ["allergies", "username", "age", "gender", "height", "preferences", "weight"];
 
     try {
         const user = req.user;
