@@ -435,7 +435,7 @@ router.patch('/users', auth, async (req, res) => {
 })
 
 // TODO needs to tested
-router.get('/users/liked_recipes', auth, cache(constants.CACHEPERIOD), async (req, res) => {
+router.get('/users/liked_recipes', auth,  async (req, res) => { // cache(constants.CACHEPERIOD),
     /*
         #swagger.tags = ['User']
         #swagger.description = 'List the recipe that user liked'
