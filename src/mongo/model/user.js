@@ -85,7 +85,7 @@ schema.methods.willKillMe = async function (recipe) {
             allergicIngredientName = allergies[j].toLowerCase();
             for (let i = 0; i < recipe.ingredients.length; i++) {
                 ingredientDescription = recipe.ingredients[i].description.toLowerCase();
-                if(ingredientDescription.includes(allergicIngredientName)){
+                if (ingredientDescription.includes(allergicIngredientName)) {
                     return true;
                 }
             }
@@ -95,8 +95,6 @@ schema.methods.willKillMe = async function (recipe) {
 }
 
 
-// TODO needs to be tested after the last refactoring of modeling
-// TODO document
 schema.methods.getIngredientFrequencyOfLikedMeals = async function () {
     const user = this;
     await user.populate("likedRecipes", "name ingredients").execPopulate();
@@ -137,7 +135,7 @@ function inRange(range, number) {
     return (left <= number && number <= right);
 }
 
-schema.methods.getMealPlan = async function (){
+schema.methods.getMealPlan = async function () {
     const user = this;
     const mealPlan = await MealPlan.find({user: user._id}).sort([['startDate', -1]]).limit(1);
     if (mealPlan) return mealPlan[0];
@@ -162,15 +160,15 @@ schema.methods.recommendRecipes = async function (limit) {
         if (ingredient) {
             let skipTheIngredient = false
 
-            for(let k = 0; k < mainstreamIngredients.length; k++){
-                if(ingredient.name.toLowerCase().includes(mainstreamIngredients[k])){
+            for (let k = 0; k < mainstreamIngredients.length; k++) {
+                if (ingredient.name.toLowerCase().includes(mainstreamIngredients[k])) {
                     skipTheIngredient = true;
                     break;
                 }
 
             }
 
-            if(skipTheIngredient)
+            if (skipTheIngredient)
                 continue;
 
             const populatedIngredient = await ingredient.populate("inRecipes").execPopulate();
@@ -190,7 +188,7 @@ schema.methods.recommendRecipes = async function (limit) {
     for (let similarRecipe of similarRecipes) {
         const willKillMe = await this.willKillMe(similarRecipe);
         if (willKillMe)
-            delete recipeScores[similarRecipes.name]
+            recipeScores[similarRecipes.name] = -1000
     }
 
     // scoring of preferences
@@ -210,6 +208,11 @@ schema.methods.recommendRecipes = async function (limit) {
                     recipeScores[recipe.name] += 4;
             }
 
+            // needs to be tested
+            if (recipe.estimatedPrice && inRange(user.preferences.costRange, recipe.estimatedPrice)) {
+                recipeScores[recipe.name] += 4;
+            }
+
             if (recipe.compatibleDiet && user.preferences.dietType && recipe.compatibleDiet.includes(user.preferences.dietType)) {
                 recipeScores[recipe.name] += 5;
             }
@@ -217,34 +220,34 @@ schema.methods.recommendRecipes = async function (limit) {
     }
 
     // initialise the min heap
-    let heap = new Heap(function(a, b){
+    let heap = new Heap(function (a, b) {
         return a.score - b.score;
     });
 
     let n = min(limit, Object.keys(recipeScores).length);
 
-    for(recipe of similarRecipes){
-        if(heap.size() < n && recipe){
+    for (recipe of similarRecipes) {
+        if (heap.size() < n && recipe) {
             heap.push({recipe, score: recipeScores[recipe.name]});
-        }
-        else{
+        } else if(heap.size() != 0){
             let front = heap.peek();
 
-            if(front.score < recipeScores[recipe.name]){
+            if (front.score < recipeScores[recipe.name]) {
                 heap.pop();
                 heap.push({recipe, score: recipeScores[recipe.name]});
             }
         }
     }
 
+
     let result = [];
 
-    while(heap.size() > 0){
+    while (heap.size() > 0) {
         let top = heap.pop();
         result.push(top.recipe);
     }
 
-    if(result.length === 0){
+    if (result.length === 0) {
         const kTopRecipesNumber = limit;
         const availableRecipes = await Recipe.countDocuments({});
         const returnNumberOfRecipes = min(availableRecipes, kTopRecipesNumber);
