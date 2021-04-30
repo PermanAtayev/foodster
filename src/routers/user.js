@@ -37,11 +37,18 @@ router.post('/users/signup', async (req, res) => {
     */
     try {
         const user = new User(req.body);
+        user.isVerified = true;
+
         await user.save();
         await user.generateAuthToken();
-        user.sendEmailVerification(req);
+        // user.sendEmailVerification(req);
 
-        return res.status(201).send('A verification email has been sent to ' + user.email + '. It will be expire after one day. If you not get verification email, use "resend" endpoint. Check API documentation for endpoint details.');
+
+        return res.status(201).send("Successfully signed up");
+
+        // return res.status(201).send('A verification email has been sent to ' + user.email + '. It will be expire after one day. If you not get verification email, use "resend" endpoint. Check API documentation for endpoint details.');
+
+
     } catch (e) {
         res.status(406).send(e + "");
     }
@@ -214,7 +221,6 @@ router.post('/users/login', async (req, res) => {
     }
 */
     try {
-        //console.log(req.body.email + ", " + req.body.password);
         const user = await User.findByCredentials(req.body.email, req.body.password);
         await user.generateAuthToken();
 

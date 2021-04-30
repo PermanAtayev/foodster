@@ -26,7 +26,8 @@ const dateAfterSomeDays = (startDate, numberOfDays) => {
     return targetDate;
 }
 const getDays = (startDate, endDate) => {
-    return (endDate.getDate() - startDate.getDate()) + 1 ;
+    const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+    return Math.round(Math.abs((endDate - startDate) / oneDay)); ;
 }
 const formatDate = (date) => {
     if (!date) return null;
