@@ -49,7 +49,8 @@ schema.statics.generateMealPlan = async function(planFilter, user_id){
     }else{
         mealNumberPerDay = getRandomBetween(2, 4);
     }
-    const recipePerMeal = getRandomBetween(1, 2);
+    // const recipePerMeal = getRandomBetween(1, 2);
+    const recipePerMeal = 1;
     const totalRecipes = numberOfDays * mealNumberPerDay * recipePerMeal;
 
     const recommendedRecipes = await user.recommendRecipes(totalRecipes);

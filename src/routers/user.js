@@ -6,6 +6,8 @@ const EmailToken = require('../mongo/model/emailToken');
 const cache = require('../middleware/cache')
 const constants = require("../data/constants");
 
+const preferenceSchema = require('../mongo/schema/preference')
+
 router.post('/users/signup', async (req, res) => {
     /*
         #swagger.tags = ['User']
@@ -412,6 +414,10 @@ router.patch('/users', auth, async (req, res) => {
                 user[update] = req.body[update];
             else{
                 const preferences = Object.keys(req.body[update])
+
+                if(!user[update])
+                    user[update] = preferenceSchema;
+
                 preferences.forEach((preference) => {
                     user[update][preference] = req.body[update][preference]
                 })

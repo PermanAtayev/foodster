@@ -31,36 +31,26 @@ if (process.env.NODE_ENV === 'DEPLOYMENT') {
 mongoose.connect(conn_string, connectionOptions);
 mongoose.Promise = global.Promise;
 
-let scrapedRecipes = require('../../playground/ar_small_v5.json');
-
-let supportedDiets = [
-    "vegan",
-    "paleo",
-    "keto",
-    "vegetarian"
-];
+let recipes = require('../../playground/lessThan150.json');
 
 
 (async () => {
-    for (let i = 0; i < scrapedRecipes.length; i++) {
-        recipe = scrapedRecipes[i];
-        console.log(i, recipe.name, recipe.rating);
+    for(let j = 0; j < recipes.length; j++) {
+        for (var k in recipes[j]) {
+            let recipe_name = k;
+            found_recipe = await Recipe.findOne({name: recipe_name}).exec();
 
-        if (recipe.rating && recipe.rating.count && recipe.rating.value) {
-            found_recipe = await Recipe.findOne({name: recipe.name}).exec();
-
-            if (!found_recipe.rating) {
+            if (!found_recipe.estimatedPrice && recipes[j][k]){
                 try {
-                    await Recipe.updateOne({name: recipe.name}, {rating: recipe.rating});
+                    await Recipe.updateOne({name: recipe_name}, {estimatedPrice: recipes[j][k]});
                 } catch (e) {
                     console.log(e);
                 }
+
+                console.log(`${found_recipe.name} is updated`);
             }
-
         }
-
     }
-
 })
 ();
 
