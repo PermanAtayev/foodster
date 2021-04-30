@@ -25,7 +25,7 @@ router.post('/meals/generate',  auth, async(req, res) => {
     }
 })
 
-router.get('/meals',  auth, cache(constants.CACHEPERIOD), async(req, res) => {
+router.get('/meals',  auth,  async(req, res) => { // cache(constants.CACHEPERIOD),
     /*
     #swagger.tags = ['Meal']
     #swagger.description = 'get the MealPlan'
