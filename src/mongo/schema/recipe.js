@@ -9,11 +9,6 @@ let schema = new Schema({
         required: false,
         default: null
     },
-    // Do we need images if all recipes is already storing them?
-    // img: {
-    //     type: Buffer,
-    //     required: false
-    // },
     servingSize: {
         type: Number,
         required: false,
