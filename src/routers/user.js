@@ -486,7 +486,14 @@ router.get('/users/liked_ingredient_frequencies', auth, cache(constants.CACHEPER
     let user = req.user;
     try {
         const result = await user.getIngredientFrequencyOfLikedMeals();
-        res.status(200).send(result);
+
+        let result_processed = {};
+        let ingredientNames = Object.keys(result);
+
+        for(let i = 0; i < ingredientNames.length; i++)
+            result_processed[ingredientNames[i]] = result[ingredientNames[i]].score
+
+        res.status(200).send(result_processed);
     }catch (e) {
         return res.status(404).send("Database error " + e);
     }
