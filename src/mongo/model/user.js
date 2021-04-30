@@ -76,7 +76,7 @@ schema.methods.hasPermission = async function (permission) {
     return hasPermission;
 }
 
-schema.methods.willKillMe = async function (recipe) {
+schema.methods.willKillMe = function (recipe) {
     const user = this;
     const allergies = user.allergies;
 
@@ -99,20 +99,43 @@ schema.methods.getIngredientFrequencyOfLikedMeals = async function () {
     const user = this;
     await user.populate("likedRecipes", "name ingredients").execPopulate();
     await user.populate("likedRecipes.ingredients.ingredient").execPopulate();
+    const allergies = user.allergies;
 
     const likedRecipes = user.likedRecipes;
     let ingredientFrequencyCounter = {};
 
-    likedRecipes.forEach((recipe) => {
+    const mainstreamIngredients = ["salt", "sugar", "water", "butter", "garlic", "black pepper", "oil"];
 
+    likedRecipes.forEach((recipe) => {
         let edibles = recipe.ingredients;
         edibles.forEach((edible) => {
             const ingredient = edible.ingredient;
+            let skipIngredient = false;
 
-            if (ingredientFrequencyCounter[ingredient.name]) {
-                ingredientFrequencyCounter[ingredient.name] += 1;
-            } else {
-                ingredientFrequencyCounter[ingredient.name] = 1;
+            for (let i = 0; i < mainstreamIngredients.length; i++) {
+                if (edible.description.includes(mainstreamIngredients[i])) {
+                    skipIngredient = true;
+                    break;
+                }
+            }
+
+            if (allergies && !skipIngredient) {
+                for (let j = 0; j < allergies.length && !skipIngredient; j++) {
+                    allergicIngredientName = allergies[j].toLowerCase();
+                    ingredientDescription = edible.description.toLowerCase();
+                    if (ingredientDescription.includes(allergicIngredientName)) {
+                        skipIngredient = true;
+                    }
+                }
+            }
+
+
+            if (!skipIngredient) {
+                if (ingredientFrequencyCounter[ingredient.name]) {
+                    ingredientFrequencyCounter[ingredient.name].score += 1;
+                } else {
+                    ingredientFrequencyCounter[ingredient.name] = {ingredient, score: 1};
+                }
             }
         })
     });
@@ -146,49 +169,32 @@ schema.methods.getMealPlan = async function () {
 schema.methods.recommendRecipes = async function (limit) {
     const user = this;
     const ingredientFrequencyCounter = await this.getIngredientFrequencyOfLikedMeals();
+    const ingredientInfo = Object.values(ingredientFrequencyCounter);
     let recipeScores = {};
-    const ingredientNames = Object.keys(ingredientFrequencyCounter);
+    let recipesFound = 0;
+    let n = min(limit, Object.keys(recipeScores).length);
 
     let similarRecipes = new Set();
 
-    const mainstreamIngredients = ["salt", "sugar", "water", "olive oil", "butter", "garlic", "black pepper"];
 
-    for (let i = 0; i < ingredientNames.length; i++) {
-        const ingredientName = ingredientNames[i];
-        const ingredient = await Ingredient.findByName(ingredientName);
+    for (let i = 0; i < ingredientInfo.length && recipesFound < 4 * n; i++) {
+        const ingredient = ingredientInfo[i].ingredient;
 
         if (ingredient) {
-            let skipTheIngredient = false
-
-            for (let k = 0; k < mainstreamIngredients.length; k++) {
-                if (ingredient.name.toLowerCase().includes(mainstreamIngredients[k])) {
-                    skipTheIngredient = true;
-                    break;
-                }
-
-            }
-
-            if (skipTheIngredient)
-                continue;
-
             const populatedIngredient = await ingredient.populate("inRecipes").execPopulate();
             await populatedIngredient.populate("inRecipes.ingredients.ingredient", "name").execPopulate();
+
             populatedIngredient.inRecipes.forEach((recipe) => {
-                const score = ingredientFrequencyCounter[ingredientName];
+                const score = ingredientFrequencyCounter[ingredient.name].score;
                 if (recipeScores[recipe.name]) {
                     recipeScores[recipe.name] += score;
-                } else {
+                } else if (recipesFound < 4 * n) {
                     similarRecipes.add(recipe);
                     recipeScores[recipe.name] = score;
+                    recipesFound += 1
                 }
             })
         }
-    }
-
-    for (let similarRecipe of similarRecipes) {
-        const willKillMe = await this.willKillMe(similarRecipe);
-        if (willKillMe)
-            recipeScores[similarRecipes.name] = -1000
     }
 
     // scoring of preferences
@@ -224,12 +230,11 @@ schema.methods.recommendRecipes = async function (limit) {
         return a.score - b.score;
     });
 
-    let n = min(limit, Object.keys(recipeScores).length);
 
     for (recipe of similarRecipes) {
         if (heap.size() < n && recipe) {
             heap.push({recipe, score: recipeScores[recipe.name]});
-        } else if(heap.size() != 0){
+        } else if (heap.size() != 0) {
             let front = heap.peek();
 
             if (front.score < recipeScores[recipe.name]) {
