@@ -39,8 +39,10 @@ const formatDate = (date) => {
 schema.statics.generateMealPlan = async function(planFilter, user_id){
     const startDate = formatDate(planFilter.startDate) || dateAfterSomeDays(new Date(), 0);
     const endDate = formatDate(planFilter.endDate) || dateAfterSomeDays(new Date(), 1);
-    const numberOfDays = getDays(startDate, endDate);
     const user = await User.findOne({_id: user_id});
+
+    const numberOfDays = user.preferences.mealPlanDuration || getDays(startDate, endDate);
+
     const userPreferences = user.preferences;
     let mealNumberPerDay = 0;
     
