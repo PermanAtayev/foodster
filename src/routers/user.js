@@ -46,7 +46,7 @@ router.post('/users/signup', async (req, res) => {
         user.sendEmailVerification(req);
 
 
-       // return res.status(201).send("Successfully signed up");
+        // return res.status(201).send("Successfully signed up");
 
         return res.status(201).send('A verification email has been sent to ' + user.email + '. It will be expire after one day. If you not get verification email, use "resend" endpoint. Check API documentation for endpoint details.');
 
@@ -56,7 +56,7 @@ router.post('/users/signup', async (req, res) => {
     }
 });
 
-router.get('/users/confirmation/:email/:token', async(req, res) => {
+router.get('/users/confirmation/:email/:token', async (req, res) => {
     /*
         #swagger.tags = ['User']
         #swagger.description = 'Endpoint for a user to signup'
@@ -99,7 +99,7 @@ router.get('/users/confirmation/:email/:token', async(req, res) => {
             }
         }
     */
-    EmailToken.findOne({ token: req.params.token }, function (err, token) {
+    EmailToken.findOne({token: req.params.token}, function (err, token) {
         // token is not found into database i.e. token may have expired 
         if (!token) {
             return res.status(400).send('Your verification link may have expired. Please use "resend" endpoint to resend the verification link. Check API documentation for endpoint details.');
@@ -169,7 +169,7 @@ router.post('/users/confirmation/resend', async (req, res) => {
             }
         }
     */
-    User.findOne({ email: req.body.email }, function (err, user) {
+    User.findOne({email: req.body.email}, function (err, user) {
         // user is not found into database
         if (!user) {
             return res.status(400).send({msg: 'We were unable to find a user with that email. Make sure your Email is correct!'});
@@ -284,7 +284,6 @@ router.get('/users', auth, async (req, res) => {
         res.status(400).send("Bad request");
     }
 })
-    
 
 
 // TODO check how do we disallow updating the id of preferences object of user
@@ -410,12 +409,12 @@ router.patch('/users', auth, async (req, res) => {
         })
 
         updates.forEach((update) => {
-            if(update !== "preferences")
+            if (update !== "preferences")
                 user[update] = req.body[update];
-            else{
+            else {
                 const preferences = Object.keys(req.body[update])
 
-                if(!user[update])
+                if (!user[update])
                     user[update] = preferenceSchema;
 
                 preferences.forEach((preference) => {
@@ -423,7 +422,6 @@ router.patch('/users', auth, async (req, res) => {
                 })
             }
         });
-
 
 
         await user.save();
@@ -435,7 +433,8 @@ router.patch('/users', auth, async (req, res) => {
 })
 
 // TODO needs to tested
-router.get('/users/liked_recipes', auth,  async (req, res) => { // cache(constants.CACHEPERIOD),
+// GET /users/liked_recipes?number
+router.get('/users/liked_recipes', auth, async (req, res) => { // cache(constants.CACHEPERIOD),
     /*
         #swagger.tags = ['User']
         #swagger.description = 'List the recipe that user liked'
@@ -456,10 +455,12 @@ router.get('/users/liked_recipes', auth,  async (req, res) => { // cache(constan
     */
     let user = req.user;
     try {
-        // only return the name field of the liked recipes
-        //console.log(user.likedRecipes)
-        const populatedUser = await user.populate("likedRecipes").execPopulate();
-        return res.status(200).send(populatedUser.likedRecipes);
+        if (req.query.number) {
+            return res.status(200).json({number: user.likedRecipes.length});
+        } else {
+            const populatedUser = await user.populate("likedRecipes").execPopulate();
+            return res.status(200).send(populatedUser.likedRecipes);
+        }
     } catch (e) {
         return res.status(404).send("Recipes were not found. " + e);
     }
@@ -490,11 +491,11 @@ router.get('/users/liked_ingredient_frequencies', auth, cache(constants.CACHEPER
         let result_processed = {};
         let ingredientNames = Object.keys(result);
 
-        for(let i = 0; i < ingredientNames.length; i++)
+        for (let i = 0; i < ingredientNames.length; i++)
             result_processed[ingredientNames[i]] = result[ingredientNames[i]].score
 
         res.status(200).send(result_processed);
-    }catch (e) {
+    } catch (e) {
         return res.status(404).send("Database error " + e);
     }
 })
