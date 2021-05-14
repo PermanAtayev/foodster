@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "test": "jest --runInBand --detectOpenHandles  --testEnvironment=node --testTimeout=10000 --forceExit ",
-    "dev": "nodemon -r dotenv/config src/index.js",
+    "dev": "cross-env NODE_ENV=DEVELOPMENT nodemon -r dotenv/config src/index.js",
     "start": "node -r dotenv/config src/index.js",
     "gendoc": "node -r dotenv/config src/swagger.js",
     "moveScrapedToDB": "node -r dotenv/config --trace-warnings src/_helpers/scrapedToDB.js",
@@ -43,6 +43,7 @@
     "swagger-ui-express": "^4.1.6"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "nodemon": "^2.0.6"
   }
 }
